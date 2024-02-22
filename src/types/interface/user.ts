@@ -1,58 +1,74 @@
-import { IOrganization } from "./organization"
+import { IQuery, SortOptionsType } from './fetch'
+import { GroupInterface, GroupSortInterface } from './group'
+import {
+    OrganizationInterface,
+    OrganizationSortInterface,
+} from './organizations'
+import { RoleInterface, RoleSortInterface } from './roles'
 
-export interface IUser {
-  user_id?: number | null
-  is_active?: boolean | null
-  email?: string | null
-  createdAt?: Date | null
-  updatedAt?: Date | null
-  role?: IRole | null
-  organization?: IOrganization | null
-  person?: IPerson | null
-  group?: IGroup | null
+export interface UsersPayloadInterface extends IQuery {
+    sorts: UserSortInterface
+    filter: Partial<UserInterface>
 }
 
-export interface IPerson {
-  person_id?: number | null
-  last_name?: string | null
-  first_name?: string | null
-  patronymic?: string | null
-  phone?: string | null
-  property_values?: null | null
-  createdAt?: Date | null
-  updatedAt?: Date | null
+export interface UserPayloadInterface {
+    user_id?: number
+    last_name: string
+    first_name: string
+    patronymic: string
+    phone: string
+    role_id: string
+    group_id?: string | null
+    email: string
+    password?: string
 }
 
-// ROLE
-
-export interface IRole {
-  role_id?: number | null
-  role_name?: string | null
-  createdAt?: Date | null
-  updatedAt?: Date | null
+export interface OrganizationUserPayloadInterface {
+    user_id?: number
+    organization_type_id: string
+    full_name: string
+    short_name: string
+    phone: string
+    role_id: string
+    group_id?: string | null
+    email: string
+    password?: string
 }
 
-export interface IRoleSort {
-  role_id?: "ASC" | "DESC" | null
-  role_name?: "ASC" | "DESC" | null
+// USER
+
+export interface UserInterface {
+    user_id: number
+    is_active: boolean
+    email: string
+    role: RoleInterface
+    organization?: OrganizationInterface | null
+    person: PersonInterface
+    group: GroupInterface | null
 }
 
-// GROUP
-
-export interface IGroup {
-  group_id?: number | null
-  group_name?: string | null
-  branch_id?: null | null
-  checkpoint_id?: null | null
-  facility_id?: null | null
-  createdAt?: Date | null
-  updatedAt?: Date | null
+export interface UserSortInterface {
+    user_id?: SortOptionsType
+    email?: SortOptionsType
+    is_active?: SortOptionsType
+    person?: PersonSortInterface | null
+    role?: RoleSortInterface | null
+    group?: GroupSortInterface | null
+    organization?: OrganizationSortInterface | null
 }
 
-export interface IGroupSort {
-  group_id?: "ASC" | "DESC" | null
-  group_name?: "ASC" | "DESC" | null
-  branch_id?: "ASC" | "DESC" | null
-  checkpoint_id?: "ASC" | "DESC" | null
-  facility_id?: "ASC" | "DESC" | null
+// PERSON
+
+export interface PersonInterface {
+    person_id: number | null
+    last_name: string
+    first_name: string
+    patronymic: string
+    phone: string
+    property_values?: number[] | null
 }
+
+export type PersonSortInterface = Omit<
+    Partial<Record<keyof PersonInterface, SortOptionsType>>,
+    'property_values'
+>

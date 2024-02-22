@@ -7,8 +7,8 @@ module.exports = {
         moduleName: '@env',
         path: '.env',
         blocklist: null,
-        allowlist: null,
-      },
-    ],
-  ],
-};
+        allowlist: null
+      }
+    ]
+  ]
+}
