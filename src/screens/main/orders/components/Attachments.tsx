@@ -1,6 +1,7 @@
 import {
     Dimensions,
     FlatList,
+    ScrollView,
     StyleProp,
     StyleSheet,
     Text,
@@ -9,11 +10,11 @@ import {
     ViewStyle,
 } from 'react-native'
 import AppColors from '../../../../constants/Colors'
-import { CloseIcon, Image, ScrollView, Skeleton } from 'native-base'
 import { AddCircleIcon } from '../../../../components/icons/AddCircleIcon'
 import { PhotoIcon } from '../../../../components/icons/PhotoIcon'
 import { UploadIcon } from '../../../../components/icons/UploadIcon'
 import AppStrings from '../../../../constants/Strings'
+import { CloseIcon, Image } from '@gluestack-ui/themed'
 
 type CardProps = {
     style?: StyleProp<ViewStyle>
@@ -133,7 +134,8 @@ export const Attachment = ({
                     <Image
                         source={attachment}
                         alt=""
-                        size={Dimensions.get('window').width / 3 - 38}
+                        width={Dimensions.get('window').width / 3 - 38}
+                        height={Dimensions.get('window').width / 3 - 38}
                     />
                 ) : (
                     <AddCircleIcon />
@@ -182,7 +184,7 @@ export const AttachFile = ({
 export const AttachmentsShimmer = (style: StyleProp<ViewStyle>) => (
     <View style={[style, styles.attachmentsCard]}>
         <ScrollView horizontal contentContainerStyle={styles.scrollView}>
-            <Skeleton
+            {/* TODO <Skeleton
                 style={styles.attachment}
                 size={Dimensions.get('window').width / 3 - 38}
             />
@@ -193,7 +195,7 @@ export const AttachmentsShimmer = (style: StyleProp<ViewStyle>) => (
             <Skeleton
                 style={styles.attachment}
                 size={Dimensions.get('window').width / 3 - 38}
-            />
+            /> */}
         </ScrollView>
     </View>
 )

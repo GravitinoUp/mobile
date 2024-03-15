@@ -8,10 +8,16 @@ import AppButton from '../../components/AppButton'
 import { fetchAuth } from '../../redux/features/AuthSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks/useAppDispatch'
 import { HideIcon } from '../../components/icons/HideIcon'
-import { FormControl, WarningOutlineIcon } from 'native-base'
 import AppCheckbox from '../../components/AppCheckbox'
 import AppTextButton from '../../components/AppTextButton'
 import { DEFAULT_HOST } from '@env'
+import {
+    FormControl,
+    FormControlError,
+    FormControlErrorIcon,
+    FormControlErrorText,
+} from '@gluestack-ui/themed'
+import WarningIcon from '../../components/icons/WarningIcon'
 
 export default function LoginScreen({ navigation }: any) {
     const [email, onChangeEmail] = useState('')
@@ -83,9 +89,10 @@ export default function LoginScreen({ navigation }: any) {
                             onChangePasswordHidden(!isPasswordHidden)
                         }
                     />
-                    <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon />}>
-                        {error}
-                    </FormControl.ErrorMessage>
+                    <FormControlError>
+                        <FormControlErrorIcon as={WarningIcon} />
+                        <FormControlErrorText>{error}</FormControlErrorText>
+                    </FormControlError>
                 </FormControl>
                 <View
                     style={{

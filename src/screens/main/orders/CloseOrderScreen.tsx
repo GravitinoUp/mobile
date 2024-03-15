@@ -3,11 +3,10 @@ import AppColors from '../../../constants/Colors'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import {
     ChevronLeftIcon,
-    IconButton,
-    Row,
+    HStack,
     ScrollView,
     useToast,
-} from 'native-base'
+} from '@gluestack-ui/themed'
 import AppCard from '../../../components/AppCard'
 import AppTextInput from '../../../components/AppTextInput'
 import AppStrings from '../../../constants/Strings'
@@ -95,7 +94,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
 
         if (pickedFiles.length + files.length > 10) {
             pickedFiles = pickedFiles.slice(0, 10 - files.length)
-            toast.show({ description: AppStrings.tooManyImages })
+            // TODO toast.show({ description: AppStrings.tooManyImages })
         }
 
         const newFiles: string[] = []
@@ -135,8 +134,9 @@ export default function CloseOrderScreen({ navigation, route }: any) {
             JSON.stringify(data)
         )
 
-        toast.closeAll()
-        toast.show({ description: AppStrings.imageDeleted })
+        // TODO toast
+        //toast.closeAll()
+        //toast.show({ description: AppStrings.imageDeleted })
     }
 
     const closeOrder = async () => {
@@ -149,15 +149,15 @@ export default function CloseOrderScreen({ navigation, route }: any) {
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
             <View style={styles.header}>
-                <Row>
-                    <IconButton
+                <HStack>
+                    {/* TODO <IconButton
                         icon={<ChevronLeftIcon />}
                         _icon={{ color: AppColors.text }}
                         _pressed={{ backgroundColor: AppColors.primaryPressed }}
                         borderRadius={'full'}
                         onPress={() => navigation.goBack()}
-                    />
-                </Row>
+                    /> */}
+                </HStack>
                 <Text style={styles.headerTitle}>№{order.order_id}</Text>
             </View>
             <ScrollView contentContainerStyle={styles.scrollView}>
@@ -167,7 +167,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                         multiline={true}
                         hint={AppStrings.comment}
                         placeholder={AppStrings.comment}
-                        minHeight="110px"
+                        minHeight={110}
                         textAlignVertical="top"
                         onChangeText={(text) => {
                             onChangeComment(text)
@@ -182,7 +182,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                             attachments={files}
                             canDelete={true}
                             canAddMore={true}
-                            canAddFiles={true} // TODO Role check
+                            canAddFiles={false} // TODO Role check
                             onAddFilePress={async () => {
                                 await pickImages()
                             }}
@@ -214,7 +214,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                         await closeOrder()
                     }}
                     text={'Закрыть задачу'}
-                    width={`${Dimensions.get('window').width / 1.5}px`}
+                    width={Dimensions.get('window').width / 1.5}
                     isDisabled={files.length === 0}
                 />
             </BottomBar>

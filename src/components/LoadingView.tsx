@@ -1,11 +1,11 @@
-import { Spinner } from "native-base";
-import { View } from "react-native";
-import AppColors from "../constants/Colors";
+import { View } from 'react-native'
+import AppColors from '../constants/Colors'
+import { Spinner } from '@gluestack-ui/themed'
 
 const LoadingView = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Spinner size={"120px"} color={AppColors.primary} />
-  </View>
-);
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner size={'large'} color={AppColors.primary} />
+    </View>
+)
 
-export default LoadingView;
+export default LoadingView

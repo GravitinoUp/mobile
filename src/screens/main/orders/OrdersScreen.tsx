@@ -5,10 +5,16 @@ import {
     fetchOrderStatuses,
 } from '../../../redux/features/OrderSlice'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
+import {
+    FlatList,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native'
 import AppTextInput from '../../../components/AppTextInput'
 import AppColors from '../../../constants/Colors'
-import { CloseIcon, HStack, ScrollView, SearchIcon } from 'native-base'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
 import AppButton from '../../../components/AppButton'
 import OrderCard from './components/OrderCard'
@@ -25,6 +31,7 @@ import {
     OrderPayloadInterface,
     OrderStatusInterface,
 } from '../../../types/interface/orders'
+import { HStack, SearchIcon } from '@gluestack-ui/themed'
 
 moment.locale('ru')
 

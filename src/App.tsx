@@ -2,23 +2,24 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import LoginScreen from './screens/auth/LoginScreen'
-import RegisterScreen from './screens/auth/RegisterScreen'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { useAppDispatch, useAppSelector } from './hooks/useAppDispatch'
 import { fetchRefreshAuth } from './redux/features/AuthSlice'
-import { NativeBaseProvider, View } from 'native-base'
 import NavigationScreen from './screens/main/NavigationScreen'
 import CameraScreen from './screens/main/camera/CameraScreen'
+import { GluestackUIProvider } from '@gluestack-ui/themed'
+import { View } from 'react-native'
+import { config } from '@gluestack-ui/config'
 
 const Stack = createNativeStackNavigator()
 
 export const AppWrapper = () => {
     return (
         <Provider store={store}>
-            <NativeBaseProvider>
+            <GluestackUIProvider config={config}>
                 <App />
-            </NativeBaseProvider>
+            </GluestackUIProvider>
         </Provider>
     )
 }
@@ -68,10 +69,6 @@ function App() {
                         <Stack.Screen
                             name="LoginScreen"
                             component={LoginScreen}
-                        />
-                        <Stack.Screen
-                            name="RegisterScreen"
-                            component={RegisterScreen}
                         />
                     </Stack.Group>
                 )}

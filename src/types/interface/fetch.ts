@@ -1,8 +1,3 @@
-export interface IFetchState {
-    error: string | null
-    isLoading: boolean | null
-}
-
 export interface IQuery {
     offset: IOffset
 }
@@ -22,6 +17,14 @@ export interface FetchDataInterface<T> {
     data: T
 }
 
+export interface ErrorInterface {
+    text: string
+    url: string
+    method: string
+    error: string
+    statusCode: number
+}
+
 export type SortOptionsType = 'ASC' | 'DESC' | null | undefined
 
 export type EntityType =
@@ -32,7 +35,3 @@ export type EntityType =
     | 'Checkpoints'
     | 'Branches'
     | 'Roles'
-
-export type RecursivePartial<T> = {
-    [P in keyof T]?: T[P] extends object ? RecursivePartial<T[P]> : T[P]
-}

@@ -1,25 +1,48 @@
+import { RecursivePartial } from '../../utils/recursive-partial'
 import { BranchInterface, BranchSortInterface } from './branch'
 import { IQuery, SortOptionsType } from './fetch'
+import { ReportFilterInterface } from './report'
+import { ReportInterface } from './reports'
 
 export interface CheckpointsPayloadInterface extends IQuery {
     sorts: CheckpointSortInterface
-    filter: Partial<CheckpointInterface>
+    filter: RecursivePartial<CheckpointFilterInterface>
+    report_filter?: RecursivePartial<ReportFilterInterface>
+}
+
+export interface CheckpointTypesPayloadInterface extends IQuery {
+    sorts: CheckpointTypeSortInterface
+    filter: Partial<CheckpointTypeInterface>
 }
 
 export interface FormattedCheckpointsInterface {
     checkpoint: CheckpointInterface
     key: number
-    id: number
+    checkpoint_id: number
     checkpoint_name: string
     address: string
     branch_name: string
     working_hours?: string
+    operating_mode?: string
     neighboring_state?: string
     region?: string | null
     checkpoint_type_name: string
 }
 
 // CHECKPOINT
+
+export interface CheckpointPayloadInterface {
+    checkpoint_id: number
+    checkpoint_name: string
+    address: string
+    branch_id: string
+    neighboring_state_id?: string
+    district?: string
+    region?: string
+    checkpoint_type_id: string
+    working_hours_id?: string
+    operating_mode_id?: string
+}
 
 export interface CheckpointInterface {
     checkpoint_id: number
@@ -28,7 +51,7 @@ export interface CheckpointInterface {
     lat: number
     lng: number
     branch: BranchInterface
-    neighboring_state?: NeighboringStateInterface | null
+    neighboring_state: NeighboringStateInterface
     district?: string | null
     region?: string | null
     checkpoint_type: CheckpointTypeInterface
@@ -37,6 +60,14 @@ export interface CheckpointInterface {
     createdAt: Date
     updatedAt: Date
     property_values?: number[] | null
+    report?: ReportInterface
+}
+
+export type CheckpointFilterInterface = Omit<
+    CheckpointInterface,
+    'checkpoint_type'
+> & {
+    checkpoint_type?: CheckpointTypeFilterInterface[]
 }
 
 export interface CheckpointSortInterface {
@@ -57,6 +88,12 @@ export interface CheckpointSortInterface {
 export interface CheckpointTypeInterface {
     checkpoint_type_id: number
     checkpoint_type_name: string
+}
+export type CheckpointTypeFilterInterface = Omit<
+    CheckpointTypeInterface,
+    'checkpoint_type_name'
+> & {
+    checkpoint_type_name?: string
 }
 
 export type CheckpointTypeSortInterface = Partial<

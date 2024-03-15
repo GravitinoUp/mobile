@@ -1,3 +1,4 @@
+import { RecursivePartial } from '../../utils/recursive-partial'
 import { IQuery, SortOptionsType } from './fetch'
 import { GroupInterface, GroupSortInterface } from './group'
 import {
@@ -8,7 +9,20 @@ import { RoleInterface, RoleSortInterface } from './roles'
 
 export interface UsersPayloadInterface extends IQuery {
     sorts: UserSortInterface
-    filter: Partial<UserInterface>
+    filter: RecursivePartial<UserInterface>
+}
+
+export interface FormattedUsersInterface {
+    user: UserInterface
+    key: number
+    user_id: number
+    FIO: string
+    phone?: string
+    email?: string
+    organization_name?: string
+    organization_type_name?: string
+    role_name: string
+    is_active: boolean
 }
 
 export interface UserPayloadInterface {
@@ -42,7 +56,7 @@ export interface UserInterface {
     is_active: boolean
     email: string
     role: RoleInterface
-    organization?: OrganizationInterface | null
+    organization: OrganizationInterface
     person: PersonInterface
     group: GroupInterface | null
 }
@@ -65,7 +79,7 @@ export interface PersonInterface {
     first_name: string
     patronymic: string
     phone: string
-    property_values?: number[] | null
+    property_values?: number[]
 }
 
 export type PersonSortInterface = Omit<

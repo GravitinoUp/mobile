@@ -1,11 +1,5 @@
 import { IQuery, SortOptionsType } from './fetch'
 
-export interface OrganizationStateInterface {
-    organizations: OrganizationInterface[] | null
-    error: string | null
-    isLoading: boolean | null
-}
-
 export interface OrganizationsPayloadInterface extends IQuery {
     sorts: OrganizationSortInterface
     filter: Partial<OrganizationInterface>
@@ -32,9 +26,7 @@ export interface OrganizationInterface {
     organization_type: OrganizationTypeInterface
     full_name: string
     short_name: string
-    register_number: string
     phone: string
-    email?: string | null
     createdAt?: Date | null
     updatedAt?: Date | null
     property_values?: number[] | null
@@ -45,9 +37,7 @@ export interface OrganizationSortInterface {
     organization_type?: OrganizationTypeSortInterface | null
     full_name?: SortOptionsType
     short_name?: SortOptionsType
-    register_number?: SortOptionsType
     phone?: SortOptionsType
-    email?: SortOptionsType
 }
 
 // ORGANIZATION TYPE

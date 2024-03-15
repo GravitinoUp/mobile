@@ -1,7 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppColors from '../../../constants/Colors'
-import { StyleSheet, Text, View } from 'react-native'
-import { ChevronLeftIcon, HStack, IconButton, ScrollView } from 'native-base'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import AppCard from '../../../components/AppCard'
 import { CalendarIcon } from '../../../components/icons/CalendarIcon'
 import AppTextInput from '../../../components/AppTextInput'
@@ -12,6 +11,7 @@ import AppTopBar from '../../../components/AppTopBar'
 import renderIconSwitch from '../../../utils/renderIconSwitch'
 import moment from 'moment'
 import { OrderInterface } from '../../../types/interface/orders'
+import { HStack } from '@gluestack-ui/themed'
 
 export default function OrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -22,13 +22,13 @@ export default function OrderScreen({ navigation, route }: any) {
         >
             <AppTopBar style={styles.header}>
                 <HStack style={{ alignItems: 'center' }}>
-                    <IconButton
+                    {/* TODO <IconButton
                         icon={<ChevronLeftIcon />}
                         _icon={{ color: AppColors.text }}
                         _pressed={{ backgroundColor: AppColors.primaryPressed }}
                         borderRadius={'full'}
                         onPress={() => navigation.goBack()}
-                    />
+                    /> */}
                     <View style={{ flex: 1 }} />
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ marginEnd: 12 }}>

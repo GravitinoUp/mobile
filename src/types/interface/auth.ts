@@ -2,12 +2,8 @@ import { JwtPayload } from 'jwt-decode'
 import { UserInterface } from './user'
 
 export interface AuthInterface {
+    isLogin: boolean
     user: UserInterface | null
-    token: TokenInterface | null
-    error: string | null
-    isLoading: boolean | null
-    remember: boolean
-    host: string | null
 }
 
 export interface TokenInterface {
@@ -18,8 +14,6 @@ export interface TokenInterface {
 export interface AuthPayloadInterface {
     email: string
     password: string
-    remember: boolean
-    host: string | null
 }
 
 export interface RefreshPayloadInterface {
