@@ -2,10 +2,10 @@ import { useState } from 'react'
 import AppTopBar from '../../../components/AppTopBar'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import AppColors from '../../../constants/Colors'
-import AppTextInput from '../../../components/AppTextInput'
+import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/Strings'
 import { CalendarAddIcon } from '../../../components/icons/CalendarAddIcon'
-import AppButton from '../../../components/AppButton'
+import AppButton from '../../../components/ui/button'
 import { SearchIcon } from '@gluestack-ui/themed'
 
 export default function NotificationsScreen() {
@@ -17,7 +17,7 @@ export default function NotificationsScreen() {
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
             <AppTopBar style={styles.header}>
-                <AppTextInput
+                <AppInput
                     value={search}
                     onChangeText={(text: string) => {
                         onChangeSearch(text)

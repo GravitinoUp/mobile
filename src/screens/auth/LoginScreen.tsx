@@ -1,51 +1,55 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import AppColors from '../../constants/Colors'
-import AppTextInput from '../../components/AppTextInput'
 import { useEffect, useState } from 'react'
 import AppStrings from '../../constants/Strings'
-import AppButton from '../../components/AppButton'
-import { fetchAuth } from '../../redux/features/AuthSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks/useAppDispatch'
-import { HideIcon } from '../../components/icons/HideIcon'
+import AppButton from '../../components/ui/button'
 import AppCheckbox from '../../components/AppCheckbox'
 import AppTextButton from '../../components/AppTextButton'
-import { DEFAULT_HOST } from '@env'
 import {
+    EyeIcon,
+    EyeOffIcon,
     FormControl,
     FormControlError,
     FormControlErrorIcon,
-    FormControlErrorText,
 } from '@gluestack-ui/themed'
 import WarningIcon from '../../components/icons/WarningIcon'
+import { useAuthMutation } from '../../redux/api/auth'
+import { AuthPayloadInterface } from '../../types/interface/auth'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
+import AppFormControlErrorText from '../../components/FormControlErrorText'
+import AppInput from '../../components/ui/input'
 
 export default function LoginScreen({ navigation }: any) {
+    //const [serverHost, onChangeServerHost] = useState(DEFAULT_HOST)
     const [email, onChangeEmail] = useState('')
     const [password, onChangePassword] = useState('')
-    const [isPasswordHidden, onChangePasswordHidden] = useState(true)
-    const [serverHost, onChangeServerHost] = useState(DEFAULT_HOST)
+    const [passwordHidden, setPasswordHidden] = useState(true)
 
     const [isChecked, setChecked] = useState(true)
 
     const dispatch = useAppDispatch()
-    const { error, host } = useAppSelector((state) => state.auth)
-
-    useEffect(() => {
-        if (host) {
-            onChangeServerHost(host)
-        }
-    }, [host])
+    const [authUser, { data, error, isError, isSuccess, isLoading }] =
+        useAuthMutation()
 
     const handleLogin = () => {
-        const params = {
+        const authData: AuthPayloadInterface = {
             email: email,
             password: password,
-            remember: isChecked,
-            host: serverHost,
         }
 
-        dispatch(fetchAuth(params))
+        authUser(authData)
     }
+
+    useEffect(() => {
+        if (isSuccess) {
+            dispatch(setAccessToken(data?.accessToken))
+            dispatch(setRefreshToken(data?.refreshToken))
+
+            navigation.navigate('NavigationScreen')
+        }
+    }, [isSuccess])
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -56,42 +60,44 @@ export default function LoginScreen({ navigation }: any) {
                     {AppStrings.signInDescription}
                 </Text>
                 <FormControl
-                    isInvalid={error !== null && error !== ''}
+                    isInvalid={isError}
                     style={{
                         flex: 1,
                         flexDirection: 'column',
                         paddingBottom: 20,
                     }}
                 >
-                    <AppTextInput
+                    {/* <AppInput
                         style={{ marginBottom: 8 }}
                         value={serverHost}
                         onChangeText={onChangeServerHost}
                         hint="Хост"
                         placeholder="0.0.0.0:3000"
-                    />
-                    <AppTextInput
+                    /> */}
+                    <AppInput
                         style={{ marginBottom: 8 }}
                         value={email}
                         onChangeText={onChangeEmail}
                         hint="Email"
                         placeholder="Email"
                     />
-                    <AppTextInput
+                    <AppInput
                         style={{ marginBottom: 8 }}
                         value={password}
                         onChangeText={onChangePassword}
                         hint="Пароль"
                         placeholder="Пароль"
-                        secureTextEntry={isPasswordHidden}
-                        trailingIcon={<HideIcon />}
+                        secureTextEntry={passwordHidden}
+                        trailingIcon={
+                            passwordHidden ? <EyeOffIcon /> : <EyeIcon />
+                        }
                         onTrailingIconPress={() =>
-                            onChangePasswordHidden(!isPasswordHidden)
+                            setPasswordHidden(!passwordHidden)
                         }
                     />
                     <FormControlError>
                         <FormControlErrorIcon as={WarningIcon} />
-                        <FormControlErrorText>{error}</FormControlErrorText>
+                        <AppFormControlErrorText error={error} />
                     </FormControlError>
                 </FormControl>
                 <View
@@ -110,7 +116,11 @@ export default function LoginScreen({ navigation }: any) {
                     <AppTextButton text="Забыли пароль?" onPress={() => {}} />
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
-                    <AppButton onPress={handleLogin} text={'Войти'} />
+                    <AppButton
+                        onPress={handleLogin}
+                        text={'Войти'}
+                        isLoading={isLoading}
+                    />
                 </View>
                 <View style={{ flex: 3 }} />
             </ScrollView>

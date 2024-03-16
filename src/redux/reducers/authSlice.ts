@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { AuthInterface } from '@/types/interface/auth'
+import { AuthInterface } from '../../types/interface/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState: AuthInterface = {
     isLogin: false,
@@ -11,10 +12,10 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setAccessToken: (_, action) => {
-            document.cookie = `accessToken=${action.payload}; Max-Age=43200`
+            AsyncStorage.setItem('accessToken', action.payload)
         },
         setRefreshToken: (_, action) => {
-            document.cookie = `refreshToken=${action.payload}`
+            AsyncStorage.setItem('refreshToken', action.payload)
         },
     },
 })

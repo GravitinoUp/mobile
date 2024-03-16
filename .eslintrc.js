@@ -1,65 +1,74 @@
 module.exports = {
-    env: {
-        es2021: true,
+  env: {
+    es2021: true,
+    node: true,
+  },
+  extends: [
+    "standard-with-typescript",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+  ],
+  overrides: [
+    {
+      env: {
         node: true,
+      },
+      files: [".eslintrc.{js,cjs}"],
+      parserOptions: {
+        sourceType: "script",
+      },
     },
-    extends: [
-        'standard-with-typescript',
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:react-hooks/recommended',
-        'plugin:react/recommended',
-        'plugin:react/jsx-runtime',
+  ],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+  },
+  plugins: ["react", "react-native", "react-refresh", "import"],
+  rules: {
+    "import/no-unresolved": "off",
+    "consistent-return": "error",
+    "arrow-body-style": ["error", "as-needed"],
+    "react/prop-types": 0,
+    "react-refresh/only-export-components": [
+      "warn",
+      {
+        allowConstantExport: true,
+      },
     ],
-    overrides: [
-        {
-            env: {
-                node: true,
-            },
-            files: ['.eslintrc.{js,cjs}'],
-            parserOptions: {
-                sourceType: 'script',
-            },
+    "import/order": [
+      "error",
+      {
+        groups: [
+          ["builtin", "external"],
+          ["internal", "parent", "sibling", "index"],
+        ],
+        pathGroups: [
+          {
+            pattern: "react",
+            group: "external",
+            position: "before",
+          },
+        ],
+        pathGroupsExcludedImportTypes: ["react"],
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
         },
+      },
     ],
-    parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+  },
+  settings: {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"],
     },
-    plugins: ['react', 'react-native', 'react-refresh', 'import'],
-    rules: {
-        'import/no-unresolved': 'off',
-        'consistent-return': 'error',
-        'arrow-body-style': ['error', 'as-needed'],
-        'react/prop-types': 0,
-        'react-refresh/only-export-components': [
-            'warn',
-            { allowConstantExport: true },
-        ],
-        'import/order': [
-            'error',
-            {
-                groups: [
-                    ['builtin', 'external'],
-                    ['internal', 'parent', 'sibling', 'index'],
-                ],
-                pathGroups: [
-                    { pattern: 'react', group: 'external', position: 'before' },
-                ],
-                pathGroupsExcludedImportTypes: ['react'],
-                alphabetize: { order: 'asc', caseInsensitive: true },
-            },
-        ],
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+      typescript: {},
     },
-    settings: {
-        'import/parsers': {
-            '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
-        'import/resolver': {
-            node: {
-                extensions: ['.js', '.jsx', '.ts', '.tsx'],
-            },
-            typescript: {},
-        },
-    },
-}
+  },
+};

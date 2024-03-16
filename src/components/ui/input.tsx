@@ -7,11 +7,11 @@ import {
     View,
     ViewStyle,
 } from 'react-native'
-import AppColors from '../constants/Colors'
+import AppColors from '../../constants/Colors'
 import { useState } from 'react'
 import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
 
-type AppTextInputProps = {
+type AppInputProps = {
     style?: StyleProp<ViewStyle>
     value: string
     onChangeText: (text: string) => void
@@ -29,7 +29,7 @@ type AppTextInputProps = {
     onLeadingIconPress?: () => void
 }
 
-const AppTextInput = ({
+const AppInput = ({
     style,
     value = '',
     onChangeText,
@@ -45,40 +45,41 @@ const AppTextInput = ({
     onLeadingIconPress,
     trailingIcon,
     onTrailingIconPress,
-}: AppTextInputProps) => {
-    const [isFocused, setFocused] = useState(false)
-
+}: AppInputProps) => {
     return (
         <View style={style}>
             {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
             <Input
-                borderColor={
-                    isFocused ? AppColors.borderActive : AppColors.border
-                }
+                variant="rounded"
                 borderRadius="$2xl"
-                borderWidth="$1"
-                h={multiline ? undefined : 50}
                 minHeight={minHeight}
+                h="$11"
             >
                 {leadingIcon && (
-                    <InputSlot style={styles.leading}>{leadingIcon}</InputSlot>
+                    <InputSlot
+                        style={styles.leading}
+                        onPress={onLeadingIconPress}
+                    >
+                        {leadingIcon}
+                    </InputSlot>
                 )}
                 <InputField
                     value={value}
                     onChangeText={onChangeText}
-                    fontSize={16}
                     placeholder={placeholder}
+                    fontSize={14}
                     readOnly={readOnly}
                     multiline={multiline}
                     secureTextEntry={secureTextEntry}
-                    onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
                     textAlignVertical={textAlignVertical}
                     color={AppColors.text}
                     paddingHorizontal={16}
                 />
                 {trailingIcon && (
-                    <InputSlot style={styles.trailing}>
+                    <InputSlot
+                        style={styles.trailing}
+                        onPress={onTrailingIconPress}
+                    >
                         {trailingIcon}
                     </InputSlot>
                 )}
@@ -101,4 +102,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default AppTextInput
+export default AppInput

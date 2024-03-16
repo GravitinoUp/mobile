@@ -11,6 +11,10 @@ import CameraScreen from './screens/main/camera/CameraScreen'
 import { GluestackUIProvider } from '@gluestack-ui/themed'
 import { View } from 'react-native'
 import { config } from '@gluestack-ui/config'
+import SplashScreen from './screens/splash/splash-screen'
+import { useRefreshTokenMutation } from './redux/api/auth'
+import { getJWTtokens } from './utils/helpers'
+import { setAccessToken } from './redux/reducers/authSlice'
 
 const Stack = createNativeStackNavigator()
 
@@ -26,55 +30,61 @@ export const AppWrapper = () => {
 
 function App() {
     const [isLoading, setLoading] = useState<boolean | null>(null)
+    const [initialRoute, setInitialRoute] = useState<string>('LoginScreen')
+
     const dispatch = useAppDispatch()
-    const auth = useAppSelector((state) => state.auth)
+
+    const [fetchRefresh, { data: newAccessToken, error, isSuccess }] =
+        useRefreshTokenMutation()
 
     useEffect(() => {
-        if (isLoading === null) {
-            setLoading(true)
-            dispatch(fetchRefreshAuth())
-        } else if (isLoading === true) {
-            if (
-                auth.isLoading === false &&
-                auth.error === null &&
-                auth.user !== null
-            ) {
+        getJWTtokens().then(({ accessToken, refreshToken }) => {
+            console.log(accessToken)
+            console.log(refreshToken)
+
+            if (refreshToken) {
+                fetchRefresh({ refresh_token: `${refreshToken}` })
+                setLoading(true)
+            } else if (!accessToken) {
                 setLoading(false)
             }
-        }
-    }, [auth])
+        })
+    }, [])
 
     useEffect(() => {
-        if (auth.error !== null) {
+        if (isSuccess) {
+            dispatch(setAccessToken(newAccessToken))
+            setInitialRoute('NavigationScreen')
             setLoading(false)
         }
-    }, [auth.error])
+    }, [isSuccess])
+
+    useEffect(() => {
+        if (error) {
+            setLoading(false)
+        }
+    }, [error])
 
     return isLoading === false ? (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {auth.user && auth.error === null ? (
-                    <Stack.Group>
-                        <Stack.Screen
-                            name="NavigationScreen"
-                            component={NavigationScreen}
-                        />
-                        <Stack.Screen
-                            name="CameraScreen"
-                            component={CameraScreen}
-                        />
-                    </Stack.Group>
-                ) : (
-                    <Stack.Group>
-                        <Stack.Screen
-                            name="LoginScreen"
-                            component={LoginScreen}
-                        />
-                    </Stack.Group>
-                )}
+            <Stack.Navigator
+                screenOptions={{ headerShown: false }}
+                initialRouteName={initialRoute}
+            >
+                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Group>
+                    <Stack.Screen
+                        name="NavigationScreen"
+                        component={NavigationScreen}
+                    />
+                    <Stack.Screen
+                        name="CameraScreen"
+                        component={CameraScreen}
+                    />
+                </Stack.Group>
             </Stack.Navigator>
         </NavigationContainer>
     ) : (
-        <View />
+        <SplashScreen />
     )
 }

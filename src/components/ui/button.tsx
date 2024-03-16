@@ -1,6 +1,6 @@
 import { StyleProp, ViewStyle } from 'react-native'
-import AppColors from '../constants/Colors'
-import { Button, ButtonSpinner, ButtonText, Text } from '@gluestack-ui/themed'
+import AppColors from '../../constants/Colors'
+import { Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed'
 
 type AppButtonProps = {
     onPress: () => void
@@ -37,24 +37,27 @@ const AppButton = ({
 }: AppButtonProps) => (
     <Button
         w={width}
+        h="$11"
         style={style}
         onPress={onPress}
         backgroundColor={backgroundColor}
         borderColor={borderColor}
-        borderWidth={'$1'}
-        borderRadius={'$xl'}
+        borderRadius={'$2xl'}
         px={paddingX}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled || isLoading}
+        $disabled-opacity="$75"
     >
-        {isLoading && <ButtonSpinner />}
-        <ButtonText
-            fontSize={fontSize}
-            fontWeight={fontWeight}
-            color={foregroundColor}
-            textAlign={'center'}
-        >
-            {text}
-        </ButtonText>
+        {!isLoading && (
+            <ButtonText
+                fontSize={fontSize}
+                fontWeight={fontWeight}
+                color={foregroundColor}
+                textAlign={'center'}
+            >
+                {text}
+            </ButtonText>
+        )}
+        {isLoading && <ButtonSpinner ml="$2" />}
     </Button>
 )
 

@@ -13,10 +13,10 @@ import {
     Text,
     View,
 } from 'react-native'
-import AppTextInput from '../../../components/AppTextInput'
+import AppInput from '../../../components/ui/input'
 import AppColors from '../../../constants/Colors'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
-import AppButton from '../../../components/AppButton'
+import AppButton from '../../../components/ui/button'
 import OrderCard from './components/OrderCard'
 import moment from 'moment'
 import 'moment/locale/ru'
@@ -197,7 +197,7 @@ export default function OrdersScreen({ navigation }: any) {
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
             <AppTopBar style={styles.header}>
-                <AppTextInput
+                <AppInput
                     value={search}
                     onChangeText={(text: string) => {
                         onChangeSearch(text)

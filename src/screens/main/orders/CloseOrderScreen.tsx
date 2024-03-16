@@ -8,11 +8,11 @@ import {
     useToast,
 } from '@gluestack-ui/themed'
 import AppCard from '../../../components/AppCard'
-import AppTextInput from '../../../components/AppTextInput'
+import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/Strings'
 import { useEffect, useState } from 'react'
 import { BottomBar } from '../../../components/BottomBar'
-import AppButton from '../../../components/AppButton'
+import AppButton from '../../../components/ui/button'
 import { AttachmentsCard, AttachmentsShimmer } from './components/Attachments'
 import { useCameraPermission } from 'react-native-vision-camera'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -162,7 +162,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
             </View>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <AppCard style={styles.cardContent}>
-                    <AppTextInput
+                    <AppInput
                         value={comment}
                         multiline={true}
                         hint={AppStrings.comment}

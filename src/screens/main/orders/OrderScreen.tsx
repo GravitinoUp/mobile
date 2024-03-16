@@ -3,9 +3,9 @@ import AppColors from '../../../constants/Colors'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import AppCard from '../../../components/AppCard'
 import { CalendarIcon } from '../../../components/icons/CalendarIcon'
-import AppTextInput from '../../../components/AppTextInput'
+import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/Strings'
-import AppButton from '../../../components/AppButton'
+import AppButton from '../../../components/ui/button'
 import { AttachmentsCard } from './components/Attachments'
 import AppTopBar from '../../../components/AppTopBar'
 import renderIconSwitch from '../../../utils/renderIconSwitch'
@@ -75,7 +75,7 @@ export default function OrderScreen({ navigation, route }: any) {
                                 paddingBottom: 16,
                             }}
                         >
-                            <AppTextInput
+                            <AppInput
                                 value={`${
                                     order.order_name
                                         ? order.order_name
@@ -86,7 +86,7 @@ export default function OrderScreen({ navigation, route }: any) {
                                 placeholder={AppStrings.workType}
                                 onChangeText={() => {}}
                             />
-                            <AppTextInput
+                            <AppInput
                                 value={`${
                                     order.order_description
                                         ? order.order_description
@@ -101,7 +101,7 @@ export default function OrderScreen({ navigation, route }: any) {
                             />
                         </View>
                         <View style={{ gap: 16, flexDirection: 'column' }}>
-                            <AppTextInput
+                            <AppInput
                                 value={`${order.facility?.checkpoint?.branch?.branch_name}`}
                                 readOnly={true}
                                 multiline={false}
@@ -109,7 +109,7 @@ export default function OrderScreen({ navigation, route }: any) {
                                 placeholder={AppStrings.branch}
                                 onChangeText={() => {}}
                             />
-                            <AppTextInput
+                            <AppInput
                                 value={`${order.task?.category?.category_name}`}
                                 readOnly={true}
                                 multiline={false}
@@ -117,7 +117,7 @@ export default function OrderScreen({ navigation, route }: any) {
                                 placeholder={AppStrings.category}
                                 onChangeText={() => {}}
                             />
-                            <AppTextInput
+                            <AppInput
                                 value={`${order.priority?.priority_name}`}
                                 readOnly={true}
                                 multiline={false}
