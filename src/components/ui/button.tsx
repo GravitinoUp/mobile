@@ -1,59 +1,44 @@
 import { StyleProp, ViewStyle } from 'react-native'
 import AppColors from '../../constants/Colors'
 import { Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed'
+import { ComponentProps } from 'react'
 
+type ButtonProps = ComponentProps<typeof Button>
+type ButtonTextProps = ComponentProps<typeof ButtonText>
 type AppButtonProps = {
     onPress: () => void
     style?: StyleProp<ViewStyle>
     text: string
-    borderRadius?: number
-    borderColor?: string
-    backgroundColor?: string
-    foregroundColor?: string
-    fontSize?: number
-    fontWeight?: string
-    width?: number
-    paddingX?: number
-    paddingY?: number
-    isDisabled?: boolean
+    textProps?: ButtonTextProps
     isLoading?: boolean
-}
+} & ButtonProps
 
 const AppButton = ({
     style,
-    onPress,
     text,
+    textProps: textStyle = {
+        fontSize: 15,
+        fontWeight: '$bold',
+        color: AppColors.textOnPrimary,
+    },
     backgroundColor = AppColors.primary,
-    foregroundColor = AppColors.textOnPrimary,
-    fontSize = 15,
-    fontWeight = 'bold',
     borderColor = '#00000000',
-    borderRadius = 16,
-    width,
-    paddingX = 16,
-    paddingY = 10,
-    isDisabled = false,
     isLoading = false,
+    ...props
 }: AppButtonProps) => (
     <Button
-        w={width}
-        h="$11"
+        key={props.key}
         style={style}
-        onPress={onPress}
+        h="$11"
         backgroundColor={backgroundColor}
         borderColor={borderColor}
         borderRadius={'$2xl'}
-        px={paddingX}
-        isDisabled={isDisabled || isLoading}
         $disabled-opacity="$75"
+        {...props}
+        isDisabled={props.isDisabled || isLoading}
     >
         {!isLoading && (
-            <ButtonText
-                fontSize={fontSize}
-                fontWeight={fontWeight}
-                color={foregroundColor}
-                textAlign={'center'}
-            >
+            <ButtonText textAlign={'center'} {...textStyle}>
                 {text}
             </ButtonText>
         )}

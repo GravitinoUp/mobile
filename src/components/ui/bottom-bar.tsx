@@ -4,7 +4,7 @@ import {
     TouchableOpacity,
     ViewStyle,
 } from 'react-native'
-import AppColors from '../constants/Colors'
+import AppColors from '../../constants/Colors'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { HStack } from '@gluestack-ui/themed'
 

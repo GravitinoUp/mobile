@@ -23,7 +23,7 @@ type OrderCardProps = {
 const OrderCard = ({ style, orderData, icon, onPress }: OrderCardProps) => {
     return (
         <TouchableOpacity
-            activeOpacity={0.5}
+            activeOpacity={0.8}
             onPress={onPress}
             style={[style, styles.card]}
         >
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     card: {
         borderRadius: 20,
         backgroundColor: AppColors.background,
-        elevation: 10,
+        elevation: 5,
         shadowColor: AppColors.text,
         shadowOffset: {
             width: 0,

@@ -1,6 +1,9 @@
 import { FormControlErrorText } from '@gluestack-ui/themed'
-import { ErrorInterface, FetchResultInterface } from '../types/interface/fetch'
-import AppStrings from '../constants/Strings'
+import {
+    ErrorInterface,
+    FetchResultInterface,
+} from '../../types/interface/fetch'
+import AppStrings from '../../constants/Strings'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { SerializedError } from '@reduxjs/toolkit'
 

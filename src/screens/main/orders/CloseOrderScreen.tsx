@@ -7,11 +7,11 @@ import {
     ScrollView,
     useToast,
 } from '@gluestack-ui/themed'
-import AppCard from '../../../components/AppCard'
+import Card from '../../../components/ui/card'
 import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/Strings'
 import { useEffect, useState } from 'react'
-import { BottomBar } from '../../../components/BottomBar'
+import { BottomBar } from '../../../components/ui/bottom-bar'
 import AppButton from '../../../components/ui/button'
 import { AttachmentsCard, AttachmentsShimmer } from './components/Attachments'
 import { useCameraPermission } from 'react-native-vision-camera'
@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { exists } from 'react-native-fs'
 import { pick } from 'react-native-document-picker'
 import { OrderInterface } from '../../../types/interface/orders'
+import IconButton from '../../../components/icon-button/icon-button'
 
 export default function CloseOrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -150,18 +151,15 @@ export default function CloseOrderScreen({ navigation, route }: any) {
         >
             <View style={styles.header}>
                 <HStack>
-                    {/* TODO <IconButton
-                        icon={<ChevronLeftIcon />}
-                        _icon={{ color: AppColors.text }}
-                        _pressed={{ backgroundColor: AppColors.primaryPressed }}
-                        borderRadius={'full'}
+                    <IconButton
+                        icon={<ChevronLeftIcon size="lg" />}
                         onPress={() => navigation.goBack()}
-                    /> */}
+                    />
                 </HStack>
                 <Text style={styles.headerTitle}>№{order.order_id}</Text>
             </View>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <AppCard style={styles.cardContent}>
+                <Card style={styles.cardContent}>
                     <AppInput
                         value={comment}
                         multiline={true}
@@ -203,7 +201,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                         <AttachmentsShimmer marginTop={13} />
                     )}
                     {/* <AttachmentsShimmer /> */}
-                </AppCard>
+                </Card>
             </ScrollView>
             <BottomBar
                 style={{ alignItems: 'center', justifyContent: 'center' }}

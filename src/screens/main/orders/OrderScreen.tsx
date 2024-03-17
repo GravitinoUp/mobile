@@ -1,17 +1,18 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppColors from '../../../constants/Colors'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import AppCard from '../../../components/AppCard'
+import Card from '../../../components/ui/card'
 import { CalendarIcon } from '../../../components/icons/CalendarIcon'
 import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/Strings'
 import AppButton from '../../../components/ui/button'
 import { AttachmentsCard } from './components/Attachments'
-import AppTopBar from '../../../components/AppTopBar'
+import AppBar from '../../../components/ui/app-bar'
 import renderIconSwitch from '../../../utils/renderIconSwitch'
 import moment from 'moment'
 import { OrderInterface } from '../../../types/interface/orders'
-import { HStack } from '@gluestack-ui/themed'
+import { ChevronLeftIcon, HStack } from '@gluestack-ui/themed'
+import IconButton from '../../../components/icon-button/icon-button'
 
 export default function OrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -20,15 +21,12 @@ export default function OrderScreen({ navigation, route }: any) {
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
-            <AppTopBar style={styles.header}>
+            <AppBar style={styles.header}>
                 <HStack style={{ alignItems: 'center' }}>
-                    {/* TODO <IconButton
-                        icon={<ChevronLeftIcon />}
-                        _icon={{ color: AppColors.text }}
-                        _pressed={{ backgroundColor: AppColors.primaryPressed }}
-                        borderRadius={'full'}
+                    <IconButton
+                        icon={<ChevronLeftIcon size="lg" />}
                         onPress={() => navigation.goBack()}
-                    /> */}
+                    />
                     <View style={{ flex: 1 }} />
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ marginEnd: 12 }}>
@@ -40,9 +38,9 @@ export default function OrderScreen({ navigation, route }: any) {
                     </View>
                 </HStack>
                 <Text style={styles.headerTitle}>№{order.order_id}</Text>
-            </AppTopBar>
+            </AppBar>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <AppCard>
+                <Card>
                     <View style={styles.topRow}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <CalendarIcon />
@@ -94,7 +92,7 @@ export default function OrderScreen({ navigation, route }: any) {
                                 }`}
                                 readOnly={true}
                                 multiline={true}
-                                minHeight="50px"
+                                minHeight={50}
                                 hint={AppStrings.workTypeDescription}
                                 placeholder={AppStrings.workTypeDescription}
                                 onChangeText={() => {}}
@@ -144,11 +142,11 @@ export default function OrderScreen({ navigation, route }: any) {
                                 })
                             }}
                             text={'Закрыть задачу'}
-                            paddingX={40}
-                            paddingY={10}
+                            px={40}
+                            py={10}
                         />
                     </View>
-                </AppCard>
+                </Card>
             </ScrollView>
         </SafeAreaView>
     )

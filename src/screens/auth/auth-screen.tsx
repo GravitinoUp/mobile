@@ -4,8 +4,8 @@ import AppColors from '../../constants/Colors'
 import { useEffect, useState } from 'react'
 import AppStrings from '../../constants/Strings'
 import AppButton from '../../components/ui/button'
-import AppCheckbox from '../../components/AppCheckbox'
-import AppTextButton from '../../components/AppTextButton'
+import AppCheckbox from '../../components/ui/checkbox'
+import TextButton from '../../components/ui/text-button'
 import {
     EyeIcon,
     EyeOffIcon,
@@ -18,10 +18,10 @@ import { useAuthMutation } from '../../redux/api/auth'
 import { AuthPayloadInterface } from '../../types/interface/auth'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
-import AppFormControlErrorText from '../../components/FormControlErrorText'
+import AppFormControlErrorText from '../../components/form/form-control-error-text'
 import AppInput from '../../components/ui/input'
 
-export default function LoginScreen({ navigation }: any) {
+export default function AuthScreen({ navigation }: any) {
     //const [serverHost, onChangeServerHost] = useState(DEFAULT_HOST)
     const [email, onChangeEmail] = useState('')
     const [password, onChangePassword] = useState('')
@@ -109,11 +109,12 @@ export default function LoginScreen({ navigation }: any) {
                     }}
                 >
                     <AppCheckbox
+                        value=""
                         label={AppStrings.rememberSignIn}
                         isChecked={isChecked}
                         onChange={(checked) => setChecked(checked)}
                     />
-                    <AppTextButton text="Забыли пароль?" onPress={() => {}} />
+                    <TextButton text="Забыли пароль?" onPress={() => {}} />
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
                     <AppButton

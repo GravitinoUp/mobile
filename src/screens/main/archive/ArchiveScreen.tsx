@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch'
-import AppTopBar from '../../../components/AppTopBar'
+import AppBar from '../../../components/ui/app-bar'
 import { SafeAreaView, StyleSheet } from 'react-native'
 import AppColors from '../../../constants/Colors'
 import AppInput from '../../../components/ui/input'
@@ -24,7 +24,7 @@ export default function ArchiveScreen() {
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
-            <AppTopBar style={styles.header}>
+            <AppBar style={styles.header}>
                 <AppInput
                     value={search}
                     onChangeText={(text: string) => {
@@ -35,7 +35,7 @@ export default function ArchiveScreen() {
                     trailingIcon={<CalendarAddIcon />}
                     onTrailingIconPress={() => {}}
                 />
-            </AppTopBar>
+            </AppBar>
         </SafeAreaView>
     )
 }

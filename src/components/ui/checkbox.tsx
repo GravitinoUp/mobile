@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from 'react-native'
-import AppColors from '../constants/Colors'
+import AppColors from '../../constants/Colors'
 import {
     CheckIcon,
     Checkbox,
@@ -7,28 +7,15 @@ import {
     CheckboxIndicator,
     CheckboxLabel,
 } from '@gluestack-ui/themed'
+import { ComponentProps } from 'react'
 
-interface Props {
+type CheckboxProps = ComponentProps<typeof Checkbox>
+type Props = {
     label: string
-    isChecked: boolean
-    onChange: (isSelected: boolean) => void
-    isDisabled?: boolean
-}
+} & CheckboxProps
 
-const AppCheckbox = ({
-    label,
-    isChecked = false,
-    onChange,
-    isDisabled = false,
-}: Props) => (
-    <Checkbox
-        value=""
-        size="md"
-        isChecked={isChecked}
-        onChange={onChange}
-        isDisabled={isDisabled}
-        aria-label={label}
-    >
+const AppCheckbox = ({ label, ...props }: Props) => (
+    <Checkbox size="md" aria-label={label} {...props}>
         <CheckboxIndicator mr={'$2'}>
             <CheckboxIcon as={CheckIcon} />
         </CheckboxIndicator>

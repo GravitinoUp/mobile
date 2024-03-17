@@ -8,52 +8,43 @@ import {
     ViewStyle,
 } from 'react-native'
 import AppColors from '../../constants/Colors'
-import { useState } from 'react'
+import { ComponentProps, useState } from 'react'
 import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
 
+type InputFieldProps = ComponentProps<typeof InputField>
 type AppInputProps = {
     style?: StyleProp<ViewStyle>
     value: string
     onChangeText: (text: string) => void
     hint?: string | null
     hintStyle?: StyleProp<TextStyle>
-    placeholder?: string
-    minHeight?: DimensionValue
-    textAlignVertical?: 'center' | 'auto' | 'top' | 'bottom' | undefined
-    secureTextEntry?: boolean
-    readOnly?: boolean
-    multiline?: boolean
     trailingIcon?: React.JSX.Element
     onTrailingIconPress?: () => void
     leadingIcon?: React.JSX.Element
     onLeadingIconPress?: () => void
-}
+} & InputFieldProps
 
 const AppInput = ({
     style,
-    value = '',
+    value,
     onChangeText,
-    hint = null,
+    hint,
     hintStyle = { fontSize: 14, color: AppColors.hint },
-    placeholder = '',
     minHeight,
-    textAlignVertical = 'center',
-    secureTextEntry = false,
-    readOnly = false,
-    multiline = false,
     leadingIcon,
     onLeadingIconPress,
     trailingIcon,
     onTrailingIconPress,
+    ...props
 }: AppInputProps) => {
     return (
         <View style={style}>
             {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
             <Input
                 variant="rounded"
-                borderRadius="$2xl"
-                minHeight={minHeight}
                 h="$11"
+                minHeight={minHeight}
+                borderRadius="$2xl"
             >
                 {leadingIcon && (
                     <InputSlot
@@ -66,14 +57,10 @@ const AppInput = ({
                 <InputField
                     value={value}
                     onChangeText={onChangeText}
-                    placeholder={placeholder}
                     fontSize={14}
-                    readOnly={readOnly}
-                    multiline={multiline}
-                    secureTextEntry={secureTextEntry}
-                    textAlignVertical={textAlignVertical}
                     color={AppColors.text}
-                    paddingHorizontal={16}
+                    px={16}
+                    {...props}
                 />
                 {trailingIcon && (
                     <InputSlot

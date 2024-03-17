@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
-import LoginScreen from './screens/auth/LoginScreen'
+import AuthScreen from './screens/auth/auth-screen'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import { useAppDispatch, useAppSelector } from './hooks/useAppDispatch'
 import { fetchRefreshAuth } from './redux/features/AuthSlice'
-import NavigationScreen from './screens/main/NavigationScreen'
+import NavigationScreen from './screens/main/navigation-screen'
 import CameraScreen from './screens/main/camera/CameraScreen'
 import { GluestackUIProvider } from '@gluestack-ui/themed'
 import { View } from 'react-native'
@@ -15,6 +15,7 @@ import SplashScreen from './screens/splash/splash-screen'
 import { useRefreshTokenMutation } from './redux/api/auth'
 import { getJWTtokens } from './utils/helpers'
 import { setAccessToken } from './redux/reducers/authSlice'
+import { TaskFilterQueryProvider } from './context/tasks/tasks-filter-query'
 
 const Stack = createNativeStackNavigator()
 
@@ -22,7 +23,9 @@ export const AppWrapper = () => {
     return (
         <Provider store={store}>
             <GluestackUIProvider config={config}>
-                <App />
+                <TaskFilterQueryProvider>
+                    <App />
+                </TaskFilterQueryProvider>
             </GluestackUIProvider>
         </Provider>
     )
@@ -71,7 +74,7 @@ function App() {
                 screenOptions={{ headerShown: false }}
                 initialRouteName={initialRoute}
             >
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Screen name="LoginScreen" component={AuthScreen} />
                 <Stack.Group>
                     <Stack.Screen
                         name="NavigationScreen"

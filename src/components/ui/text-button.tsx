@@ -1,33 +1,34 @@
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
-import AppColors from '../constants/Colors'
+import AppColors from '../../constants/Colors'
 import { Text } from '@gluestack-ui/themed'
+import { ComponentProps } from 'react'
 
+type TextProps = ComponentProps<typeof Text>
 type Props = {
-    onPress: () => void
     style?: StyleProp<ViewStyle>
     text: string
-    foregroundColor?: string
-    fontSize?: number
-    fontWeight?: string
-}
+    onPress: () => void
+} & TextProps
 
-const AppTextButton = ({
+const TextButton = ({
     style,
-    onPress,
     text,
-    foregroundColor = AppColors.primary,
+    onPress,
+    color = AppColors.primary,
     fontSize = 15,
     fontWeight = 'normal',
+    ...props
 }: Props) => (
     <TouchableOpacity style={style} activeOpacity={0.5} onPress={onPress}>
         <Text
             fontSize={fontSize}
             fontWeight={fontWeight}
-            color={foregroundColor}
+            color={color}
+            {...props}
         >
             {text}
         </Text>
     </TouchableOpacity>
 )
 
-export default AppTextButton
+export default TextButton

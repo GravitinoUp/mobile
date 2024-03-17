@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import AppTopBar from '../../../components/AppTopBar'
+import AppBar from '../../../components/ui/app-bar'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import AppColors from '../../../constants/Colors'
 import AppInput from '../../../components/ui/input'
@@ -16,7 +16,7 @@ export default function NotificationsScreen() {
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
-            <AppTopBar style={styles.header}>
+            <AppBar style={styles.header}>
                 <AppInput
                     value={search}
                     onChangeText={(text: string) => {
@@ -65,7 +65,7 @@ export default function NotificationsScreen() {
                         paddingY={5}
                     />
                 </View>
-            </AppTopBar>
+            </AppBar>
         </SafeAreaView>
     )
 }
