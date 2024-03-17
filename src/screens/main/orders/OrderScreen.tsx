@@ -9,10 +9,10 @@ import AppButton from '../../../components/ui/button'
 import { AttachmentsCard } from './components/Attachments'
 import AppBar from '../../../components/ui/app-bar'
 import { OrderInterface } from '../../../types/interface/orders'
-import { ChevronLeftIcon, HStack } from '@gluestack-ui/themed'
-import IconButton from '../../../components/icon-button/icon-button'
+import { HStack } from '@gluestack-ui/themed'
 import { formatDate } from '../../../utils/helpers'
 import OrderStatusCard from '../../../components/order-status-card/order-status-card'
+import BackButton from '../../../components/back-button/back-button'
 
 export default function OrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -23,10 +23,7 @@ export default function OrderScreen({ navigation, route }: any) {
         >
             <AppBar style={styles.header}>
                 <HStack justifyContent="space-between" alignItems="center">
-                    <IconButton
-                        icon={<ChevronLeftIcon size="lg" />}
-                        onPress={() => navigation.goBack()}
-                    />
+                    <BackButton navigation={navigation} />
                     <OrderStatusCard
                         orderStatus={order.order_status.order_status_name}
                     />

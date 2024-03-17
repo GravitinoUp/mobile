@@ -9,7 +9,9 @@ type OrderStatusCardProps = {
 
 const OrderStatusCard = ({ orderStatus }: OrderStatusCardProps) => (
     <HStack
-        p="$2"
+        pl="$3"
+        pr="$2"
+        py={6}
         borderRadius="$xl"
         backgroundColor={getStatusColor(orderStatus)}
     >

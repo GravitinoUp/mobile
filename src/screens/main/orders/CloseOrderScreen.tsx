@@ -20,6 +20,7 @@ import { exists } from 'react-native-fs'
 import { pick } from 'react-native-document-picker'
 import { OrderInterface } from '../../../types/interface/orders'
 import IconButton from '../../../components/icon-button/icon-button'
+import BackButton from '../../../components/back-button/back-button'
 
 export default function CloseOrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -151,10 +152,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
         >
             <View style={styles.header}>
                 <HStack>
-                    <IconButton
-                        icon={<ChevronLeftIcon size="lg" />}
-                        onPress={() => navigation.goBack()}
-                    />
+                    <BackButton navigation={navigation} />
                 </HStack>
                 <Text style={styles.headerTitle}>№{order.order_id}</Text>
             </View>
@@ -165,7 +163,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                         multiline={true}
                         hint={AppStrings.comment}
                         placeholder={AppStrings.comment}
-                        minHeight={110}
+                        minHeight={120}
                         textAlignVertical="top"
                         onChangeText={(text) => {
                             onChangeComment(text)
@@ -180,7 +178,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                             attachments={files}
                             canDelete={true}
                             canAddMore={true}
-                            canAddFiles={false} // TODO Role check
+                            canAddFiles={false}
                             onAddFilePress={async () => {
                                 await pickImages()
                             }}
