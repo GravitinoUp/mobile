@@ -1,4 +1,4 @@
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import AppButton from '../ui/button'
 
 type AltButtonProps = {

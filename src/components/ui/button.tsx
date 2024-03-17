@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import { Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed'
 import { ComponentProps } from 'react'
 

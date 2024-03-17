@@ -9,7 +9,7 @@ export const formatDate = (
         return ''
     }
     const newDate = new Date(date)
-    return format(newDate, `dd.MM.yyyy${includeTime ? ' hh:mm' : ''}`)
+    return format(newDate, `dd.MM.yyyy${includeTime ? ' HH:mm' : ''}`)
 }
 
 export const formatDateISO = (
@@ -20,7 +20,7 @@ export const formatDateISO = (
         return ''
     }
     const newDate = new Date(date)
-    return format(newDate, `yyyy-MM-dd${includeTime ? ' hh:mm' : ''}`)
+    return format(newDate, `yyyy-MM-dd${includeTime ? ' HH:mm' : ''}`)
 }
 
 export const getJWTtokens = async () => {

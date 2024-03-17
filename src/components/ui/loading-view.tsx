@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import { Spinner } from '@gluestack-ui/themed'
 
 const LoadingView = () => (

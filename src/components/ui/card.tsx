@@ -1,5 +1,5 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 
 type Props = {
     style?: StyleProp<ViewStyle>
@@ -12,7 +12,7 @@ const Card = ({ style, children }: Props) => (
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 20,
+        borderRadius: 16,
         elevation: 20,
         shadowColor: AppColors.shadowColor,
         backgroundColor: AppColors.background,

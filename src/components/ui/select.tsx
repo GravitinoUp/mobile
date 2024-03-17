@@ -6,7 +6,7 @@ import {
     View,
     ViewStyle,
 } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import DropDownPicker, { ItemType } from 'react-native-dropdown-picker'
 import { useState } from 'react'
 

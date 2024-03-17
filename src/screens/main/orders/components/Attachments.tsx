@@ -9,11 +9,11 @@ import {
     View,
     ViewStyle,
 } from 'react-native'
-import AppColors from '../../../../constants/Colors'
+import { AppColors } from '../../../../constants/colors'
 import { AddCircleIcon } from '../../../../components/icons/AddCircleIcon'
 import { PhotoIcon } from '../../../../components/icons/PhotoIcon'
 import { UploadIcon } from '../../../../components/icons/UploadIcon'
-import AppStrings from '../../../../constants/Strings'
+import AppStrings from '../../../../constants/strings'
 import { CloseIcon, Image } from '@gluestack-ui/themed'
 
 type CardProps = {

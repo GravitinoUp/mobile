@@ -1,7 +1,7 @@
 import { Center } from '@gluestack-ui/themed'
-import Svg, { Path } from 'react-native-svg'
+import Svg, { Path, SvgProps } from 'react-native-svg'
 
-export const CalendarIcon = (props: any) => {
+const CalendarIcon = (props: any) => {
     return (
         <Center>
             <Svg
@@ -27,3 +27,5 @@ export const CalendarIcon = (props: any) => {
         </Center>
     )
 }
+
+export default CalendarIcon

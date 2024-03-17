@@ -1,18 +1,18 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AppColors from '../../../constants/Colors'
+import { AppColors } from '../../../constants/colors'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import Card from '../../../components/ui/card'
-import { CalendarIcon } from '../../../components/icons/CalendarIcon'
+import CalendarIcon from '../../../components/icons/calendar'
 import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/Strings'
+import AppStrings from '../../../constants/strings'
 import AppButton from '../../../components/ui/button'
 import { AttachmentsCard } from './components/Attachments'
 import AppBar from '../../../components/ui/app-bar'
-import renderIconSwitch from '../../../utils/renderIconSwitch'
-import moment from 'moment'
 import { OrderInterface } from '../../../types/interface/orders'
 import { ChevronLeftIcon, HStack } from '@gluestack-ui/themed'
 import IconButton from '../../../components/icon-button/icon-button'
+import { formatDate } from '../../../utils/helpers'
+import OrderStatusCard from '../../../components/order-status-card/order-status-card'
 
 export default function OrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -22,20 +22,14 @@ export default function OrderScreen({ navigation, route }: any) {
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
             <AppBar style={styles.header}>
-                <HStack style={{ alignItems: 'center' }}>
+                <HStack justifyContent="space-between" alignItems="center">
                     <IconButton
                         icon={<ChevronLeftIcon size="lg" />}
                         onPress={() => navigation.goBack()}
                     />
-                    <View style={{ flex: 1 }} />
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ marginEnd: 12 }}>
-                            {order?.order_status?.order_status_name}
-                        </Text>
-                        {renderIconSwitch(
-                            order?.order_status?.order_status_name
-                        )}
-                    </View>
+                    <OrderStatusCard
+                        orderStatus={order.order_status.order_status_name}
+                    />
                 </HStack>
                 <Text style={styles.headerTitle}>№{order.order_id}</Text>
             </AppBar>
@@ -50,9 +44,9 @@ export default function OrderScreen({ navigation, route }: any) {
                                     fontSize: 14,
                                     color: AppColors.bodyDark,
                                 }}
-                            >{`${moment(order?.planned_datetime).format(
-                                AppStrings.longDateFormat
-                            )}`}</Text>
+                            >
+                                {formatDate(order.planned_datetime)}
+                            </Text>
                         </View>
                     </View>
                     <View
@@ -92,7 +86,8 @@ export default function OrderScreen({ navigation, route }: any) {
                                 }`}
                                 readOnly={true}
                                 multiline={true}
-                                minHeight={50}
+                                minHeight={88}
+                                textAlignVertical="top"
                                 hint={AppStrings.workTypeDescription}
                                 placeholder={AppStrings.workTypeDescription}
                                 onChangeText={() => {}}
@@ -154,9 +149,9 @@ export default function OrderScreen({ navigation, route }: any) {
 
 const styles = StyleSheet.create({
     header: {
-        paddingHorizontal: 12,
         paddingTop: 8,
-        paddingBottom: 30,
+        paddingBottom: 16,
+        paddingHorizontal: 16,
     },
     headerTitle: {
         fontSize: 22,
@@ -166,9 +161,9 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flexGrow: 1,
-        paddingTop: 4,
+        paddingTop: 16,
         paddingBottom: 30,
-        paddingHorizontal: 12,
+        paddingHorizontal: 16,
         backgroundColor: AppColors.background,
     },
     topRow: {

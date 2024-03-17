@@ -1,17 +1,16 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import AppInput from '../../../components/ui/input'
-import AppColors from '../../../constants/Colors'
+import { AppColors } from '../../../constants/colors'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
 import AppButton from '../../../components/ui/button'
 import OrderCard from './components/order-card'
 import moment from 'moment'
 import 'moment/locale/ru'
-import AppStrings from '../../../constants/Strings'
+import AppStrings from '../../../constants/strings'
 import AppBar from '../../../components/ui/app-bar'
 import Select from '../../../components/ui/select'
-import AddIcon from '../../../components/icons/AddIcon'
 import EmptyOrderList from './components/EmptyOrderList'
 import AppActionsheet from '../../../components/ui/actionsheet'
 import { ItemType } from 'react-native-dropdown-picker'
@@ -20,8 +19,9 @@ import { useGetPersonalOrdersQuery } from '../../../redux/api/orders'
 import AltButton from '../../../components/alt-button/alt-button'
 import LoadingView from '../../../components/ui/loading-view'
 import { TasksFilterQueryContext } from '../../../context/tasks/tasks-filter-query'
-import { addDays, formatDate, formatDateISO } from '../../../utils/helpers'
+import { formatDateISO } from '../../../utils/helpers'
 import { api } from '../../../redux/api'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 moment.locale('ru')
 
@@ -51,6 +51,8 @@ export default function OrdersScreen({ navigation }: any) {
         { value: 'DESC', label: 'По убыванию' },
     ]
 
+    const dispatch = useAppDispatch()
+
     const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
         TasksFilterQueryContext
     )
@@ -69,6 +71,7 @@ export default function OrdersScreen({ navigation }: any) {
         for (let i = -1; i < 2; i++) {
             const currentDate = new Date()
             currentDate.setDate(currentDate.getDate() + i)
+            currentDate.setHours(0, 0, 0, 0)
 
             const buttonTitle =
                 i === -1
@@ -82,19 +85,24 @@ export default function OrdersScreen({ navigation }: any) {
                     key={`date-${i}`}
                     text={buttonTitle}
                     onPress={() => {
-                        const date = formatDateISO(currentDate)
+                        const date = formatDateISO(currentDate, true)
+                        currentDate.setHours(23, 59, 0, 0)
+                        const endDate = formatDateISO(currentDate, true)
 
                         setPersonalOrdersQuery({
                             ...personalOrdersQuery,
                             period: {
                                 date_start: date,
-                                date_end: date,
+                                date_end: endDate,
                             },
                         })
+
+                        console.log(date)
+                        console.log(endDate)
                     }}
                     selected={
                         personalOrdersQuery.period.date_start ===
-                        formatDateISO(currentDate)
+                        formatDateISO(currentDate, true)
                     }
                 />
             )
@@ -129,8 +137,7 @@ export default function OrdersScreen({ navigation }: any) {
                         <RefreshControl
                             refreshing={false}
                             onRefresh={() => {
-                                api.util.invalidateTags(['Orders'])
-                                refetch()
+                                dispatch(api.util.invalidateTags(['Orders']))
                             }}
                         />
                     }
@@ -140,7 +147,6 @@ export default function OrdersScreen({ navigation }: any) {
                         <OrderCard
                             style={index === 0 ? { marginTop: 26 } : null}
                             orderData={item}
-                            icon={<AddIcon />}
                             onPress={() =>
                                 navigation.navigate('OrderScreen', {
                                     order: item,

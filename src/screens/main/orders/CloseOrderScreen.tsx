@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AppColors from '../../../constants/Colors'
+import { AppColors } from '../../../constants/colors'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import {
     ChevronLeftIcon,
@@ -9,7 +9,7 @@ import {
 } from '@gluestack-ui/themed'
 import Card from '../../../components/ui/card'
 import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/Strings'
+import AppStrings from '../../../constants/strings'
 import { useEffect, useState } from 'react'
 import { BottomBar } from '../../../components/ui/bottom-bar'
 import AppButton from '../../../components/ui/button'

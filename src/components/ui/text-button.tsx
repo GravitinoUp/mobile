@@ -1,5 +1,5 @@
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import { Text } from '@gluestack-ui/themed'
 import { ComponentProps } from 'react'
 

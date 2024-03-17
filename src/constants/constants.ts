@@ -1,3 +1,17 @@
+import AppStrings from './strings'
+
+export const TASK_STATUSES = {
+    CREATED: AppStrings.orderCreated,
+    ASSIGNED: AppStrings.orderAssigned,
+    IN_PROGRESS: AppStrings.orderInProgress,
+    ON_VERIFICATION: AppStrings.orderOnVerification,
+    CLOSED: AppStrings.orderClosed,
+    CANCELED: AppStrings.orderCancelled,
+    DEADLINE_CLOSED: AppStrings.orderDeadlineClosed,
+    NEED_WORK: AppStrings.orderNeedWork,
+    NOT_ASSIGNED: AppStrings.orderNotAssigned,
+}
+
 export const placeholderQuery = {
     offset: {
         count: 10,

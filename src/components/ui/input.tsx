@@ -7,7 +7,7 @@ import {
     View,
     ViewStyle,
 } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import { ComponentProps, useState } from 'react'
 import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
 
@@ -42,7 +42,7 @@ const AppInput = ({
             {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
             <Input
                 variant="rounded"
-                h="$11"
+                h={props.multiline ? 'auto' : '$11'}
                 minHeight={minHeight}
                 borderRadius="$2xl"
             >

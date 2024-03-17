@@ -9,7 +9,7 @@ type IconButtonProps = {
 const IconButton = ({ style, icon, onPress }: IconButtonProps) => {
     return (
         <TouchableOpacity
-            style={[style, { borderRadius: 100 }]}
+            style={[style, { padding: 8, borderRadius: 100 }]}
             activeOpacity={0.5}
             onPress={onPress}
         >

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import AppBar from '../../../components/ui/app-bar'
 import { SafeAreaView, StyleSheet } from 'react-native'
-import AppColors from '../../../constants/Colors'
+import { AppColors } from '../../../constants/colors'
 import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/Strings'
+import AppStrings from '../../../constants/strings'
 import { CalendarAddIcon } from '../../../components/icons/CalendarAddIcon'
 import { SearchIcon } from '@gluestack-ui/themed'
 

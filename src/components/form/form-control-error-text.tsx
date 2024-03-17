@@ -3,7 +3,7 @@ import {
     ErrorInterface,
     FetchResultInterface,
 } from '../../types/interface/fetch'
-import AppStrings from '../../constants/Strings'
+import AppStrings from '../../constants/strings'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { SerializedError } from '@reduxjs/toolkit'
 

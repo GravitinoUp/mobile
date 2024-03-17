@@ -1,5 +1,5 @@
 import { StyleProp, ViewStyle } from 'react-native'
-import AppColors from '../../constants/Colors'
+import { AppColors } from '../../constants/colors'
 import {
     Actionsheet,
     ActionsheetBackdrop,

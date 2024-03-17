@@ -1,7 +1,7 @@
 import { StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AppStrings from '../../constants/Strings'
-import AppColors from '../../constants/Colors'
+import AppStrings from '../../constants/strings'
+import { AppColors } from '../../constants/colors'
 import { Spinner } from '@gluestack-ui/themed'
 
 export default function SplashScreen({ navigation }: any) {

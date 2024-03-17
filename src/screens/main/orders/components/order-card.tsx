@@ -1,26 +1,24 @@
 import {
     StyleProp,
     StyleSheet,
-    Text,
     TouchableOpacity,
+    Text,
     View,
     ViewStyle,
 } from 'react-native'
-import { CalendarIcon } from '../../../../components/icons/CalendarIcon'
-import AppColors from '../../../../constants/Colors'
-import moment from 'moment'
-import AppStrings from '../../../../constants/Strings'
-import renderIconSwitch from '../../../../utils/renderIconSwitch'
+import CalendarIcon from '../../../../components/icons/calendar'
+import { AppColors } from '../../../../constants/colors'
+import renderIconSwitch from '../../../../components/order-status-card/render-icon-switch'
 import { OrderInterface } from '../../../../types/interface/orders'
+import { formatDate } from '../../../../utils/helpers'
 
 type OrderCardProps = {
     style?: StyleProp<ViewStyle>
     orderData?: OrderInterface
-    icon?: React.JSX.Element
     onPress: () => void
 }
 
-const OrderCard = ({ style, orderData, icon, onPress }: OrderCardProps) => {
+const OrderCard = ({ style, orderData, onPress }: OrderCardProps) => {
     return (
         <TouchableOpacity
             activeOpacity={0.8}
@@ -28,15 +26,38 @@ const OrderCard = ({ style, orderData, icon, onPress }: OrderCardProps) => {
             style={[style, styles.card]}
         >
             <View style={styles.topRow}>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <CalendarIcon />
-                    <Text style={{ marginLeft: 6, color: AppColors.text }}>
-                        {moment(orderData?.planned_datetime).format(
-                            AppStrings.longDateFormat
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <CalendarIcon />
+                        <Text style={styles.titleContainer}>
+                            <Text style={styles.title}>
+                                {orderData?.order_name}
+                            </Text>
+                            <Text style={styles.titleHint}>
+                                {` (${formatDate(
+                                    orderData?.planned_datetime
+                                )})`}
+                            </Text>
+                        </Text>
+                    </View>
+                    <View style={{ width: 40, height: 20 }}>
+                        {renderIconSwitch(
+                            orderData?.order_status?.order_status_name
                         )}
-                    </Text>
+                    </View>
                 </View>
-                {renderIconSwitch(orderData?.order_status?.order_status_name)}
             </View>
             <View
                 style={{
@@ -48,8 +69,8 @@ const OrderCard = ({ style, orderData, icon, onPress }: OrderCardProps) => {
                     borderStyle: 'dashed',
                 }}
             />
-            <Text ellipsizeMode="tail" numberOfLines={1} style={styles.content}>
-                {orderData?.task?.task_description}
+            <Text ellipsizeMode="tail" numberOfLines={2} style={styles.content}>
+                {orderData?.order_description}
             </Text>
         </TouchableOpacity>
     )
@@ -57,7 +78,7 @@ const OrderCard = ({ style, orderData, icon, onPress }: OrderCardProps) => {
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 20,
+        borderRadius: 16,
         backgroundColor: AppColors.background,
         elevation: 5,
         shadowColor: AppColors.text,
@@ -73,14 +94,26 @@ const styles = StyleSheet.create({
     topRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 20,
+        paddingHorizontal: 16,
+        paddingTop: 16,
         paddingBottom: 16,
     },
     content: {
-        padding: 20,
+        padding: 16,
         fontSize: 16,
         color: AppColors.text,
+    },
+    titleContainer: {
+        marginLeft: 8,
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: AppColors.text,
+    },
+    titleHint: {
+        fontSize: 14,
+        color: AppColors.hint,
     },
 })
 
