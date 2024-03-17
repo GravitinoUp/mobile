@@ -1,7 +1,7 @@
-import renderIconSwitch from './render-icon-switch'
-import { AppColors } from '../../constants/colors'
 import { HStack, Text } from '@gluestack-ui/themed'
+import { AppColors } from '../../constants/colors'
 import { getStatusColor } from './get-status-color'
+import renderIconSwitch from './render-icon-switch'
 
 type OrderStatusCardProps = {
     orderStatus: string

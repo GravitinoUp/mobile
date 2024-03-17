@@ -1,26 +1,20 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { AppColors } from '../../../constants/colors'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import {
-    ChevronLeftIcon,
-    HStack,
-    ScrollView,
-    useToast,
-} from '@gluestack-ui/themed'
-import Card from '../../../components/ui/card'
-import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/strings'
+import { HStack, ScrollView, useToast } from '@gluestack-ui/themed'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useEffect, useState } from 'react'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { pick } from 'react-native-document-picker'
+import { exists } from 'react-native-fs'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useCameraPermission } from 'react-native-vision-camera'
+import BackButton from '../../../components/back-button/back-button'
 import { BottomBar } from '../../../components/ui/bottom-bar'
 import AppButton from '../../../components/ui/button'
-import { AttachmentsCard, AttachmentsShimmer } from './components/Attachments'
-import { useCameraPermission } from 'react-native-vision-camera'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { exists } from 'react-native-fs'
-import { pick } from 'react-native-document-picker'
+import Card from '../../../components/ui/card'
+import AppInput from '../../../components/ui/input'
+import { AppColors } from '../../../constants/colors'
+import AppStrings from '../../../constants/strings'
 import { OrderInterface } from '../../../types/interface/orders'
-import IconButton from '../../../components/icon-button/icon-button'
-import BackButton from '../../../components/back-button/back-button'
+import { AttachmentsCard, AttachmentsShimmer } from './components/Attachments'
 
 export default function CloseOrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
