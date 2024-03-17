@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../hooks/useAppDispatch'
+import { useState } from 'react'
 import AppBar from '../../../components/ui/app-bar'
 import { SafeAreaView, StyleSheet } from 'react-native'
 import AppColors from '../../../constants/Colors'
@@ -10,15 +9,6 @@ import { SearchIcon } from '@gluestack-ui/themed'
 
 export default function ArchiveScreen() {
     const [search, onChangeSearch] = useState('')
-
-    const dispatch = useAppDispatch()
-    const orderState = useAppSelector((state) => state.order)
-
-    useEffect(() => {
-        if (!orderState.isLoading) {
-            //dispatch(fetchMyOrders());
-        }
-    }, [])
 
     return (
         <SafeAreaView

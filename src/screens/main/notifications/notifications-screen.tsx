@@ -7,6 +7,7 @@ import AppStrings from '../../../constants/Strings'
 import { CalendarAddIcon } from '../../../components/icons/CalendarAddIcon'
 import AppButton from '../../../components/ui/button'
 import { SearchIcon } from '@gluestack-ui/themed'
+import AltButton from '../../../components/alt-button/alt-button'
 
 export default function NotificationsScreen() {
     const [search, onChangeSearch] = useState('')
@@ -28,10 +29,26 @@ export default function NotificationsScreen() {
                     onTrailingIconPress={() => {}}
                 />
                 <View style={{ marginTop: 14, flexDirection: 'row', gap: 12 }}>
-                    <AppButton
+                    <AltButton
+                        text={AppStrings.unread}
+                        onPress={() => setSelectedType(0)}
+                        selected={selectedType === 0}
+                    />
+                    <AltButton
+                        text={AppStrings.read}
+                        onPress={() => setSelectedType(1)}
+                        selected={selectedType === 1}
+                    />
+                    {/* <AppButton
                         style={{ flex: 1 }}
                         onPress={() => setSelectedType(0)}
                         text={AppStrings.unread}
+                        textProps={{
+                            color:
+                                selectedType === 0
+                                    ? AppColors.textOnPrimary
+                                    : AppColors.text,
+                        }}
                         borderRadius={30}
                         borderColor={AppColors.text}
                         backgroundColor={
@@ -39,17 +56,18 @@ export default function NotificationsScreen() {
                                 ? AppColors.text
                                 : AppColors.background
                         }
-                        foregroundColor={
-                            selectedType === 0
-                                ? AppColors.textOnPrimary
-                                : AppColors.text
-                        }
-                        paddingY={5}
+                        py={5}
                     />
                     <AppButton
                         style={{ flex: 1 }}
                         onPress={() => setSelectedType(1)}
                         text={AppStrings.read}
+                        textProps={{
+                            color:
+                                selectedType === 1
+                                    ? AppColors.textOnPrimary
+                                    : AppColors.text,
+                        }}
                         borderRadius={30}
                         borderColor={AppColors.text}
                         backgroundColor={
@@ -57,13 +75,8 @@ export default function NotificationsScreen() {
                                 ? AppColors.text
                                 : AppColors.background
                         }
-                        foregroundColor={
-                            selectedType === 1
-                                ? AppColors.textOnPrimary
-                                : AppColors.text
-                        }
-                        paddingY={5}
-                    />
+                        py={5}
+                    /> */}
                 </View>
             </AppBar>
         </SafeAreaView>

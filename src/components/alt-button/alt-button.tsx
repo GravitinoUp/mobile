@@ -18,6 +18,7 @@ const AltButton = ({ text, selected, onPress }: AltButtonProps) => {
                 fontSize: '$xs',
                 color: selected ? AppColors.textOnPrimary : AppColors.text,
             }}
+            px="$1"
             py={6}
             borderRadius={30}
             borderColor={AppColors.text}

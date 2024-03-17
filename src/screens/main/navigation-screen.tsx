@@ -9,9 +9,9 @@ import {
 import OrdersNavigationScreen from './orders/OrdersNavigationScreen'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import ArchiveScreen from './archive/ArchiveScreen'
-import NotificationsNavigationScreen from './notifications/NotificationsNavigationScreen'
-import ProfileNavigationScreen from './profile/ProfileNavigationScreen'
+import ArchiveScreen from './archive/archive-screen'
+import NotificationsNavigationScreen from './notifications/notifications-nav-screen'
+import ProfileNavigationScreen from './profile/profile-nav-screen'
 
 const Tab = createBottomTabNavigator()
 
