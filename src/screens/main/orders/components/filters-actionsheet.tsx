@@ -1,14 +1,11 @@
 import { StyleSheet } from 'react-native'
 import AppActionsheet from '../../../../components/ui/actionsheet'
-import AppSelect, {
-    SelectItemInterface,
-} from '../../../../components/ui/select'
+import AppSelect from '../../../../components/ui/select'
 import AppStrings from '../../../../constants/strings'
 import { useGetAllOrderStatusesQuery } from '../../../../redux/api/order-statuses'
 import { Text, VStack } from '@gluestack-ui/themed'
 import AppButton from '../../../../components/ui/button'
 import { AppColors } from '../../../../constants/colors'
-import { useState } from 'react'
 import {
     defaultSelectItem,
     placeholderQuery,
@@ -16,6 +13,18 @@ import {
     taskTypes,
 } from '../../../../constants/constants'
 import { useGetBranchesQuery } from '../../../../redux/api/branch'
+import { useForm } from '../../../../components/form/form'
+import { z } from 'zod'
+import { Controller } from 'react-hook-form'
+import { useContext } from 'react'
+import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
+
+const filterSchema = z.object({
+    task_type: z.string(),
+    order_status_id: z.number(),
+    branch_id: z.number(),
+    sorting: z.string(),
+})
 
 interface FiltersActionsheetProps {
     actionsheetOpen: boolean
@@ -26,12 +35,19 @@ const FiltersActionsheet = ({
     actionsheetOpen,
     setActionsheetOpen,
 }: FiltersActionsheetProps) => {
-    const [taskType, setTaskType] =
-        useState<SelectItemInterface>(defaultSelectItem)
-    const [orderStatus, setOrderStatus] =
-        useState<SelectItemInterface>(defaultSelectItem)
-    const [branch, setBranch] = useState<SelectItemInterface>(defaultSelectItem)
-    const [sorting, setSorting] = useState<SelectItemInterface>(sortVariants[0])
+    const form = useForm({
+        schema: filterSchema,
+        defaultValues: {
+            task_type: 'all',
+            order_status_id: 0,
+            branch_id: 0,
+            sorting: 'ASC',
+        },
+    })
+
+    const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
+        TasksFilterQueryContext
+    )
 
     const {
         data: orderStatuses = [],
@@ -42,8 +58,9 @@ const FiltersActionsheet = ({
 
     const formattedOrderStatuses = orderStatuses.map((status) => ({
         label: status.order_status_name,
-        value: status.order_status_name,
+        value: `${status.order_status_id}`,
     }))
+    formattedOrderStatuses.unshift(defaultSelectItem)
 
     const {
         data: branches = { count: 0, data: [] },
@@ -54,8 +71,33 @@ const FiltersActionsheet = ({
 
     const formattedBranches = branches.data.map((branch) => ({
         label: branch.branch_name,
-        value: branch.branch_name,
+        value: `${branch.branch_id}`,
     }))
+    formattedBranches.unshift(defaultSelectItem)
+
+    const handleSubmit = (data: z.infer<typeof filterSchema>) => {
+        setPersonalOrdersQuery({
+            ...personalOrdersQuery,
+            filter: {
+                facility: {
+                    checkpoint: {
+                        branch: {
+                            branch_id:
+                                data.branch_id !== 0
+                                    ? data.branch_id
+                                    : undefined,
+                        },
+                    },
+                },
+                order_status:
+                    data.order_status_id !== 0
+                        ? [{ order_status_id: data.order_status_id }]
+                        : undefined,
+            },
+        })
+
+        setActionsheetOpen(false)
+    }
 
     return (
         <AppActionsheet
@@ -73,56 +115,73 @@ const FiltersActionsheet = ({
                 {AppStrings.setFilter}
             </Text>
             <VStack gap="$6" mb="$10">
-                <AppSelect
-                    hint={AppStrings.taskType}
-                    items={taskTypes}
-                    value={taskType}
-                    setValue={setTaskType}
+                <Controller
+                    control={form.control}
+                    name="task_type"
+                    render={({ field }) => (
+                        <AppSelect
+                            hint={AppStrings.taskType}
+                            items={taskTypes}
+                            selectedValue={field.value}
+                            onValueChange={field.onChange}
+                        />
+                    )}
                 />
-                <AppSelect
-                    hint={AppStrings.status}
-                    items={formattedOrderStatuses}
-                    value={orderStatus}
-                    setValue={setOrderStatus}
-                    isDisabled={orderStatusesLoading}
+                <Controller
+                    control={form.control}
+                    name="order_status_id"
+                    render={({ field }) => (
+                        <AppSelect
+                            hint={AppStrings.status}
+                            items={formattedOrderStatuses}
+                            selectedValue={
+                                field.value !== 0 ? String(field.value) : 'all'
+                            }
+                            onValueChange={(value) =>
+                                field.onChange(
+                                    value !== 'all' ? Number(value) : 0
+                                )
+                            }
+                            isDisabled={orderStatusesLoading}
+                        />
+                    )}
                 />
-                <AppSelect
-                    hint={AppStrings.branch}
-                    items={formattedBranches}
-                    value={branch}
-                    setValue={setBranch}
-                    isDisabled={branchesLoading}
+                <Controller
+                    control={form.control}
+                    name="branch_id"
+                    render={({ field }) => (
+                        <AppSelect
+                            hint={AppStrings.branch}
+                            items={formattedBranches}
+                            selectedValue={
+                                field.value !== 0 ? String(field.value) : 'all'
+                            }
+                            onValueChange={(value) =>
+                                field.onChange(
+                                    value !== 'all' ? Number(value) : 0
+                                )
+                            }
+                            isDisabled={branchesLoading}
+                        />
+                    )}
                 />
-                <AppSelect
-                    items={sortVariants}
-                    value={sorting}
-                    setValue={setSorting}
-                    includeDefault={false}
-                    hint={AppStrings.sortTasks}
+                <Controller
+                    control={form.control}
+                    name="sorting"
+                    render={({ field }) => (
+                        <AppSelect
+                            hint={AppStrings.sortTasks}
+                            items={sortVariants}
+                            selectedValue={field.value}
+                            onValueChange={field.onChange}
+                        />
+                    )}
                 />
-                {/* <HStack flexDirection="row" alignItems="center">
-                    <Text
-                        style={{ flex: 1 }}
-                        color={AppColors.bodyLight}
-                        fontSize={14}
-                        mr="$2"
-                    >
-                        {AppStrings.sortTasks}
-                    </Text>
-                    <AppSelect
-                        style={{ flex: 2 }}
-                        items={sortVariants}
-                        value={sorting}
-                        setValue={setSorting}
-                        includeDefault={false}
-                        placeholder={AppStrings.defaultSorting}
-                    />
-                </HStack> */}
             </VStack>
             <AppButton
                 text={AppStrings.apply}
                 onPress={() => {
-                    setActionsheetOpen(false)
+                    handleSubmit(form.getValues())
                 }}
                 py={10}
                 mb="$4"

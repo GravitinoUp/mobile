@@ -1,5 +1,5 @@
 import { HStack, SearchIcon } from '@gluestack-ui/themed'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { FlatList, RefreshControl, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AltButton from '../../../components/alt-button/alt-button'
@@ -24,12 +24,6 @@ export default function OrdersScreen({ navigation }: any) {
     const [search, onChangeSearch] = useState('')
     const [actionsheetOpen, setActionsheetOpen] = useState(false)
 
-    const [sort, setSort] = useState<'ASC' | 'DESC'>('ASC')
-    const sortList = [
-        { value: 'ASC', label: 'По возрастанию' },
-        { value: 'DESC', label: 'По убыванию' },
-    ]
-
     const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
         TasksFilterQueryContext
     )
@@ -41,6 +35,11 @@ export default function OrdersScreen({ navigation }: any) {
         error,
         refetch,
     } = useGetPersonalOrdersQuery(personalOrdersQuery)
+
+    useEffect(() => {
+        console.log(orders)
+        console.log(personalOrdersQuery)
+    }, [orders])
 
     const generateDates = () => {
         let list = []
@@ -107,7 +106,7 @@ export default function OrdersScreen({ navigation }: any) {
                     {generateDates()}
                 </HStack>
             </AppBar>
-            {!isLoading ? (
+            {!isLoading && isSuccess ? (
                 <FlatList
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={

@@ -15,37 +15,45 @@ import {
 } from '@gluestack-ui/themed'
 import WarningIcon from '../../components/icons/WarningIcon'
 import { useAuthMutation } from '../../redux/api/auth'
-import { AuthPayloadInterface } from '../../types/interface/auth'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
 import AppFormControlErrorText from '../../components/form/form-control-error-text'
 import AppInput from '../../components/ui/input'
+import { useForm } from '../../components/form/form'
+import { z } from 'zod'
+import { Controller } from 'react-hook-form'
+
+const authSchema = z.object({
+    email: z.string(),
+    password: z.string(),
+})
 
 export default function AuthScreen({ navigation }: any) {
-    //const [serverHost, onChangeServerHost] = useState(DEFAULT_HOST)
-    const [email, onChangeEmail] = useState('')
-    const [password, onChangePassword] = useState('')
-    const [passwordHidden, setPasswordHidden] = useState(true)
+    const form = useForm({
+        schema: authSchema,
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    })
 
+    const [passwordHidden, setPasswordHidden] = useState(true)
     const [isChecked, setChecked] = useState(true)
 
     const dispatch = useAppDispatch()
     const [authUser, { data, error, isError, isSuccess, isLoading }] =
         useAuthMutation()
 
-    const handleLogin = () => {
-        const authData: AuthPayloadInterface = {
-            email: email,
-            password: password,
-        }
-
+    const handleSubmit = (authData: z.infer<typeof authSchema>) => {
         authUser(authData)
     }
 
     useEffect(() => {
         if (isSuccess) {
             dispatch(setAccessToken(data?.accessToken))
-            dispatch(setRefreshToken(data?.refreshToken))
+            if (isChecked) {
+                dispatch(setRefreshToken(data?.refreshToken))
+            }
 
             navigation.navigate('NavigationScreen')
         }
@@ -67,33 +75,42 @@ export default function AuthScreen({ navigation }: any) {
                         paddingBottom: 20,
                     }}
                 >
-                    {/* <AppInput
-                        style={{ marginBottom: 8 }}
-                        value={serverHost}
-                        onChangeText={onChangeServerHost}
-                        hint="Хост"
-                        placeholder="0.0.0.0:3000"
-                    /> */}
-                    <AppInput
-                        style={{ marginBottom: 8 }}
-                        value={email}
-                        onChangeText={onChangeEmail}
-                        hint="Email"
-                        placeholder="Email"
+                    <Controller
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <AppInput
+                                style={{ marginBottom: 8 }}
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                hint="Email"
+                                placeholder="Email"
+                            />
+                        )}
                     />
-                    <AppInput
-                        style={{ marginBottom: 8 }}
-                        value={password}
-                        onChangeText={onChangePassword}
-                        hint="Пароль"
-                        placeholder="Пароль"
-                        secureTextEntry={passwordHidden}
-                        trailingIcon={
-                            passwordHidden ? <EyeOffIcon /> : <EyeIcon />
-                        }
-                        onTrailingIconPress={() =>
-                            setPasswordHidden(!passwordHidden)
-                        }
+                    <Controller
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <AppInput
+                                style={{ marginBottom: 8 }}
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                hint="Пароль"
+                                placeholder="Пароль"
+                                secureTextEntry={passwordHidden}
+                                trailingIcon={
+                                    passwordHidden ? (
+                                        <EyeOffIcon />
+                                    ) : (
+                                        <EyeIcon />
+                                    )
+                                }
+                                onTrailingIconPress={() =>
+                                    setPasswordHidden(!passwordHidden)
+                                }
+                            />
+                        )}
                     />
                     <FormControlError>
                         <FormControlErrorIcon as={WarningIcon} />
@@ -118,8 +135,8 @@ export default function AuthScreen({ navigation }: any) {
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
                     <AppButton
-                        onPress={handleLogin}
-                        text={'Войти'}
+                        onPress={() => handleSubmit(form.getValues())}
+                        text="Войти"
                         isLoading={isLoading}
                     />
                 </View>

@@ -33,22 +33,19 @@ type Props = {
     hint?: string
     hintStyle?: StyleProp<TextStyle>
     items: SelectItemInterface[]
-    value: any
-    setValue: (value: any) => void
-    includeDefault?: boolean
-    //labelStyle?: StyleProp<TextStyle>
+    selectedValue: string
+    onValueChange: (value: string) => void
 } & SelectProps
 
 const AppSelect = ({
     style,
     items,
-    value,
-    setValue,
+    selectedValue,
+    onValueChange,
     hint,
     hintStyle,
     placeholder = AppStrings.selectValue,
     h = '$11',
-    includeDefault = true,
     ...props
 }: Props) => {
     return (
@@ -58,11 +55,10 @@ const AppSelect = ({
                 h={h}
                 {...props}
                 initialLabel={
-                    includeDefault ? defaultSelectItem.label : undefined
+                    items.find((item) => item.value === selectedValue)?.label
                 }
-                defaultValue={
-                    includeDefault ? defaultSelectItem.value : undefined
-                }
+                selectedValue={selectedValue}
+                onValueChange={onValueChange}
             >
                 <SelectTrigger h={h} variant="rounded" borderRadius="$2xl">
                     <SelectInput placeholder={placeholder} />
@@ -83,13 +79,6 @@ const AppSelect = ({
                             {placeholder}
                         </Text>
                         <SelectScrollView persistentScrollbar>
-                            {includeDefault && (
-                                <SelectItem
-                                    borderRadius="$none"
-                                    p="$4"
-                                    {...defaultSelectItem}
-                                />
-                            )}
                             {items.map((item, index) => (
                                 <SelectItem
                                     key={`select-item-${index}`}

@@ -36,6 +36,7 @@ export const sortVariants = [
 ]
 
 export const taskTypes = [
+    defaultSelectItem,
     { label: 'Плановая', value: 'planned' },
     { label: 'Внеплановая', value: 'unplanned' },
 ]
