@@ -27,6 +27,7 @@ const AppStrings = {
     setFilter: 'Подобрать фильтр',
     taskType: 'Тип задания',
     status: 'Статус',
+    selectValue: 'Выберите значение',
     sortTasks: 'Сортировать задачи',
     apply: 'Применить',
     emptyOrderList: 'Пока нет активных задач',

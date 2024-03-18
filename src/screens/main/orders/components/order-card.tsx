@@ -45,11 +45,13 @@ const OrderCard = ({ style, orderData, onPress }: OrderCardProps) => {
                             <Text style={styles.title}>
                                 {orderData?.order_name}
                             </Text>
-                            <Text style={styles.titleHint}>
-                                {` (${formatDate(
-                                    orderData?.planned_datetime
-                                )})`}
-                            </Text>
+                            {orderData?.planned_datetime && (
+                                <Text style={styles.titleHint}>
+                                    {` (${formatDate(
+                                        orderData?.planned_datetime
+                                    )})`}
+                                </Text>
+                            )}
                         </Text>
                     </View>
                     <View style={{ width: 40, height: 20 }}>

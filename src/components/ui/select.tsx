@@ -1,57 +1,107 @@
-import {
-    StyleProp,
-    StyleSheet,
-    Text,
-    TextStyle,
-    View,
-    ViewStyle,
-} from 'react-native'
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import DropDownPicker, { ItemType } from 'react-native-dropdown-picker'
-import { useState } from 'react'
+import { ComponentProps, useState } from 'react'
+import {
+    Select,
+    SelectPortal,
+    SelectBackdrop,
+    SelectContent,
+    SelectDragIndicatorWrapper,
+    SelectDragIndicator,
+    SelectItem,
+    ChevronDownIcon,
+    Icon,
+    SelectIcon,
+    SelectInput,
+    SelectTrigger,
+    SelectScrollView,
+    Text,
+} from '@gluestack-ui/themed'
+import { defaultSelectItem } from '../../constants/constants'
+import AppStrings from '../../constants/strings'
 
-interface Props {
+export interface SelectItemInterface {
+    label: string
+    value: string
+    isDisabled?: boolean
+}
+
+type SelectProps = ComponentProps<typeof Select>
+type SelectItemProps = ComponentProps<typeof SelectItem>
+type Props = {
     style?: StyleProp<ViewStyle>
     hint?: string
     hintStyle?: StyleProp<TextStyle>
-    items: ItemType<any>[]
+    items: SelectItemInterface[]
     value: any
     setValue: (value: any) => void
-    searchable?: boolean
-    labelStyle?: StyleProp<TextStyle>
-}
+    includeDefault?: boolean
+    //labelStyle?: StyleProp<TextStyle>
+} & SelectProps
 
-const Select = ({
+const AppSelect = ({
     style,
-    hint,
-    hintStyle,
     items,
     value,
     setValue,
-    searchable = false,
-    labelStyle = styles.labelStyle,
+    hint,
+    hintStyle,
+    placeholder = AppStrings.selectValue,
+    h = '$11',
+    includeDefault = true,
+    ...props
 }: Props) => {
-    const [open, setOpen] = useState(false)
-
     return (
         <View style={style}>
             {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
-            <DropDownPicker
-                style={styles.dropdown}
-                props={{ activeOpacity: 0.5 }}
-                itemProps={{ activeOpacity: 0.5 }}
-                dropDownContainerStyle={styles.dropDownContainerStyle}
-                labelStyle={labelStyle}
-                listItemContainerStyle={styles.listItemContainerStyle}
-                listItemLabelStyle={styles.listItemLabelStyle}
-                showTickIcon={false}
-                searchable={searchable}
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-            />
+            <Select
+                h={h}
+                {...props}
+                initialLabel={
+                    includeDefault ? defaultSelectItem.label : undefined
+                }
+                defaultValue={
+                    includeDefault ? defaultSelectItem.value : undefined
+                }
+            >
+                <SelectTrigger h={h} variant="rounded" borderRadius="$2xl">
+                    <SelectInput placeholder={placeholder} />
+                    <Icon mr="$4" as={ChevronDownIcon} />
+                </SelectTrigger>
+                <SelectPortal>
+                    <SelectBackdrop />
+                    <SelectContent px={0} maxHeight="$full">
+                        <SelectDragIndicatorWrapper>
+                            <SelectDragIndicator />
+                        </SelectDragIndicatorWrapper>
+                        <Text
+                            my="$1"
+                            color={AppColors.text}
+                            fontSize="$lg"
+                            fontWeight="$semibold"
+                        >
+                            {placeholder}
+                        </Text>
+                        <SelectScrollView persistentScrollbar>
+                            {includeDefault && (
+                                <SelectItem
+                                    borderRadius="$none"
+                                    p="$4"
+                                    {...defaultSelectItem}
+                                />
+                            )}
+                            {items.map((item, index) => (
+                                <SelectItem
+                                    key={`select-item-${index}`}
+                                    borderRadius="$none"
+                                    p="$4"
+                                    {...item}
+                                />
+                            ))}
+                        </SelectScrollView>
+                    </SelectContent>
+                </SelectPortal>
+            </Select>
         </View>
     )
 }
@@ -96,4 +146,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Select
+export default AppSelect

@@ -14,7 +14,7 @@ import AppInput from '../../../components/ui/input'
 import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
 import { OrderInterface } from '../../../types/interface/orders'
-import { AttachmentsCard, AttachmentsShimmer } from './components/Attachments'
+import { AttachmentsCard, AttachmentsShimmer } from './components/attachments'
 
 export default function CloseOrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order

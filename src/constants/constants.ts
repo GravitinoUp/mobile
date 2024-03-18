@@ -24,3 +24,18 @@ export const placeholderQuery = {
         date_end: '2025-01-01',
     },
 }
+
+export const defaultSelectItem = {
+    label: 'Все',
+    value: 'all',
+}
+
+export const sortVariants = [
+    { label: 'По возрастанию', value: 'ASC' },
+    { label: 'По убыванию', value: 'DESC' },
+]
+
+export const taskTypes = [
+    { label: 'Плановая', value: 'planned' },
+    { label: 'Внеплановая', value: 'unplanned' },
+]

@@ -11,19 +11,28 @@ import {
 } from '@gluestack-ui/themed'
 import { ComponentProps } from 'react'
 
-type ActionsheetProps = ComponentProps<typeof Actionsheet>
+type ActionsheetContentProps = ComponentProps<typeof ActionsheetContent>
 type Props = {
     style?: StyleProp<ViewStyle>
     children?: React.ReactNode
     isOpen: boolean
     onClose: () => void
-} & ActionsheetProps
+} & ActionsheetContentProps
 
-const AppActionsheet = ({ style, children, isOpen, onClose }: Props) => {
+const AppActionsheet = ({
+    style,
+    children,
+    isOpen,
+    onClose,
+    ...props
+}: Props) => {
     return (
         <Actionsheet isOpen={isOpen} onClose={onClose} zIndex={999}>
             <ActionsheetBackdrop />
-            <ActionsheetContent backgroundColor={AppColors.background}>
+            <ActionsheetContent
+                backgroundColor={AppColors.background}
+                {...props}
+            >
                 <ActionsheetDragIndicatorWrapper>
                     <ActionsheetDragIndicator />
                 </ActionsheetDragIndicatorWrapper>

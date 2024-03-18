@@ -1,16 +1,12 @@
 import { HStack, SearchIcon } from '@gluestack-ui/themed'
 import { useContext, useState } from 'react'
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
-import { ItemType } from 'react-native-dropdown-picker'
+import { FlatList, RefreshControl, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AltButton from '../../../components/alt-button/alt-button'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
-import AppActionsheet from '../../../components/ui/actionsheet'
 import AppBar from '../../../components/ui/app-bar'
-import AppButton from '../../../components/ui/button'
 import AppInput from '../../../components/ui/input'
 import LoadingView from '../../../components/ui/loading-view'
-import Select from '../../../components/ui/select'
 import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
 import { TasksFilterQueryContext } from '../../../context/tasks/tasks-filter-query'
@@ -18,36 +14,21 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { api } from '../../../redux/api'
 import { useGetPersonalOrdersQuery } from '../../../redux/api/orders'
 import { formatDateISO } from '../../../utils/helpers'
-import EmptyOrderList from './components/EmptyOrderList'
+import EmptyOrderList from './components/empty-order-list'
 import OrderCard from './components/order-card'
+import FiltersActionsheet from './components/filters-actionsheet'
 
 export default function OrdersScreen({ navigation }: any) {
+    const dispatch = useAppDispatch()
+
     const [search, onChangeSearch] = useState('')
-
-    const [isActionsheetOpen, setActionsheetOpen] = useState(false)
-
-    const [taskTypeId, setTaskTypeId] = useState(0)
-    const [taskTypeList, setTaskTypeList] = useState<ItemType<number>[]>([
-        { value: 0, label: 'Все' },
-    ])
-
-    const [statusId, setStatusId] = useState(0)
-    const [statusList, setStatusList] = useState<ItemType<number>[]>([
-        { value: 0, label: 'Все' },
-    ])
-
-    const [branchId, setBranchId] = useState(0)
-    const [branchList, setBranchList] = useState<ItemType<number>[]>([
-        { value: 0, label: 'Все' },
-    ])
+    const [actionsheetOpen, setActionsheetOpen] = useState(false)
 
     const [sort, setSort] = useState<'ASC' | 'DESC'>('ASC')
     const sortList = [
         { value: 'ASC', label: 'По возрастанию' },
         { value: 'DESC', label: 'По убыванию' },
     ]
-
-    const dispatch = useAppDispatch()
 
     const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
         TasksFilterQueryContext
@@ -154,64 +135,10 @@ export default function OrdersScreen({ navigation }: any) {
             ) : (
                 <LoadingView />
             )}
-            <AppActionsheet
-                style={{ paddingHorizontal: 30 }}
-                isOpen={isActionsheetOpen}
-                onClose={() => setActionsheetOpen(false)}
-            >
-                <Text style={styles.filterTitle}>{AppStrings.setFilter}</Text>
-                <View
-                    style={{
-                        flexDirection: 'column',
-                        gap: 25,
-                        marginBottom: 40,
-                    }}
-                >
-                    <Select
-                        hint={AppStrings.taskType}
-                        items={taskTypeList}
-                        value={taskTypeId}
-                        setValue={setTaskTypeId}
-                        searchable={false}
-                    />
-                    <Select
-                        hint={AppStrings.status}
-                        items={statusList}
-                        value={statusId}
-                        setValue={setStatusId}
-                        searchable={false}
-                    />
-                    <Select
-                        hint={AppStrings.branch}
-                        items={branchList}
-                        value={branchId}
-                        setValue={setBranchId}
-                        searchable={false}
-                    />
-                    <HStack style={{ alignItems: 'center' }}>
-                        <Text style={[styles.filterSort, { flex: 1 }]}>
-                            {AppStrings.sortTasks}
-                        </Text>
-                        <Select
-                            style={{ flex: 1 }}
-                            items={sortList}
-                            value={sort}
-                            setValue={setSort}
-                            searchable={false}
-                            labelStyle={styles.sortText}
-                        />
-                    </HStack>
-                </View>
-                <AppButton
-                    style={styles.filterApplyButton}
-                    text={AppStrings.apply}
-                    onPress={() => {
-                        refetch()
-                        setActionsheetOpen(false)
-                    }}
-                    py={10}
-                />
-            </AppActionsheet>
+            <FiltersActionsheet
+                actionsheetOpen={actionsheetOpen}
+                setActionsheetOpen={setActionsheetOpen}
+            />
         </SafeAreaView>
     )
 }
