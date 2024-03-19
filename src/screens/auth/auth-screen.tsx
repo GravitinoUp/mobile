@@ -2,10 +2,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppColors } from '../../constants/colors'
 import { useEffect, useState } from 'react'
-import AppStrings from '../../constants/strings'
-import AppButton from '../../components/ui/button'
-import AppCheckbox from '../../components/ui/checkbox'
-import TextButton from '../../components/ui/text-button'
 import {
     EyeIcon,
     EyeOffIcon,
@@ -13,15 +9,20 @@ import {
     FormControlError,
     FormControlErrorIcon,
 } from '@gluestack-ui/themed'
-import WarningIcon from '../../components/icons/WarningIcon'
-import { useAuthMutation } from '../../redux/api/auth'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
-import AppFormControlErrorText from '../../components/form/form-control-error-text'
-import AppInput from '../../components/ui/input'
 import { useForm } from '../../components/form/form'
-import { z } from 'zod'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAuthMutation } from '../../redux/api/auth'
+import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
+import AppStrings from '../../constants/strings'
 import { Controller } from 'react-hook-form'
+import AppInput from '../../components/ui/input'
+import WarningIcon from '../../components/icons/WarningIcon'
+import AppFormControlErrorText from '../../components/form/form-control-error-text'
+import AppCheckbox from '../../components/ui/checkbox'
+import TextButton from '../../components/ui/text-button'
+import AppButton from '../../components/ui/button'
+import { z } from 'zod'
+import { DEFAULT_HOST } from '@env'
 
 const authSchema = z.object({
     email: z.string(),
@@ -45,6 +46,8 @@ export default function AuthScreen({ navigation }: any) {
         useAuthMutation()
 
     const handleSubmit = (authData: z.infer<typeof authSchema>) => {
+        console.log(DEFAULT_HOST)
+
         authUser(authData)
     }
 

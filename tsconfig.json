@@ -1,3 +1,21 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+    "extends": "@react-native/typescript-config/tsconfig.json",
+    "compilerOptions": {
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "baseUrl": ".",
+        "typeRoots": ["./src/@types/env.d.ts"],
+        "alwaysStrict": true,
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true
+    },
+    "include": ["src"]
 }
