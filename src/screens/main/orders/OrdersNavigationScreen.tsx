@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import OrderScreen from './OrderScreen'
-import CloseOrderScreen from './CloseOrderScreen'
+import OrderScreen from './order-screen'
+import CloseOrderScreen from './close-order-screen'
 import OrdersScreen from './orders-screen'
 
 const Stack = createNativeStackNavigator()

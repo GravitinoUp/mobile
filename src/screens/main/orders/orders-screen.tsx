@@ -1,6 +1,11 @@
 import { HStack, SearchIcon } from '@gluestack-ui/themed'
-import { useContext, useEffect, useMemo, useState } from 'react'
-import { FlatList, RefreshControl, StyleSheet } from 'react-native'
+import { useContext, useEffect, useState } from 'react'
+import {
+    FlatList,
+    RefreshControl,
+    StyleSheet,
+    useWindowDimensions,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AltButton from '../../../components/alt-button/alt-button'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
@@ -10,36 +15,116 @@ import LoadingView from '../../../components/ui/loading-view'
 import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
 import { TasksFilterQueryContext } from '../../../context/tasks/tasks-filter-query'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { api } from '../../../redux/api'
 import { useGetPersonalOrdersQuery } from '../../../redux/api/orders'
 import { formatDateISO } from '../../../utils/helpers'
 import EmptyOrderList from './components/empty-order-list'
 import OrderCard from './components/order-card'
 import FiltersActionsheet from './components/filters-actionsheet'
+import { TabView } from 'react-native-tab-view'
+import useErrorToast from '../../../hooks/use-error-toast'
+import AppTabBar from '../../../components/tab-bar/tab-bar'
+import { placeholderQuery } from '../../../constants/constants'
+
+const OrdersTab = ({ navigation, query }: { navigation: any; query: any }) => {
+    const { personalOrdersQuery } = useContext(TasksFilterQueryContext)
+
+    const {
+        data: orders = { count: 0, data: [] },
+        isFetching,
+        isSuccess,
+        error,
+        refetch,
+    } = useGetPersonalOrdersQuery(query)
+
+    useErrorToast(error)
+
+    return !isFetching && isSuccess ? (
+        <FlatList
+            contentContainerStyle={{ flexGrow: 1 }}
+            refreshControl={
+                <RefreshControl
+                    refreshing={false}
+                    onRefresh={() => {
+                        refetch()
+                    }}
+                />
+            }
+            ListEmptyComponent={<EmptyOrderList />}
+            data={orders.data}
+            renderItem={({ item, index }) => (
+                <OrderCard
+                    style={index === 0 ? { marginTop: 26 } : null}
+                    orderData={item}
+                    onPress={() =>
+                        navigation.navigate('OrderScreen', {
+                            order: item,
+                        })
+                    }
+                />
+            )}
+        />
+    ) : (
+        <LoadingView />
+    )
+}
+
+const renderScene = ({
+    route,
+    navigation,
+    query,
+}: {
+    route: {
+        key: string
+        title: string
+    }
+    navigation: any
+    query: any
+}) => {
+    switch (route.key) {
+        case 'inProgress':
+            return (
+                <OrdersTab
+                    navigation={navigation}
+                    query={{
+                        ...query,
+                        filter: {
+                            ...query.filter,
+                            order_status: [{ order_status_id: 3 }],
+                        },
+                    }}
+                />
+            )
+        case 'closed':
+            return (
+                <OrdersTab
+                    navigation={navigation}
+                    query={{
+                        ...query,
+                        filter: {
+                            ...query.filter,
+                            order_status: [{ order_status_id: 5 }],
+                        },
+                    }}
+                />
+            )
+        default:
+            return null
+    }
+}
 
 export default function OrdersScreen({ navigation }: any) {
-    const dispatch = useAppDispatch()
+    const [index, setIndex] = useState(0)
+    const [routes] = useState([
+        { key: 'inProgress', title: AppStrings.orderInProgress },
+        { key: 'closed', title: AppStrings.closedOrders },
+    ])
 
-    const [search, onChangeSearch] = useState('')
+    const [search, setSearch] = useState('')
     const [actionsheetOpen, setActionsheetOpen] = useState(false)
 
     const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
         TasksFilterQueryContext
     )
-
-    const {
-        data: orders = { count: 0, data: [] },
-        isLoading,
-        isSuccess,
-        error,
-        refetch,
-    } = useGetPersonalOrdersQuery(personalOrdersQuery)
-
-    useEffect(() => {
-        console.log(orders)
-        console.log(personalOrdersQuery)
-    }, [orders])
 
     const generateDates = () => {
         let list = []
@@ -62,7 +147,7 @@ export default function OrdersScreen({ navigation }: any) {
                     text={buttonTitle}
                     onPress={() => {
                         const date = formatDateISO(currentDate, true)
-                        currentDate.setHours(23, 59, 0, 0)
+                        currentDate.setHours(24, 0, 0, 0)
                         const endDate = formatDateISO(currentDate, true)
 
                         setPersonalOrdersQuery({
@@ -87,6 +172,21 @@ export default function OrdersScreen({ navigation }: any) {
         return list
     }
 
+    useEffect(() => {
+        const delayTimeoutId = setTimeout(() => {
+            setPersonalOrdersQuery({
+                ...personalOrdersQuery,
+                filter: {
+                    ...personalOrdersQuery.filter,
+                    order_name:
+                        search.trim().length !== 0 ? search.trim() : undefined,
+                },
+            })
+        }, 500)
+        return () => clearTimeout(delayTimeoutId)
+    }, [search, 500])
+
+    const layout = useWindowDimensions()
     return (
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
@@ -94,9 +194,7 @@ export default function OrdersScreen({ navigation }: any) {
             <AppBar style={styles.header}>
                 <AppInput
                     value={search}
-                    onChangeText={(text: string) => {
-                        onChangeSearch(text)
-                    }}
+                    onChangeText={(text) => setSearch(text)}
                     placeholder={AppStrings.search}
                     leadingIcon={<SearchIcon />}
                     trailingIcon={<SettingsIcon />}
@@ -106,34 +204,19 @@ export default function OrdersScreen({ navigation }: any) {
                     {generateDates()}
                 </HStack>
             </AppBar>
-            {!isLoading && isSuccess ? (
-                <FlatList
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={false}
-                            onRefresh={() => {
-                                dispatch(api.util.invalidateTags(['Orders']))
-                            }}
-                        />
-                    }
-                    ListEmptyComponent={<EmptyOrderList />}
-                    data={orders.data}
-                    renderItem={({ item, index }) => (
-                        <OrderCard
-                            style={index === 0 ? { marginTop: 26 } : null}
-                            orderData={item}
-                            onPress={() =>
-                                navigation.navigate('OrderScreen', {
-                                    order: item,
-                                })
-                            }
-                        />
-                    )}
-                />
-            ) : (
-                <LoadingView />
-            )}
+            <TabView
+                navigationState={{ index, routes }}
+                onIndexChange={setIndex}
+                renderTabBar={(props) => <AppTabBar {...props} />}
+                renderScene={({ route }) =>
+                    renderScene({
+                        route,
+                        navigation,
+                        query: personalOrdersQuery,
+                    })
+                }
+                initialLayout={{ width: layout.width }}
+            />
             <FiltersActionsheet
                 actionsheetOpen={actionsheetOpen}
                 setActionsheetOpen={setActionsheetOpen}

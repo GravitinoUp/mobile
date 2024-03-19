@@ -9,7 +9,7 @@ import AppButton from '../../../components/ui/button'
 import { AttachmentsCard } from './components/attachments'
 import AppBar from '../../../components/ui/app-bar'
 import { OrderInterface } from '../../../types/interface/orders'
-import { HStack } from '@gluestack-ui/themed'
+import { HStack, VStack } from '@gluestack-ui/themed'
 import { formatDate } from '../../../utils/helpers'
 import OrderStatusCard from '../../../components/order-status-card/order-status-card'
 import BackButton from '../../../components/back-button/back-button'
@@ -57,13 +57,7 @@ export default function OrderScreen({ navigation, route }: any) {
                         }}
                     />
                     <View style={styles.cardContent}>
-                        <View
-                            style={{
-                                gap: 4,
-                                flexDirection: 'column',
-                                paddingBottom: 16,
-                            }}
-                        >
+                        <VStack gap="$2" mb="$6">
                             <AppInput
                                 value={`${
                                     order.order_name
@@ -71,8 +65,8 @@ export default function OrderScreen({ navigation, route }: any) {
                                         : order.task?.task_name
                                 }`}
                                 readOnly={true}
-                                hint={AppStrings.workType}
-                                placeholder={AppStrings.workType}
+                                hint={AppStrings.name}
+                                placeholder={AppStrings.name}
                                 onChangeText={() => {}}
                             />
                             <AppInput
@@ -85,22 +79,41 @@ export default function OrderScreen({ navigation, route }: any) {
                                 multiline={true}
                                 minHeight={88}
                                 textAlignVertical="top"
-                                hint={AppStrings.workTypeDescription}
-                                placeholder={AppStrings.workTypeDescription}
+                                hint={AppStrings.description}
+                                placeholder={AppStrings.description}
                                 onChangeText={() => {}}
                             />
-                        </View>
-                        <View style={{ gap: 16, flexDirection: 'column' }}>
+                        </VStack>
+                        <VStack gap="$2" mb="$6">
                             <AppInput
-                                value={`${order.facility?.checkpoint?.branch?.branch_name}`}
+                                value={
+                                    order.facility.checkpoint.branch.branch_name
+                                }
                                 readOnly={true}
-                                multiline={false}
                                 hint={AppStrings.branch}
                                 placeholder={AppStrings.branch}
                                 onChangeText={() => {}}
                             />
                             <AppInput
-                                value={`${order.task?.category?.category_name}`}
+                                value={
+                                    order.facility.checkpoint.checkpoint_name
+                                }
+                                readOnly={true}
+                                hint={AppStrings.checkpoint}
+                                placeholder={AppStrings.checkpoint}
+                                onChangeText={() => {}}
+                            />
+                            <AppInput
+                                value={order.facility.facility_name}
+                                readOnly={true}
+                                hint={AppStrings.facility}
+                                placeholder={AppStrings.facility}
+                                onChangeText={() => {}}
+                            />
+                        </VStack>
+                        <VStack gap="$4" mb="$4">
+                            <AppInput
+                                value={order.task.category.category_name}
                                 readOnly={true}
                                 multiline={false}
                                 hint={AppStrings.category}
@@ -108,24 +121,20 @@ export default function OrderScreen({ navigation, route }: any) {
                                 onChangeText={() => {}}
                             />
                             <AppInput
-                                value={`${order.priority?.priority_name}`}
+                                value={order.priority.priority_name}
                                 readOnly={true}
                                 multiline={false}
                                 hint={AppStrings.priority}
                                 placeholder={AppStrings.priority}
                                 onChangeText={() => {}}
                             />
-                            <AttachmentsCard
-                                canDelete={false}
-                                canAddMore={false}
-                                canAddFiles={false}
-                                attachments={[
-                                    'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
-                                    'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
-                                    'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
-                                ]}
-                            />
-                        </View>
+                        </VStack>
+                        <AttachmentsCard
+                            canDelete={false}
+                            canAddMore={false}
+                            canAddFiles={false}
+                            attachments={order.files}
+                        />
                         <AppButton
                             style={styles.bottomButton}
                             onPress={() => {
@@ -133,7 +142,7 @@ export default function OrderScreen({ navigation, route }: any) {
                                     order: order,
                                 })
                             }}
-                            text={'Закрыть задачу'}
+                            text={AppStrings.closeOrder}
                             px={40}
                             py={10}
                         />

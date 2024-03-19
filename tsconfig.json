@@ -6,7 +6,6 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "baseUrl": ".",
         "typeRoots": ["./src/@types/env.d.ts"],
         "alwaysStrict": true,
         "strict": true,
@@ -16,6 +15,5 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true
-    },
-    "include": ["src"]
+    }
 }

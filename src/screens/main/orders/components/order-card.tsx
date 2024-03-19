@@ -54,7 +54,7 @@ const OrderCard = ({ style, orderData, onPress }: OrderCardProps) => {
                             )}
                         </Text>
                     </View>
-                    <View style={{ width: 40, height: 20 }}>
+                    <View style={{ width: 20, height: 20 }}>
                         {renderIconSwitch(
                             orderData?.order_status?.order_status_name
                         )}

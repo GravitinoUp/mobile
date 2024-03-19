@@ -1,5 +1,6 @@
 const AppStrings = {
     appName: 'ГРАВИТИНО АСУР',
+    gravitino: 'Гравитино',
     signInDescription: 'Войдите в свой аккаунт',
     signUpDescription: 'Зарегистрироваться',
     rememberSignIn: 'Запомнить меня',
@@ -11,13 +12,12 @@ const AppStrings = {
     differentPasswords: 'Пароли не совпадают!',
     workType: 'Описание вида работы',
     workTypeDescription: 'Описание задания',
-    branch: 'Филиал',
     category: 'Категория',
     priority: 'Приоритет',
     comment: 'Комментарий к задаче',
     shortDateFormat: 'DD.MM.YYYY',
     longDateFormat: 'DD/MM/YYYY HH:mm',
-    search: 'Искать...',
+    search: 'Поиск по названию...',
     today: 'Сегодня',
     tomorrow: 'Завтра',
     yesterday: 'Вчера',
@@ -47,5 +47,16 @@ const AppStrings = {
     orderDeadlineClosed: 'Закрыта с нарушением дедлайна',
     orderNeedWork: 'Необходима доработка',
     orderNotAssigned: 'Не назначена',
+    name: 'Название',
+    description: 'Описание',
+    branch: 'Филиал',
+    checkpoint: 'Пункт пропуска',
+    facility: 'Объект обслуживания',
+    closeOrder: 'Закрыть задачу',
+    madeIn: 'Сделано в ',
+    cameraAccessError:
+        'Доступ к камере заблокирован. Измените разрешение в настройках.',
+    ordersInWork: 'Задачи в работе',
+    closedOrders: 'Завершенные задачи',
 }
 export default AppStrings

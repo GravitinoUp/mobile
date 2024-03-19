@@ -1,5 +1,5 @@
 import {
-    DimensionValue,
+    GestureResponderEvent,
     StyleProp,
     StyleSheet,
     Text,
@@ -8,7 +8,7 @@ import {
     ViewStyle,
 } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import { ComponentProps, useState } from 'react'
+import { ComponentProps } from 'react'
 import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
 
 type InputFieldProps = ComponentProps<typeof InputField>
@@ -22,6 +22,7 @@ type AppInputProps = {
     onTrailingIconPress?: () => void
     leadingIcon?: React.JSX.Element
     onLeadingIconPress?: () => void
+    onTouchEnd?: ((event: GestureResponderEvent) => void) | undefined
 } & InputFieldProps
 
 const AppInput = ({
@@ -35,6 +36,7 @@ const AppInput = ({
     onLeadingIconPress,
     trailingIcon,
     onTrailingIconPress,
+    onTouchEnd,
     ...props
 }: AppInputProps) => {
     return (
@@ -42,9 +44,14 @@ const AppInput = ({
             {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
             <Input
                 variant="rounded"
-                h={props.multiline ? 'auto' : '$11'}
+                h={props.multiline ? undefined : '$11'}
                 minHeight={minHeight}
+                borderColor={AppColors.border}
+                $focus-borderColor={AppColors.borderActive}
+                $invalid-borderColor={AppColors.error}
                 borderRadius="$2xl"
+                borderWidth={1.5}
+                onTouchEnd={onTouchEnd}
             >
                 {leadingIcon && (
                     <InputSlot

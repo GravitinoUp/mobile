@@ -1,7 +1,7 @@
-import { HStack, ScrollView, useToast } from '@gluestack-ui/themed'
+import { HStack, ScrollView } from '@gluestack-ui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useEffect, useState } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text } from 'react-native'
 import { pick } from 'react-native-document-picker'
 import { exists } from 'react-native-fs'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -15,50 +15,19 @@ import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
 import { OrderInterface } from '../../../types/interface/orders'
 import { AttachmentsCard, AttachmentsShimmer } from './components/attachments'
+import AppBar from '../../../components/ui/app-bar'
+import { useAppToast } from '../../../hooks/use-toast'
 
 export default function CloseOrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
 
     const [comment, onChangeComment] = useState('')
-    const { hasPermission, requestPermission } = useCameraPermission()
+    const { requestPermission } = useCameraPermission()
+    const { showErrorToast } = useAppToast()
 
     const [files, setFiles] = useState<string[]>([])
     const [isLoading, setLoading] = useState(false)
-    const toast = useToast()
-
-    useEffect(() => {
-        setLoading(true)
-        AsyncStorage.getItem(`order-${order.order_id}`).then((value) => {
-            if (value !== null) {
-                deleteEmptyFiles(JSON.parse(value)).then((newData) => {
-                    const data = newData
-                    setFiles(data.files)
-                    onChangeComment(data.comment)
-
-                    setLoading(false)
-                })
-            } else {
-                setLoading(false)
-            }
-        })
-    }, [])
-
-    useEffect(() => {
-        if (route.params.files) {
-            setFiles(route.params.files)
-
-            const data = {
-                order_id: order.order_id,
-                comment: comment,
-                files: route.params.files,
-            }
-
-            AsyncStorage.setItem(
-                `order-${order.order_id}`,
-                JSON.stringify(data)
-            )
-        }
-    }, [route.params.files])
+    const { showToast } = useAppToast()
 
     const deleteEmptyFiles = async (data: any) => {
         for (let i = 0; i < data.files.length; i++) {
@@ -90,7 +59,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
 
         if (pickedFiles.length + files.length > 10) {
             pickedFiles = pickedFiles.slice(0, 10 - files.length)
-            // TODO toast.show({ description: AppStrings.tooManyImages })
+            showToast({ label: AppStrings.tooManyImages })
         }
 
         const newFiles: string[] = []
@@ -130,9 +99,7 @@ export default function CloseOrderScreen({ navigation, route }: any) {
             JSON.stringify(data)
         )
 
-        // TODO toast
-        //toast.closeAll()
-        //toast.show({ description: AppStrings.imageDeleted })
+        showToast({ label: AppStrings.imageDeleted })
     }
 
     const closeOrder = async () => {
@@ -140,18 +107,52 @@ export default function CloseOrderScreen({ navigation, route }: any) {
         navigation.navigate('HomeScreen')
     }
 
+    useEffect(() => {
+        setLoading(true)
+        AsyncStorage.getItem(`order-${order.order_id}`).then((value) => {
+            if (value !== null) {
+                deleteEmptyFiles(JSON.parse(value)).then((newData) => {
+                    const data = newData
+                    setFiles(data.files)
+                    onChangeComment(data.comment)
+
+                    setLoading(false)
+                })
+            } else {
+                setLoading(false)
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        if (route.params.files) {
+            setFiles(route.params.files)
+
+            const data = {
+                order_id: order.order_id,
+                comment: comment,
+                files: route.params.files,
+            }
+
+            AsyncStorage.setItem(
+                `order-${order.order_id}`,
+                JSON.stringify(data)
+            )
+        }
+    }, [route.params.files])
+
     return (
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
-            <View style={styles.header}>
-                <HStack>
+            <AppBar style={styles.header}>
+                <HStack justifyContent="space-between" alignItems="center">
                     <BackButton navigation={navigation} />
                 </HStack>
                 <Text style={styles.headerTitle}>№{order.order_id}</Text>
-            </View>
+            </AppBar>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <Card style={styles.cardContent}>
+                <Card style={{ padding: 16 }}>
                     <AppInput
                         value={comment}
                         multiline={true}
@@ -186,13 +187,16 @@ export default function CloseOrderScreen({ navigation, route }: any) {
                                     navigation.navigate('CameraScreen', {
                                         files: files,
                                     })
+                                } else {
+                                    showErrorToast({
+                                        label: AppStrings.cameraAccessError,
+                                    })
                                 }
                             }}
                         />
                     ) : (
                         <AttachmentsShimmer marginTop={13} />
                     )}
-                    {/* <AttachmentsShimmer /> */}
                 </Card>
             </ScrollView>
             <BottomBar
@@ -200,7 +204,6 @@ export default function CloseOrderScreen({ navigation, route }: any) {
             >
                 <AppButton
                     onPress={async () => {
-                        // TODO Close order
                         await closeOrder()
                     }}
                     text={'Закрыть задачу'}
@@ -214,19 +217,17 @@ export default function CloseOrderScreen({ navigation, route }: any) {
 
 const styles = StyleSheet.create({
     header: {
+        paddingTop: 8,
+        paddingBottom: 16,
+        paddingHorizontal: 16,
         elevation: 20,
-        backgroundColor: AppColors.background,
-        paddingHorizontal: 12,
-        paddingTop: 16,
-        paddingBottom: 30,
-        shadowColor: AppColors.shadowColor,
+        shadowColor: AppColors.text,
         shadowOffset: {
             width: 0,
             height: 3,
         },
         shadowOpacity: 0.2,
         shadowRadius: 3,
-        zIndex: 10,
     },
     headerTitle: {
         fontSize: 22,
@@ -236,12 +237,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flexGrow: 1,
-        paddingTop: 40,
-        paddingBottom: 30,
-        paddingHorizontal: 12,
-        backgroundColor: AppColors.background,
-    },
-    cardContent: {
         padding: 16,
+        backgroundColor: AppColors.background,
     },
 })

@@ -7,7 +7,10 @@ import {
     useState,
 } from 'react'
 import { OrderPayloadInterface } from '../../types/interface/orders'
+import { dateToEpoch, formatDateISO } from '../../utils/helpers'
+import { addDays } from 'date-fns'
 
+const currentDate = dateToEpoch(new Date())
 const DEFAULT_ORDERS_PER_PAGE = 10
 
 const defaultQuery = {
@@ -18,8 +21,8 @@ const defaultQuery = {
     filter: {},
     sorts: {},
     period: {
-        date_start: new Date().toISOString(),
-        date_end: new Date().toISOString(),
+        date_start: formatDateISO(currentDate, true),
+        date_end: formatDateISO(addDays(currentDate, 1), true),
     },
 }
 

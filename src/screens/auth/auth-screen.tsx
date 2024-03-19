@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
 import { AppColors } from '../../constants/colors'
 import { useEffect, useState } from 'react'
 import {
@@ -8,6 +8,8 @@ import {
     FormControl,
     FormControlError,
     FormControlErrorIcon,
+    Text,
+    VStack,
 } from '@gluestack-ui/themed'
 import { useForm } from '../../components/form/form'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -23,6 +25,7 @@ import TextButton from '../../components/ui/text-button'
 import AppButton from '../../components/ui/button'
 import { z } from 'zod'
 import { DEFAULT_HOST } from '@env'
+import Watermark from '../../components/watermark/watermark'
 
 const authSchema = z.object({
     email: z.string(),
@@ -66,84 +69,93 @@ export default function AuthScreen({ navigation }: any) {
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={styles.loginScreenScrollView}>
                 <View style={{ flex: 3 }} />
-                <Text style={styles.title}>{AppStrings.appName}</Text>
-                <Text style={styles.description}>
+                <Image
+                    style={{
+                        width: 'auto',
+                        height: 60,
+                        objectFit: 'contain',
+                        marginBottom: 20,
+                    }}
+                    source={require('../../components/images/rosgranstroy-logo-main.png')}
+                />
+                <Text
+                    mb="$5"
+                    color={AppColors.text}
+                    textAlign="center"
+                    fontSize="$md"
+                    fontWeight="$medium"
+                >
                     {AppStrings.signInDescription}
                 </Text>
-                <FormControl
-                    isInvalid={isError}
-                    style={{
-                        flex: 1,
-                        flexDirection: 'column',
-                        paddingBottom: 20,
-                    }}
-                >
-                    <Controller
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <AppInput
-                                style={{ marginBottom: 8 }}
-                                value={field.value}
-                                onChangeText={field.onChange}
-                                hint="Email"
-                                placeholder="Email"
-                            />
-                        )}
-                    />
-                    <Controller
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <AppInput
-                                style={{ marginBottom: 8 }}
-                                value={field.value}
-                                onChangeText={field.onChange}
-                                hint="Пароль"
-                                placeholder="Пароль"
-                                secureTextEntry={passwordHidden}
-                                trailingIcon={
-                                    passwordHidden ? (
-                                        <EyeOffIcon />
-                                    ) : (
-                                        <EyeIcon />
-                                    )
-                                }
-                                onTrailingIconPress={() =>
-                                    setPasswordHidden(!passwordHidden)
-                                }
-                            />
-                        )}
-                    />
-                    <FormControlError>
-                        <FormControlErrorIcon as={WarningIcon} />
-                        <AppFormControlErrorText error={error} />
-                    </FormControlError>
-                </FormControl>
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'column',
-                        gap: 12,
-                        paddingBottom: 20,
-                    }}
-                >
-                    <AppCheckbox
-                        value=""
-                        label={AppStrings.rememberSignIn}
-                        isChecked={isChecked}
-                        onChange={(checked) => setChecked(checked)}
-                    />
-                    <TextButton text="Забыли пароль?" onPress={() => {}} />
-                </View>
-                <View style={{ flex: 1, flexDirection: 'column', gap: 8 }}>
-                    <AppButton
-                        onPress={() => handleSubmit(form.getValues())}
-                        text="Войти"
-                        isLoading={isLoading}
-                    />
-                </View>
-                <View style={{ flex: 3 }} />
+                <VStack px="$10">
+                    <FormControl
+                        isInvalid={isError}
+                        style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <Controller
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <AppInput
+                                    style={{ marginBottom: 8 }}
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    hint="Email"
+                                    placeholder="Email"
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <AppInput
+                                    style={{ marginBottom: 8 }}
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    hint="Пароль"
+                                    placeholder="Пароль"
+                                    secureTextEntry={passwordHidden}
+                                    trailingIcon={
+                                        passwordHidden ? (
+                                            <EyeOffIcon />
+                                        ) : (
+                                            <EyeIcon />
+                                        )
+                                    }
+                                    onTrailingIconPress={() =>
+                                        setPasswordHidden(!passwordHidden)
+                                    }
+                                />
+                            )}
+                        />
+                        <FormControlError>
+                            <FormControlErrorIcon as={WarningIcon} />
+                            <AppFormControlErrorText error={error} />
+                        </FormControlError>
+                    </FormControl>
+                    <VStack gap="$3" my="$6">
+                        <AppCheckbox
+                            value=""
+                            label={AppStrings.rememberSignIn}
+                            isChecked={isChecked}
+                            onChange={(checked) => setChecked(checked)}
+                        />
+                        <TextButton text="Забыли пароль?" onPress={() => {}} />
+                    </VStack>
+                </VStack>
+                <View style={{ flex: 1 }} />
+                <AppButton
+                    onPress={() => handleSubmit(form.getValues())}
+                    text="Войти"
+                    isLoading={isLoading}
+                    mx="$10"
+                />
+                <View style={{ flex: 1, minHeight: 8 }} />
+                <Watermark mb="$2" />
             </ScrollView>
         </SafeAreaView>
     )
@@ -153,7 +165,6 @@ const styles = StyleSheet.create({
     loginScreenScrollView: {
         flexGrow: 1,
         justifyContent: 'center',
-        paddingHorizontal: 60,
         paddingVertical: 8,
         backgroundColor: AppColors.background,
     },

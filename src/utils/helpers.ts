@@ -35,3 +35,9 @@ export const addDays = (date: Date, days: number) => {
     newDate.setDate(date.getDate() + days)
     return newDate
 }
+
+export const dateToEpoch = (date: Date) => {
+    date.setHours(0, 0, 0, 0)
+
+    return date
+}

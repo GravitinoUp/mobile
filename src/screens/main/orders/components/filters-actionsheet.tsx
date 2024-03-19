@@ -1,11 +1,9 @@
-import { StyleSheet } from 'react-native'
 import AppActionsheet from '../../../../components/ui/actionsheet'
 import AppSelect from '../../../../components/ui/select'
 import AppStrings from '../../../../constants/strings'
 import { useGetAllOrderStatusesQuery } from '../../../../redux/api/order-statuses'
 import { Text, VStack } from '@gluestack-ui/themed'
 import AppButton from '../../../../components/ui/button'
-import { AppColors } from '../../../../constants/colors'
 import {
     defaultSelectItem,
     placeholderQuery,
@@ -16,8 +14,9 @@ import { useGetBranchesQuery } from '../../../../redux/api/branch'
 import { useForm } from '../../../../components/form/form'
 import { z } from 'zod'
 import { Controller } from 'react-hook-form'
-import { useContext } from 'react'
+import { Fragment, useContext, useState } from 'react'
 import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
+import DatePicker from 'react-native-date-picker'
 
 const filterSchema = z.object({
     task_type: z.string(),
@@ -35,6 +34,9 @@ const FiltersActionsheet = ({
     actionsheetOpen,
     setActionsheetOpen,
 }: FiltersActionsheetProps) => {
+    const [datePickerOpen, setDatePickerOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(new Date())
+
     const form = useForm({
         schema: filterSchema,
         defaultValues: {
@@ -100,114 +102,111 @@ const FiltersActionsheet = ({
     }
 
     return (
-        <AppActionsheet
-            px="$6"
-            isOpen={actionsheetOpen}
-            onClose={() => setActionsheetOpen(false)}
-        >
-            <Text
-                fontSize="$xl"
-                fontWeight="$bold"
-                textAlign="center"
-                mt="$2"
-                mb="$8"
-            >
-                {AppStrings.setFilter}
-            </Text>
-            <VStack gap="$6" mb="$10">
-                <Controller
-                    control={form.control}
-                    name="task_type"
-                    render={({ field }) => (
-                        <AppSelect
-                            hint={AppStrings.taskType}
-                            items={taskTypes}
-                            selectedValue={field.value}
-                            onValueChange={field.onChange}
-                        />
-                    )}
-                />
-                <Controller
-                    control={form.control}
-                    name="order_status_id"
-                    render={({ field }) => (
-                        <AppSelect
-                            hint={AppStrings.status}
-                            items={formattedOrderStatuses}
-                            selectedValue={
-                                field.value !== 0 ? String(field.value) : 'all'
-                            }
-                            onValueChange={(value) =>
-                                field.onChange(
-                                    value !== 'all' ? Number(value) : 0
-                                )
-                            }
-                            isDisabled={orderStatusesLoading}
-                        />
-                    )}
-                />
-                <Controller
-                    control={form.control}
-                    name="branch_id"
-                    render={({ field }) => (
-                        <AppSelect
-                            hint={AppStrings.branch}
-                            items={formattedBranches}
-                            selectedValue={
-                                field.value !== 0 ? String(field.value) : 'all'
-                            }
-                            onValueChange={(value) =>
-                                field.onChange(
-                                    value !== 'all' ? Number(value) : 0
-                                )
-                            }
-                            isDisabled={branchesLoading}
-                        />
-                    )}
-                />
-                <Controller
-                    control={form.control}
-                    name="sorting"
-                    render={({ field }) => (
-                        <AppSelect
-                            hint={AppStrings.sortTasks}
-                            items={sortVariants}
-                            selectedValue={field.value}
-                            onValueChange={field.onChange}
-                        />
-                    )}
-                />
-            </VStack>
-            <AppButton
-                text={AppStrings.apply}
-                onPress={() => {
-                    handleSubmit(form.getValues())
+        <Fragment>
+            <DatePicker
+                modal
+                mode="date"
+                open={datePickerOpen}
+                date={selectedDate}
+                onConfirm={(newDate) => {
+                    setDatePickerOpen(false)
+                    setSelectedDate(newDate)
                 }}
-                py={10}
-                mb="$4"
+                onCancel={() => setDatePickerOpen(false)}
             />
-        </AppActionsheet>
+            <AppActionsheet
+                px="$6"
+                isOpen={actionsheetOpen}
+                onClose={() => setActionsheetOpen(false)}
+            >
+                <Text
+                    fontSize="$xl"
+                    fontWeight="$bold"
+                    textAlign="center"
+                    mt="$2"
+                    mb="$8"
+                >
+                    {AppStrings.setFilter}
+                </Text>
+                <VStack gap="$6" mb="$10">
+                    <Controller
+                        control={form.control}
+                        name="task_type"
+                        render={({ field }) => (
+                            <AppSelect
+                                hint={AppStrings.taskType}
+                                items={taskTypes}
+                                selectedValue={field.value}
+                                onValueChange={field.onChange}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={form.control}
+                        name="order_status_id"
+                        render={({ field }) => (
+                            <AppSelect
+                                hint={AppStrings.status}
+                                items={formattedOrderStatuses}
+                                selectedValue={
+                                    field.value !== 0
+                                        ? String(field.value)
+                                        : 'all'
+                                }
+                                onValueChange={(value) =>
+                                    field.onChange(
+                                        value !== 'all' ? Number(value) : 0
+                                    )
+                                }
+                                isDisabled={orderStatusesLoading}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={form.control}
+                        name="branch_id"
+                        render={({ field }) => (
+                            <AppSelect
+                                hint={AppStrings.branch}
+                                items={formattedBranches}
+                                selectedValue={
+                                    field.value !== 0
+                                        ? String(field.value)
+                                        : 'all'
+                                }
+                                onValueChange={(value) =>
+                                    field.onChange(
+                                        value !== 'all' ? Number(value) : 0
+                                    )
+                                }
+                                isDisabled={branchesLoading}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={form.control}
+                        name="sorting"
+                        render={({ field }) => (
+                            <AppSelect
+                                hint={AppStrings.sortTasks}
+                                items={sortVariants}
+                                selectedValue={field.value}
+                                onValueChange={field.onChange}
+                            />
+                        )}
+                    />
+                </VStack>
+                <AppButton
+                    text={AppStrings.apply}
+                    onPress={() => {
+                        handleSubmit(form.getValues())
+                    }}
+                    py={10}
+                    mb="$4"
+                />
+            </AppActionsheet>
+        </Fragment>
     )
 }
 
 export default FiltersActionsheet
-
-const styles = StyleSheet.create({
-    filterTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        color: AppColors.text,
-        textAlign: 'center',
-        marginBottom: 40,
-    },
-    filterSort: {
-        fontSize: 15,
-        color: AppColors.bodyLight,
-    },
-    sortText: {
-        paddingHorizontal: 10,
-        paddingVertical: 3.5,
-        fontSize: 16,
-        color: AppColors.text,
-    },
-})

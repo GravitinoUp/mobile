@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectScrollView,
     Text,
+    InputField,
 } from '@gluestack-ui/themed'
 import { defaultSelectItem } from '../../constants/constants'
 import AppStrings from '../../constants/strings'

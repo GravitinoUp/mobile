@@ -12,8 +12,8 @@ export const AppColors = {
     borderActive: '#cdced1',
     card: '#F8F8F8',
     disabled: '#C4C4C4',
-    success: '#49C96D',
-    error: '#FF6B6B',
+    success: '#20A144',
+    error: '#F05C54',
     rippleColor: '#00000040',
     shadowColor: '#2C3F58',
 }
