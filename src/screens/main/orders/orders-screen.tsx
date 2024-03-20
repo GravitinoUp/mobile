@@ -1,11 +1,6 @@
 import { HStack, SearchIcon } from '@gluestack-ui/themed'
 import { useContext, useEffect, useState } from 'react'
-import {
-    FlatList,
-    RefreshControl,
-    StyleSheet,
-    useWindowDimensions,
-} from 'react-native'
+import { FlatList, RefreshControl, useWindowDimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AltButton from '../../../components/alt-button/alt-button'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
@@ -54,7 +49,7 @@ const OrdersTab = ({ navigation, query }: { navigation: any; query: any }) => {
                     orderData={item}
                     onPress={() =>
                         navigation.navigate('OrderScreen', {
-                            order: item,
+                            orderID: item.order_id,
                         })
                     }
                 />
@@ -188,7 +183,7 @@ export default function OrdersScreen({ navigation }: any) {
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
-            <AppBar style={styles.header}>
+            <AppBar>
                 <AppInput
                     value={search}
                     onChangeText={(text) => setSearch(text)}
@@ -221,32 +216,3 @@ export default function OrdersScreen({ navigation }: any) {
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    header: {
-        paddingHorizontal: 12,
-        paddingTop: 30,
-        paddingBottom: 16,
-    },
-    filterTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        color: AppColors.text,
-        textAlign: 'center',
-        marginBottom: 40,
-    },
-    filterSort: {
-        fontSize: 15,
-        color: AppColors.bodyLight,
-    },
-    filterApplyButton: {
-        marginHorizontal: 30,
-        marginBottom: 40,
-    },
-    sortText: {
-        paddingHorizontal: 10,
-        paddingVertical: 3.5,
-        fontSize: 16,
-        color: AppColors.text,
-    },
-})

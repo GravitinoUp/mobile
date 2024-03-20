@@ -26,7 +26,9 @@ const AppTabBar = ({ ...props }: AppTabBarProps) => {
                 fontWeight: '500',
                 textAlign: 'center',
             }}
-            indicatorContainerStyle={{ backgroundColor: AppColors.background }}
+            indicatorContainerStyle={{
+                backgroundColor: AppColors.background,
+            }}
             indicatorStyle={{
                 height: 2,
                 backgroundColor: AppColors.primary,

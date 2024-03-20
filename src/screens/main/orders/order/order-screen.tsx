@@ -1,21 +1,141 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { AppColors } from '../../../../constants/colors'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import Card from '../../../../components/ui/card'
-import CalendarIcon from '../../../../components/icons/calendar'
-import AppInput from '../../../../components/ui/input'
+import { StyleSheet, useWindowDimensions } from 'react-native'
 import AppStrings from '../../../../constants/strings'
-import AppButton from '../../../../components/ui/button'
-import { AttachmentsCard } from '../components/attachments'
 import AppBar from '../../../../components/ui/app-bar'
 import { OrderInterface } from '../../../../types/interface/orders'
-import { HStack, VStack } from '@gluestack-ui/themed'
-import { formatDate } from '../../../../utils/helpers'
+import { HStack, Text } from '@gluestack-ui/themed'
 import OrderStatusCard from '../../../../components/order-status-card/order-status-card'
 import BackButton from '../../../../components/back-button/back-button'
+import { useContext, useEffect, useState } from 'react'
+import { TabView } from 'react-native-tab-view'
+import AppTabBar from '../../../../components/tab-bar/tab-bar'
+import {
+    useGetPersonalOrdersQuery,
+    useUpdateStatusMutation,
+    useUploadFileMutation,
+} from '../../../../redux/api/orders'
+import LoadingView from '../../../../components/ui/loading-view'
+import useErrorToast from '../../../../hooks/use-error-toast'
+import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
+import CloseOrderScreen from './close-order-screen'
+import useSuccessToast from '../../../../hooks/use-success-toast'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import OrderInfo from './order-info'
+import { unlink } from 'react-native-fs'
+
+const renderScene = ({
+    route,
+    navigation,
+    order,
+    files,
+    setFiles,
+    submitOrder,
+    isLoading,
+}: {
+    route: {
+        key: string
+        title: string
+    }
+    navigation: any
+    order: OrderInterface
+    files: string[]
+    setFiles: React.Dispatch<React.SetStateAction<string[]>>
+    submitOrder: () => void
+    isLoading: boolean
+}) => {
+    switch (route.key) {
+        case 'orderClose':
+            return (
+                <CloseOrderScreen
+                    order={order}
+                    navigation={navigation}
+                    files={files}
+                    setFiles={setFiles}
+                    submitOrder={submitOrder}
+                    isLoading={isLoading}
+                />
+            )
+        case 'orderInfo':
+            return <OrderInfo order={order} />
+        default:
+            return null
+    }
+}
 
 export default function OrderScreen({ navigation, route }: any) {
-    const order: OrderInterface = route.params.order
+    const orderID: number = route.params.orderID
+
+    const layout = useWindowDimensions()
+
+    const [index, setIndex] = useState(0)
+    const [routes] = useState([
+        { key: 'orderClose', title: 'Закрыть задачу' },
+        { key: 'orderInfo', title: 'Инфо о задаче' },
+    ])
+
+    const { personalOrdersQuery } = useContext(TasksFilterQueryContext)
+    const {
+        data: orders = { count: 0, data: [] },
+        isFetching,
+        isSuccess,
+        error,
+    } = useGetPersonalOrdersQuery({
+        ...personalOrdersQuery,
+        filter: { order_id: orderID },
+    })
+
+    const [files, setFiles] = useState<string[]>([])
+
+    const [
+        closeOrder,
+        { isLoading: orderClosing, isSuccess: closeSuccess, error: closeError },
+    ] = useUpdateStatusMutation()
+
+    const [
+        uploadFiles,
+        {
+            isLoading: orderUploading,
+            isSuccess: uploadSuccess,
+            error: uploadError,
+        },
+    ] = useUploadFileMutation()
+
+    const submitOrder = () => {
+        const formData = new FormData()
+        files.forEach((value) => {
+            formData.append('files', {
+                uri: value,
+                name: value.split('/').pop(),
+                type: `image/${value.split('.').pop()}`,
+            })
+        })
+
+        uploadFiles({
+            orderIDs: [orderID],
+            directory: 'orders',
+            formData,
+        })
+    }
+
+    useEffect(() => {
+        if (uploadSuccess) {
+            closeOrder({ order_id: orderID, order_status_id: '4' })
+        }
+    }, [uploadSuccess])
+
+    useEffect(() => {
+        if (closeSuccess) {
+            AsyncStorage.removeItem(`order-${orderID}`).then(() => {
+                navigation.navigate('HomeScreen')
+            })
+        }
+    }, [closeSuccess])
+
+    useSuccessToast('Задача успешно закрыта!', closeSuccess)
+    useErrorToast(closeError || uploadError)
+
+    useErrorToast(error)
 
     return (
         <SafeAreaView
@@ -24,131 +144,46 @@ export default function OrderScreen({ navigation, route }: any) {
             <AppBar style={styles.header}>
                 <HStack justifyContent="space-between" alignItems="center">
                     <BackButton navigation={navigation} />
-                    <OrderStatusCard
-                        orderStatus={order.order_status.order_status_name}
-                    />
+                    {!isFetching && (
+                        <OrderStatusCard
+                            orderStatus={
+                                orders.data[0].order_status.order_status_name
+                            }
+                        />
+                    )}
                 </HStack>
-                <Text style={styles.headerTitle}>№{order.order_id}</Text>
+                <Text
+                    fontSize="$2xl"
+                    fontWeight="$semibold"
+                    textAlign="center"
+                    color={AppColors.text}
+                >
+                    {!isFetching
+                        ? `№${orders.data[0].order_id}`
+                        : AppStrings.loading}
+                </Text>
             </AppBar>
-            <ScrollView contentContainerStyle={styles.scrollView}>
-                <Card>
-                    <View style={styles.topRow}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <CalendarIcon />
-                            <Text
-                                style={{
-                                    marginLeft: 6,
-                                    fontSize: 14,
-                                    color: AppColors.bodyDark,
-                                }}
-                            >
-                                {formatDate(order.planned_datetime)}
-                            </Text>
-                        </View>
-                    </View>
-                    <View
-                        style={{
-                            height: 1,
-                            width: '100%',
-                            borderRadius: 1,
-                            borderWidth: 1,
-                            borderColor: AppColors.border,
-                            borderStyle: 'dashed',
-                        }}
-                    />
-                    <View style={styles.cardContent}>
-                        <VStack gap="$2" mb="$6">
-                            <AppInput
-                                value={`${
-                                    order.order_name
-                                        ? order.order_name
-                                        : order.task?.task_name
-                                }`}
-                                readOnly={true}
-                                hint={AppStrings.name}
-                                placeholder={AppStrings.name}
-                                onChangeText={() => {}}
-                            />
-                            <AppInput
-                                value={`${
-                                    order.order_description
-                                        ? order.order_description
-                                        : order.task?.task_description
-                                }`}
-                                readOnly={true}
-                                multiline={true}
-                                minHeight={88}
-                                textAlignVertical="top"
-                                hint={AppStrings.description}
-                                placeholder={AppStrings.description}
-                                onChangeText={() => {}}
-                            />
-                        </VStack>
-                        <VStack gap="$2" mb="$6">
-                            <AppInput
-                                value={
-                                    order.facility.checkpoint.branch.branch_name
-                                }
-                                readOnly={true}
-                                hint={AppStrings.branch}
-                                placeholder={AppStrings.branch}
-                                onChangeText={() => {}}
-                            />
-                            <AppInput
-                                value={
-                                    order.facility.checkpoint.checkpoint_name
-                                }
-                                readOnly={true}
-                                hint={AppStrings.checkpoint}
-                                placeholder={AppStrings.checkpoint}
-                                onChangeText={() => {}}
-                            />
-                            <AppInput
-                                value={order.facility.facility_name}
-                                readOnly={true}
-                                hint={AppStrings.facility}
-                                placeholder={AppStrings.facility}
-                                onChangeText={() => {}}
-                            />
-                        </VStack>
-                        <VStack gap="$4" mb="$4">
-                            <AppInput
-                                value={order.task.category.category_name}
-                                readOnly={true}
-                                multiline={false}
-                                hint={AppStrings.category}
-                                placeholder={AppStrings.category}
-                                onChangeText={() => {}}
-                            />
-                            <AppInput
-                                value={order.priority.priority_name}
-                                readOnly={true}
-                                multiline={false}
-                                hint={AppStrings.priority}
-                                placeholder={AppStrings.priority}
-                                onChangeText={() => {}}
-                            />
-                        </VStack>
-                        <AttachmentsCard
-                            canDelete={false}
-                            canAddMore={false}
-                            canAddFiles={false}
-                            attachments={order.files}
-                        />
-                        <AppButton
-                            style={styles.bottomButton}
-                            onPress={() => {
-                                navigation.navigate('CloseOrderScreen', {
-                                    order: order,
-                                })
-                            }}
-                            text={AppStrings.closeOrder}
-                            px={40}
-                            py={10}
-                        />
-                    </View>
-                </Card>
-            </ScrollView>
+            {!isFetching && isSuccess ? (
+                <TabView
+                    navigationState={{ index, routes }}
+                    onIndexChange={setIndex}
+                    renderTabBar={(props) => <AppTabBar {...props} />}
+                    renderScene={({ route }) =>
+                        renderScene({
+                            route,
+                            navigation,
+                            order: orders.data[0],
+                            files,
+                            setFiles,
+                            submitOrder,
+                            isLoading: orderClosing || orderUploading,
+                        })
+                    }
+                    initialLayout={{ width: layout.width }}
+                />
+            ) : (
+                <LoadingView />
+            )}
         </SafeAreaView>
     )
 }
@@ -158,40 +193,5 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 16,
         paddingHorizontal: 16,
-        elevation: 20,
-        shadowColor: AppColors.text,
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-    },
-    headerTitle: {
-        fontSize: 22,
-        fontWeight: '600',
-        color: AppColors.text,
-        textAlign: 'center',
-    },
-    scrollView: {
-        flexGrow: 1,
-        paddingTop: 16,
-        paddingBottom: 30,
-        paddingHorizontal: 16,
-        backgroundColor: AppColors.background,
-    },
-    topRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 20,
-        paddingBottom: 16,
-    },
-    cardContent: {
-        padding: 16,
-    },
-    bottomButton: {
-        top: 36,
-        marginHorizontal: 40,
     },
 })
