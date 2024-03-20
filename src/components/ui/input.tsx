@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Text,
     TextStyle,
+    TouchableOpacity,
     View,
     ViewStyle,
 } from 'react-native'
@@ -21,7 +22,6 @@ type AppInputProps = {
     trailingIcon?: React.JSX.Element
     onTrailingIconPress?: () => void
     leadingIcon?: React.JSX.Element
-    onLeadingIconPress?: () => void
     onTouchEnd?: ((event: GestureResponderEvent) => void) | undefined
 } & InputFieldProps
 
@@ -33,7 +33,6 @@ const AppInput = ({
     hintStyle = { fontSize: 14, color: AppColors.hint },
     minHeight,
     leadingIcon,
-    onLeadingIconPress,
     trailingIcon,
     onTrailingIconPress,
     onTouchEnd,
@@ -54,12 +53,7 @@ const AppInput = ({
                 onTouchEnd={onTouchEnd}
             >
                 {leadingIcon && (
-                    <InputSlot
-                        style={styles.leading}
-                        onPress={onLeadingIconPress}
-                    >
-                        {leadingIcon}
-                    </InputSlot>
+                    <InputSlot style={styles.leading}>{leadingIcon}</InputSlot>
                 )}
                 <InputField
                     value={value}
@@ -70,12 +64,12 @@ const AppInput = ({
                     {...props}
                 />
                 {trailingIcon && (
-                    <InputSlot
+                    <TouchableOpacity
                         style={styles.trailing}
                         onPress={onTrailingIconPress}
                     >
                         {trailingIcon}
-                    </InputSlot>
+                    </TouchableOpacity>
                 )}
             </Input>
         </View>
