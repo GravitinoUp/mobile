@@ -23,11 +23,8 @@ import FiltersActionsheet from './components/filters-actionsheet'
 import { TabView } from 'react-native-tab-view'
 import useErrorToast from '../../../hooks/use-error-toast'
 import AppTabBar from '../../../components/tab-bar/tab-bar'
-import { placeholderQuery } from '../../../constants/constants'
 
 const OrdersTab = ({ navigation, query }: { navigation: any; query: any }) => {
-    const { personalOrdersQuery } = useContext(TasksFilterQueryContext)
-
     const {
         data: orders = { count: 0, data: [] },
         isFetching,

@@ -12,6 +12,9 @@ const AppBar = ({ style, children }: Props) => (
 
 const styles = StyleSheet.create({
     header: {
+        paddingHorizontal: 12,
+        paddingTop: 30,
+        paddingBottom: 16,
         backgroundColor: AppColors.background,
         zIndex: 10,
     },

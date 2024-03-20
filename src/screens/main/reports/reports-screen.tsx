@@ -7,7 +7,7 @@ import AppStrings from '../../../constants/strings'
 import { CalendarAddIcon } from '../../../components/icons/CalendarAddIcon'
 import { SearchIcon } from '@gluestack-ui/themed'
 
-export default function ArchiveScreen() {
+export default function ReportsScreen() {
     const [search, onChangeSearch] = useState('')
 
     return (
@@ -32,8 +32,13 @@ export default function ArchiveScreen() {
 
 const styles = StyleSheet.create({
     header: {
-        paddingHorizontal: 12,
-        paddingTop: 30,
-        paddingBottom: 16,
+        elevation: 20,
+        shadowColor: AppColors.text,
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
     },
 })

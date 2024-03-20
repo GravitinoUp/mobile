@@ -1,18 +1,18 @@
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { AppColors } from '../../../constants/colors'
+import { AppColors } from '../../../../constants/colors'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import Card from '../../../components/ui/card'
-import CalendarIcon from '../../../components/icons/calendar'
-import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/strings'
-import AppButton from '../../../components/ui/button'
-import { AttachmentsCard } from './components/attachments'
-import AppBar from '../../../components/ui/app-bar'
-import { OrderInterface } from '../../../types/interface/orders'
+import Card from '../../../../components/ui/card'
+import CalendarIcon from '../../../../components/icons/calendar'
+import AppInput from '../../../../components/ui/input'
+import AppStrings from '../../../../constants/strings'
+import AppButton from '../../../../components/ui/button'
+import { AttachmentsCard } from '../components/attachments'
+import AppBar from '../../../../components/ui/app-bar'
+import { OrderInterface } from '../../../../types/interface/orders'
 import { HStack, VStack } from '@gluestack-ui/themed'
-import { formatDate } from '../../../utils/helpers'
-import OrderStatusCard from '../../../components/order-status-card/order-status-card'
-import BackButton from '../../../components/back-button/back-button'
+import { formatDate } from '../../../../utils/helpers'
+import OrderStatusCard from '../../../../components/order-status-card/order-status-card'
+import BackButton from '../../../../components/back-button/back-button'
 
 export default function OrderScreen({ navigation, route }: any) {
     const order: OrderInterface = route.params.order
@@ -158,6 +158,14 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 16,
         paddingHorizontal: 16,
+        elevation: 20,
+        shadowColor: AppColors.text,
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
     },
     headerTitle: {
         fontSize: 22,

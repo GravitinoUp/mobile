@@ -1,11 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import OrderScreen from './order-screen'
-import CloseOrderScreen from './close-order-screen'
+import OrderScreen from './order/order-screen'
+import CloseOrderScreen from './order/close-order-screen'
 import OrdersScreen from './orders-screen'
 
 const Stack = createNativeStackNavigator()
 
-export default function OrdersNavigationScreen({ navigation }: any) {
+export default function OrdersNavigationScreen() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="HomeScreen" component={OrdersScreen} />

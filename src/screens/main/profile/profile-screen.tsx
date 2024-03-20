@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native'
 import { AppColors } from '../../../constants/colors'
 
 export default function ProfileScreen() {
@@ -11,4 +11,3 @@ export default function ProfileScreen() {
         ></SafeAreaView>
     )
 }
-const styles = StyleSheet.create({})

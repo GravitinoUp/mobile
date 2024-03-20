@@ -1,4 +1,4 @@
-package com.gravitinoasu
+package com.gravitino
 
 import android.app.Application
 import com.facebook.react.PackageList

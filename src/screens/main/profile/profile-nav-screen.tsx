@@ -3,7 +3,7 @@ import ProfileScreen from './profile-screen'
 
 const Stack = createNativeStackNavigator()
 
-export default function ProfileNavigationScreen({ navigation }: any) {
+export default function ProfileNavigationScreen() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />

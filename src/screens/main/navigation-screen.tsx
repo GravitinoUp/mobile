@@ -1,21 +1,21 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomNavBar } from '../../components/ui/bottom-bar'
 import {
-    ArchiveIcon,
     FileIcon,
     NotificationsIcon,
     ProfileIcon,
+    ReportIcon,
 } from '../../components/icons/BottomBarIcons'
-import OrdersNavigationScreen from './orders/OrdersNavigationScreen'
+import OrdersNavigationScreen from './orders/orders-navigation-screen'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import ArchiveScreen from './archive/archive-screen'
+import ReportsScreen from './reports/reports-screen'
 import NotificationsNavigationScreen from './notifications/notifications-nav-screen'
 import ProfileNavigationScreen from './profile/profile-nav-screen'
 
 const Tab = createBottomTabNavigator()
 
-export default function NavigationScreen({ navigation, route }: any) {
+export default function NavigationScreen() {
     const [isVisible, setVisible] = useState(true)
 
     return (
@@ -44,10 +44,10 @@ export default function NavigationScreen({ navigation, route }: any) {
                 })}
             />
             <Tab.Screen
-                name="ArchiveScreen"
-                component={ArchiveScreen}
+                name="ReportsScreen"
+                component={ReportsScreen}
                 options={{
-                    tabBarIcon: ({ color }) => <ArchiveIcon color={color} />,
+                    tabBarIcon: ({ color }) => <ReportIcon color={color} />,
                 }}
             />
             <Tab.Screen
