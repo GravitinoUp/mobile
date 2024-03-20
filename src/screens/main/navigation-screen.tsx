@@ -32,7 +32,7 @@ export default function NavigationScreen() {
                     tabBarIcon: ({ color }) => {
                         const routeName = getFocusedRouteNameFromRoute(route)
                         useEffect(() => {
-                            if (routeName === 'CloseOrderScreen') {
+                            if (routeName === 'OrderScreen') {
                                 setVisible(false)
                             } else {
                                 setVisible(true)

@@ -4,7 +4,7 @@ import InWorkIcon from '../icons/InWorkIcon'
 import PendingIcon from '../icons/PendingIcon'
 import AssignedIcon from '../icons/assigned'
 import SuccessIcon from '../icons/SuccessIcon'
-import { AppColors } from '../../constants/colors'
+import { TASK_STATUS_COLORS } from '../../constants/colors'
 
 function renderIconSwitch(key: any): React.JSX.Element {
     switch (key) {
@@ -17,11 +17,11 @@ function renderIconSwitch(key: any): React.JSX.Element {
         case 'На проверке':
             return <PendingIcon />
         case 'Закрыта':
-            return <SuccessIcon color={AppColors.success} />
+            return <SuccessIcon color={TASK_STATUS_COLORS.CLOSED} />
         case 'Отменена':
             return <CancelledIcon />
         case 'Закрыта с нарушением дедлайна':
-            return <SuccessIcon color={AppColors.error} />
+            return <SuccessIcon color={TASK_STATUS_COLORS.DEADLINE_CLOSED} />
         default:
             return <AddIcon />
     }

@@ -58,5 +58,6 @@ const AppStrings = {
         'Доступ к камере заблокирован. Измените разрешение в настройках.',
     ordersInWork: 'Задачи в работе',
     closedOrders: 'Завершенные задачи',
+    loading: 'Загрузка...',
 }
 export default AppStrings

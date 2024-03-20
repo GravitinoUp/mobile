@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { CameraRoll } from '@react-native-camera-roll/camera-roll'
 import { moveFile } from 'react-native-fs'
 import { HStack } from '@gluestack-ui/themed'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function CameraScreen({ navigation, route }: any) {
     const device = useCameraDevice('back')
@@ -12,7 +13,7 @@ export default function CameraScreen({ navigation, route }: any) {
 
     const [cameraEnabled, setCameraEnabled] = useState(false)
 
-    const files = route.params.files
+    const orderID = route.params.orderID
 
     const takePhoto = async () => {
         setCameraEnabled(false)
@@ -38,9 +39,25 @@ export default function CameraScreen({ navigation, route }: any) {
                 savedPhoto.node.image.uri.replace('mrousavy', 'gravitino-')
             )
 
+            const storedFiles = { order_id: orderID, comment: '', files: [] }
+            const jsonStoredFiles = await AsyncStorage.getItem(
+                `order-${orderID}`
+            )
+            if (jsonStoredFiles !== null) {
+                storedFiles.files = JSON.parse(jsonStoredFiles).files
+            }
+
+            const data = {
+                order_id: orderID,
+                comment: '',
+                files: [...storedFiles.files, newUri],
+            }
+
+            await AsyncStorage.setItem(`order-${orderID}`, JSON.stringify(data))
+
             navigation.navigate({
-                name: 'CloseOrderScreen',
-                params: { files: [...files, newUri] },
+                name: 'OrderScreen',
+                params: { orderID },
                 merge: true,
             })
         }
