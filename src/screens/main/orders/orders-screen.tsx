@@ -1,8 +1,7 @@
-import { HStack, SearchIcon } from '@gluestack-ui/themed'
+import { SearchIcon } from '@gluestack-ui/themed'
 import { useContext, useEffect, useState } from 'react'
 import { FlatList, RefreshControl, useWindowDimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AltButton from '../../../components/alt-button/alt-button'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
 import AppBar from '../../../components/ui/app-bar'
 import AppInput from '../../../components/ui/input'
@@ -11,13 +10,14 @@ import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
 import { TasksFilterQueryContext } from '../../../context/tasks/tasks-filter-query'
 import { useGetPersonalOrdersQuery } from '../../../redux/api/orders'
-import { formatDateISO } from '../../../utils/helpers'
 import EmptyOrderList from './components/empty-order-list'
 import OrderCard from './components/order-card'
 import FiltersActionsheet from './components/filters-actionsheet'
 import { TabView } from 'react-native-tab-view'
 import useErrorToast from '../../../hooks/use-error-toast'
 import AppTabBar from '../../../components/tab-bar/tab-bar'
+import DateList from './components/date-list'
+import { OrderStatusInterface } from '../../../types/interface/orders'
 
 const OrdersTab = ({ navigation, query }: { navigation: any; query: any }) => {
     const {
@@ -72,42 +72,44 @@ const renderScene = ({
     navigation: any
     query: any
 }) => {
+    const orderStatuses: Partial<OrderStatusInterface>[] = []
     switch (route.key) {
+        case 'assigned':
+            orderStatuses.push({ order_status_id: 2 })
+            break
         case 'inProgress':
-            return (
-                <OrdersTab
-                    navigation={navigation}
-                    query={{
-                        ...query,
-                        filter: {
-                            ...query.filter,
-                            order_status: [{ order_status_id: 3 }],
-                        },
-                    }}
-                />
-            )
+            orderStatuses.push({ order_status_id: 3 })
+            break
+        case 'onVerification':
+            orderStatuses.push({ order_status_id: 4 })
+            break
         case 'closed':
-            return (
-                <OrdersTab
-                    navigation={navigation}
-                    query={{
-                        ...query,
-                        filter: {
-                            ...query.filter,
-                            order_status: [{ order_status_id: 5 }],
-                        },
-                    }}
-                />
-            )
+            orderStatuses.push({ order_status_id: 5 })
+            orderStatuses.push({ order_status_id: 7 })
+            break
         default:
-            return null
     }
+
+    return (
+        <OrdersTab
+            navigation={navigation}
+            query={{
+                ...query,
+                filter: {
+                    ...query.filter,
+                    order_status: orderStatuses,
+                },
+            }}
+        />
+    )
 }
 
 export default function OrdersScreen({ navigation }: any) {
     const [index, setIndex] = useState(0)
     const [routes] = useState([
+        { key: 'assigned', title: AppStrings.orderAssigned },
         { key: 'inProgress', title: AppStrings.orderInProgress },
+        { key: 'onVerification', title: AppStrings.orderOnVerification },
         { key: 'closed', title: AppStrings.closedOrders },
     ])
 
@@ -117,52 +119,6 @@ export default function OrdersScreen({ navigation }: any) {
     const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
         TasksFilterQueryContext
     )
-
-    const generateDates = () => {
-        let list = []
-
-        for (let i = -1; i < 2; i++) {
-            const currentDate = new Date()
-            currentDate.setDate(currentDate.getDate() + i)
-            currentDate.setHours(0, 0, 0, 0)
-
-            const buttonTitle =
-                i === -1
-                    ? AppStrings.yesterday
-                    : i === 0
-                    ? AppStrings.today
-                    : AppStrings.tomorrow
-
-            list.push(
-                <AltButton
-                    key={`date-${i}`}
-                    text={buttonTitle}
-                    onPress={() => {
-                        const date = formatDateISO(currentDate, true)
-                        currentDate.setHours(24, 0, 0, 0)
-                        const endDate = formatDateISO(currentDate, true)
-
-                        setPersonalOrdersQuery({
-                            ...personalOrdersQuery,
-                            period: {
-                                date_start: date,
-                                date_end: endDate,
-                            },
-                        })
-
-                        console.log(date)
-                        console.log(endDate)
-                    }}
-                    selected={
-                        personalOrdersQuery.period.date_start ===
-                        formatDateISO(currentDate, true)
-                    }
-                />
-            )
-        }
-
-        return list
-    }
 
     useEffect(() => {
         const delayTimeoutId = setTimeout(() => {
@@ -192,14 +148,12 @@ export default function OrdersScreen({ navigation }: any) {
                     trailingIcon={<SettingsIcon />}
                     onTrailingIconPress={() => setActionsheetOpen(true)}
                 />
-                <HStack mt="$3" gap={'$2'}>
-                    {generateDates()}
-                </HStack>
+                <DateList />
             </AppBar>
             <TabView
                 navigationState={{ index, routes }}
                 onIndexChange={setIndex}
-                renderTabBar={(props) => <AppTabBar {...props} />}
+                renderTabBar={(props) => <AppTabBar scrollEnabled {...props} />}
                 renderScene={({ route }) =>
                     renderScene({
                         route,
