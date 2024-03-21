@@ -59,6 +59,7 @@ export interface UserInterface {
     organization: OrganizationInterface
     person: PersonInterface
     group: GroupInterface | null
+    is_default_password?: boolean | null
 }
 
 export interface UserSortInterface {

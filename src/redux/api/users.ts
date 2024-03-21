@@ -19,6 +19,10 @@ const usersApi = api.injectEndpoints({
             query: (body) => ({ url: 'users/all', method: 'POST', body }),
             providesTags: ['Users'],
         }),
+        getMyUser: builder.query<UserInterface, void>({
+            query: () => ({ url: `users/user/my`, method: 'GET' }),
+            providesTags: ['Users'],
+        }),
         getUserById: builder.query<UserInterface, number>({
             query: (id) => ({ url: `users/${id}`, method: 'GET' }),
             providesTags: ['Users'],
@@ -85,12 +89,22 @@ const usersApi = api.injectEndpoints({
             }),
             invalidatesTags: ['Users'],
         }),
+        updateUserPassword: builder.mutation<FetchResultInterface, string>({
+            query: (password) => ({
+                url: 'users/update-password',
+                method: 'PATCH',
+                body: {
+                    password,
+                },
+            }),
+        }),
     }),
     overrideExisting: true,
 })
 
 export const {
     useGetUsersQuery,
+    useGetMyUserQuery,
     useGetUserByIdQuery,
     useCreateUserMutation,
     useCreateOrganizationUserMutation,
@@ -98,4 +112,5 @@ export const {
     useUpdateOrganizationUserMutation,
     useChangeUserStatusMutation,
     useDeleteUserMutation,
+    useUpdateUserPasswordMutation,
 } = usersApi

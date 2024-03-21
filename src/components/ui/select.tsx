@@ -1,6 +1,6 @@
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import { ComponentProps, useState } from 'react'
+import { ComponentProps } from 'react'
 import {
     Select,
     SelectPortal,
@@ -11,14 +11,11 @@ import {
     SelectItem,
     ChevronDownIcon,
     Icon,
-    SelectIcon,
     SelectInput,
     SelectTrigger,
     SelectScrollView,
     Text,
-    InputField,
 } from '@gluestack-ui/themed'
-import { defaultSelectItem } from '../../constants/constants'
 import AppStrings from '../../constants/strings'
 
 export interface SelectItemInterface {
@@ -28,7 +25,6 @@ export interface SelectItemInterface {
 }
 
 type SelectProps = ComponentProps<typeof Select>
-type SelectItemProps = ComponentProps<typeof SelectItem>
 type Props = {
     style?: StyleProp<ViewStyle>
     hint?: string
