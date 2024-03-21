@@ -22,7 +22,6 @@ import CloseOrderScreen from './close-order-screen'
 import useSuccessToast from '../../../../hooks/use-success-toast'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import OrderInfo from './order-info'
-import { unlink } from 'react-native-fs'
 
 const renderScene = ({
     route,
@@ -69,7 +68,7 @@ export default function OrderScreen({ navigation, route }: any) {
     const layout = useWindowDimensions()
 
     const [index, setIndex] = useState(0)
-    const [routes] = useState([
+    const [routes, setRoutes] = useState([
         { key: 'orderClose', title: 'Закрыть задачу' },
         { key: 'orderInfo', title: 'Инфо о задаче' },
     ])
@@ -77,9 +76,9 @@ export default function OrderScreen({ navigation, route }: any) {
     const { personalOrdersQuery } = useContext(TasksFilterQueryContext)
     const {
         data: orders = { count: 0, data: [] },
-        isFetching,
-        isSuccess,
-        error,
+        isFetching: orderFetching,
+        isSuccess: orderSuccess,
+        error: orderError,
     } = useGetPersonalOrdersQuery({
         ...personalOrdersQuery,
         filter: { order_id: orderID },
@@ -119,6 +118,12 @@ export default function OrderScreen({ navigation, route }: any) {
     }
 
     useEffect(() => {
+        if (orderSuccess && orders.data[0].order_status.order_status_id !== 3) {
+            setRoutes([{ key: 'orderInfo', title: 'Инфо о задаче' }])
+        }
+    }, [orderSuccess])
+
+    useEffect(() => {
         if (uploadSuccess) {
             closeOrder({ order_id: orderID, order_status_id: '4' })
         }
@@ -133,9 +138,7 @@ export default function OrderScreen({ navigation, route }: any) {
     }, [closeSuccess])
 
     useSuccessToast('Задача успешно закрыта!', closeSuccess)
-    useErrorToast(closeError || uploadError)
-
-    useErrorToast(error)
+    useErrorToast(orderError || closeError || uploadError)
 
     return (
         <SafeAreaView
@@ -144,7 +147,7 @@ export default function OrderScreen({ navigation, route }: any) {
             <AppBar style={styles.header}>
                 <HStack justifyContent="space-between" alignItems="center">
                     <BackButton navigation={navigation} />
-                    {!isFetching && (
+                    {!orderFetching && (
                         <OrderStatusCard
                             orderStatus={
                                 orders.data[0].order_status.order_status_name
@@ -158,16 +161,28 @@ export default function OrderScreen({ navigation, route }: any) {
                     textAlign="center"
                     color={AppColors.text}
                 >
-                    {!isFetching
+                    {!orderFetching
                         ? `№${orders.data[0].order_id}`
                         : AppStrings.loading}
                 </Text>
             </AppBar>
-            {!isFetching && isSuccess ? (
+            {!orderFetching && orderSuccess ? (
                 <TabView
                     navigationState={{ index, routes }}
                     onIndexChange={setIndex}
-                    renderTabBar={(props) => <AppTabBar {...props} />}
+                    renderTabBar={(props) => {
+                        props.navigationState.routes =
+                            props.navigationState.routes.filter(
+                                (value) =>
+                                    (value.key !== 'orderClose' &&
+                                        orders.data[0].order_status
+                                            .order_status_id !== 3) ||
+                                    orders.data[0].order_status
+                                        .order_status_id === 3
+                            )
+
+                        return <AppTabBar {...props} />
+                    }}
                     renderScene={({ route }) =>
                         renderScene({
                             route,

@@ -6,13 +6,14 @@ import {
 import { AppColors } from '../../constants/colors'
 
 type AppTabBarProps = SceneRendererProps & {
+    scrollEnabled?: boolean
     navigationState: NavigationState<{
         key: string
         title: string
     }>
 }
 
-const AppTabBar = ({ ...props }: AppTabBarProps) => {
+const AppTabBar = ({ scrollEnabled = false, ...props }: AppTabBarProps) => {
     return (
         <TabBar
             gap={0}
@@ -33,6 +34,7 @@ const AppTabBar = ({ ...props }: AppTabBarProps) => {
                 height: 2,
                 backgroundColor: AppColors.primary,
             }}
+            scrollEnabled={scrollEnabled}
             {...props}
         />
     )
