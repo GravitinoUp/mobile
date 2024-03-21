@@ -2,34 +2,23 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Image, ScrollView, StyleSheet, View } from 'react-native'
 import { AppColors } from '../../constants/colors'
 import { useEffect, useState } from 'react'
-import {
-    EyeIcon,
-    EyeOffIcon,
-    FormControl,
-    FormControlError,
-    FormControlErrorIcon,
-    Text,
-    VStack,
-} from '@gluestack-ui/themed'
-import { useForm } from '../../components/form/form'
+import { EyeIcon, EyeOffIcon, Text, VStack } from '@gluestack-ui/themed'
+import { CustomForm, useForm } from '../../components/form/form'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAuthMutation } from '../../redux/api/auth'
 import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
 import AppStrings from '../../constants/strings'
-import { Controller } from 'react-hook-form'
 import AppInput from '../../components/ui/input'
-import WarningIcon from '../../components/icons/WarningIcon'
-import AppFormControlErrorText from '../../components/form/form-control-error-text'
 import AppCheckbox from '../../components/ui/checkbox'
-import TextButton from '../../components/ui/text-button'
 import AppButton from '../../components/ui/button'
 import { z } from 'zod'
-import { DEFAULT_HOST } from '@env'
 import Watermark from '../../components/watermark/watermark'
+import { FormField, FormItem, FormMessage } from '../../components/ui/form'
+import useErrorToast from '../../hooks/use-error-toast'
 
 const authSchema = z.object({
-    email: z.string(),
-    password: z.string(),
+    email: z.string().email({ message: AppStrings.wrongEmailFormat }),
+    password: z.string().min(1, AppStrings.required),
 })
 
 export default function AuthScreen({ navigation }: any) {
@@ -45,12 +34,9 @@ export default function AuthScreen({ navigation }: any) {
     const [isChecked, setChecked] = useState(true)
 
     const dispatch = useAppDispatch()
-    const [authUser, { data, error, isError, isSuccess, isLoading }] =
-        useAuthMutation()
+    const [authUser, { data, error, isSuccess, isLoading }] = useAuthMutation()
 
-    const handleSubmit = (authData: z.infer<typeof authSchema>) => {
-        console.log(DEFAULT_HOST)
-
+    const onSubmit = (authData: z.infer<typeof authSchema>) => {
         authUser(authData)
     }
 
@@ -64,6 +50,8 @@ export default function AuthScreen({ navigation }: any) {
             navigation.navigate('NavigationScreen')
         }
     }, [isSuccess])
+
+    useErrorToast(error)
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -87,56 +75,51 @@ export default function AuthScreen({ navigation }: any) {
                 >
                     {AppStrings.signInDescription}
                 </Text>
+
                 <VStack px="$10">
-                    <FormControl
-                        isInvalid={isError}
-                        style={{
-                            flex: 1,
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Controller
+                    <CustomForm form={form}>
+                        <FormField
                             control={form.control}
                             name="email"
                             render={({ field }) => (
-                                <AppInput
-                                    style={{ marginBottom: 8 }}
-                                    value={field.value}
-                                    onChangeText={field.onChange}
-                                    hint="Email"
-                                    placeholder="Email"
-                                />
+                                <FormItem style={{ marginBottom: 8 }}>
+                                    <AppInput
+                                        value={field.value}
+                                        onChangeText={field.onChange}
+                                        hint="Email"
+                                        placeholder="Email"
+                                    />
+                                    <FormMessage />
+                                </FormItem>
                             )}
                         />
-                        <Controller
+                        <FormField
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <AppInput
-                                    style={{ marginBottom: 8 }}
-                                    value={field.value}
-                                    onChangeText={field.onChange}
-                                    hint="Пароль"
-                                    placeholder="Пароль"
-                                    secureTextEntry={passwordHidden}
-                                    trailingIcon={
-                                        passwordHidden ? (
-                                            <EyeOffIcon />
-                                        ) : (
-                                            <EyeIcon />
-                                        )
-                                    }
-                                    onTrailingIconPress={() =>
-                                        setPasswordHidden(!passwordHidden)
-                                    }
-                                />
+                                <FormItem style={{ marginBottom: 8 }}>
+                                    <AppInput
+                                        value={field.value}
+                                        onChangeText={field.onChange}
+                                        hint="Пароль"
+                                        placeholder="Пароль"
+                                        secureTextEntry={passwordHidden}
+                                        trailingIcon={
+                                            passwordHidden ? (
+                                                <EyeOffIcon />
+                                            ) : (
+                                                <EyeIcon />
+                                            )
+                                        }
+                                        onTrailingIconPress={() =>
+                                            setPasswordHidden(!passwordHidden)
+                                        }
+                                    />
+                                    <FormMessage />
+                                </FormItem>
                             )}
                         />
-                        <FormControlError>
-                            <FormControlErrorIcon as={WarningIcon} />
-                            <AppFormControlErrorText error={error} />
-                        </FormControlError>
-                    </FormControl>
+                    </CustomForm>
                     <VStack gap="$3" my="$6">
                         <AppCheckbox
                             value=""
@@ -144,12 +127,11 @@ export default function AuthScreen({ navigation }: any) {
                             isChecked={isChecked}
                             onChange={(checked) => setChecked(checked)}
                         />
-                        <TextButton text="Забыли пароль?" onPress={() => {}} />
                     </VStack>
                 </VStack>
                 <View style={{ flex: 1 }} />
                 <AppButton
-                    onPress={() => handleSubmit(form.getValues())}
+                    onPress={form.handleSubmit(onSubmit)}
                     text="Войти"
                     isLoading={isLoading}
                     mx="$10"

@@ -61,7 +61,7 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
 
     return (
         <Dialog
-            title="Восстановление пароля"
+            title={AppStrings.updatePasswordTitle}
             isOpen={isOpen}
             setOpen={setOpen}
             footer={
@@ -137,7 +137,6 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
                             </FormItem>
                         )}
                     />
-                    <FormMessage />
                 </VStack>
             </CustomForm>
         </Dialog>
