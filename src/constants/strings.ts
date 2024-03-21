@@ -59,5 +59,12 @@ const AppStrings = {
     ordersInWork: 'Задачи в работе',
     closedOrders: 'Завершенные задачи',
     loading: 'Загрузка...',
+    passwordSuccessUpdate: 'Пароль успешно изменен!',
+    change: 'Изменить',
+    updatePasswordTitle: 'Восстановление пароля',
+    updatePasswordDescription:
+        'Чтобы продолжить пользоваться приложением, установите постоянный пароль',
+    newPassword: 'Новый пароль',
+    repeatNewPassword: 'Повторите новый пароль',
 }
 export default AppStrings

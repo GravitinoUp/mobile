@@ -95,9 +95,11 @@ const AppInput = ({
 const styles = StyleSheet.create({
     leading: {
         paddingLeft: 16,
+        justifyContent: 'center',
     },
     trailing: {
-        padding: 16,
+        paddingHorizontal: 16,
+        justifyContent: 'center',
     },
     hintText: {
         fontSize: 14,

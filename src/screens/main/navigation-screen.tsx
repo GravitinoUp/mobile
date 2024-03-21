@@ -13,12 +13,23 @@ import ReportsScreen from './reports/reports-screen'
 import NotificationsNavigationScreen from './notifications/notifications-nav-screen'
 import ProfileNavigationScreen from './profile/profile-nav-screen'
 import ResetPasswordDialog from '../../components/reset-password-dialog/reset-password-dialog'
+import { useGetMyUserQuery } from '../../redux/api/users'
 
 const Tab = createBottomTabNavigator()
 
 export default function NavigationScreen() {
     const [isVisible, setVisible] = useState(true)
-    const [isOpen, setOpen] = useState(true)
+    const [isOpen, setOpen] = useState(false)
+
+    const { data: user, isSuccess } = useGetMyUserQuery()
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (user.is_default_password) {
+                setOpen(true)
+            }
+        }
+    }, [isSuccess])
 
     return (
         <Fragment>

@@ -1,16 +1,30 @@
-import { HStack, Text, VStack } from '@gluestack-ui/themed'
+import { EyeIcon, EyeOffIcon, HStack, Text, VStack } from '@gluestack-ui/themed'
 import Dialog from '../ui/dialog'
 import AppButton from '../ui/button'
 import AppInput from '../ui/input'
 import { z } from 'zod'
 import { CustomForm, useForm } from '../form/form'
 import { FormField, FormItem, FormMessage } from '../ui/form'
-import { Fragment } from 'react'
+import { useEffect, useState } from 'react'
+import { useUpdateUserPasswordMutation } from '../../redux/api/users'
+import useSuccessToast from '../../hooks/use-success-toast'
+import AppStrings from '../../constants/strings'
+import useErrorToast from '../../hooks/use-error-toast'
 
-const resetPasswordSchema = z.object({
-    password: z.string().min(6, 'Пароль должен быть длиннее 6 символов'),
-    repeatPassword: z.string().min(6, 'Пароль должен быть длиннее 6 символов'),
-})
+const resetPasswordSchema = z
+    .object({
+        password: z.string(),
+        repeatPassword: z
+            .string()
+            .min(6, 'Пароль должен быть длиннее 6 символов'),
+    })
+    .refine(
+        (values) => values.password.trim() === values.repeatPassword.trim(),
+        {
+            message: 'Пароли не совпадают!',
+            path: ['repeatPassword'],
+        }
+    )
 
 type ResetDialogProps = {
     isOpen: boolean
@@ -18,6 +32,9 @@ type ResetDialogProps = {
 }
 
 const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
+    const [passwordHidden, setPasswordHidden] = useState(true)
+    const [repeatPasswordHidden, setRepeatPasswordHidden] = useState(true)
+
     const form = useForm({
         schema: resetPasswordSchema,
         defaultValues: {
@@ -26,7 +43,21 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
         },
     })
 
-    const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {}
+    const [updateUserPassword, { isLoading, isSuccess, error }] =
+        useUpdateUserPasswordMutation()
+
+    const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {
+        updateUserPassword(data.password)
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpen(false)
+        }
+    }, [isSuccess])
+
+    useSuccessToast(AppStrings.passwordSuccessUpdate, isSuccess)
+    useErrorToast(error)
 
     return (
         <Dialog
@@ -36,8 +67,10 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
             footer={
                 <HStack gap="$2">
                     <AppButton
-                        text="Сохранить"
+                        w={150}
+                        text={AppStrings.change}
                         onPress={form.handleSubmit(onSubmit)}
+                        isLoading={isLoading}
                     />
                 </HStack>
             }
@@ -46,9 +79,7 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
             <CustomForm form={form}>
                 <VStack>
                     <Text fontSize={14} mb="$4">
-                        {
-                            'Чтобы продолжить пользоваться приложением, установите постоянный пароль'
-                        }
+                        {AppStrings.updatePasswordDescription}
                     </Text>
                     <FormField
                         control={form.control}
@@ -58,9 +89,20 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
                                 <AppInput
                                     value={field.value}
                                     onChangeText={field.onChange}
-                                    hint="Новый пароль"
-                                    placeholder="Новый пароль"
+                                    hint={AppStrings.newPassword}
+                                    placeholder={AppStrings.newPassword}
                                     required
+                                    secureTextEntry={passwordHidden}
+                                    trailingIcon={
+                                        passwordHidden ? (
+                                            <EyeOffIcon />
+                                        ) : (
+                                            <EyeIcon />
+                                        )
+                                    }
+                                    onTrailingIconPress={() =>
+                                        setPasswordHidden(!passwordHidden)
+                                    }
                                 />
                                 <FormMessage />
                             </FormItem>
@@ -74,14 +116,28 @@ const ResetPasswordDialog = ({ isOpen, setOpen }: ResetDialogProps) => {
                                 <AppInput
                                     value={field.value}
                                     onChangeText={field.onChange}
-                                    hint="Повторите новый пароль"
-                                    placeholder="Повторите новый пароль"
+                                    hint={AppStrings.repeatNewPassword}
+                                    placeholder={AppStrings.repeatNewPassword}
                                     required
+                                    secureTextEntry={repeatPasswordHidden}
+                                    trailingIcon={
+                                        repeatPasswordHidden ? (
+                                            <EyeOffIcon />
+                                        ) : (
+                                            <EyeIcon />
+                                        )
+                                    }
+                                    onTrailingIconPress={() =>
+                                        setRepeatPasswordHidden(
+                                            !repeatPasswordHidden
+                                        )
+                                    }
                                 />
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
+                    <FormMessage />
                 </VStack>
             </CustomForm>
         </Dialog>
