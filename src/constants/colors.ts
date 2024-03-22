@@ -9,7 +9,7 @@ export const AppColors = {
     textOnPrimary: '#FFFFFF',
     hint: '#8A9099',
     border: '#E8E9EB',
-    borderActive: '#cdced1',
+    borderActive: '#CDCED1',
     card: '#F8F8F8',
     disabled: '#C4C4C4',
     success: '#20A144',

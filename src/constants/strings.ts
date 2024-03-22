@@ -68,5 +68,8 @@ const AppStrings = {
     repeatNewPassword: 'Повторите новый пароль',
     required: 'Поле должно быть заполнено',
     wrongEmailFormat: 'Неправильный формат Email',
+    settings: 'Общие настройки',
+    appearance: 'Оформление',
+    notifications: 'Уведомления',
 }
 export default AppStrings
