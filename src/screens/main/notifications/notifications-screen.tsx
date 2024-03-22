@@ -4,9 +4,9 @@ import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { AppColors } from '../../../constants/colors'
 import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/strings'
-import { CalendarAddIcon } from '../../../components/icons/CalendarAddIcon'
 import { SearchIcon } from '@gluestack-ui/themed'
 import AltButton from '../../../components/alt-button/alt-button'
+import { SettingsIcon } from '../../../components/icons/SettingsIcon'
 
 export default function NotificationsScreen() {
     const [search, onChangeSearch] = useState('')
@@ -24,7 +24,7 @@ export default function NotificationsScreen() {
                     }}
                     placeholder={AppStrings.search}
                     leadingIcon={<SearchIcon />}
-                    trailingIcon={<CalendarAddIcon />}
+                    trailingIcon={<SettingsIcon />}
                     onTrailingIconPress={() => {}}
                 />
                 <View style={{ marginTop: 14, flexDirection: 'row', gap: 12 }}>
@@ -84,8 +84,13 @@ export default function NotificationsScreen() {
 
 const styles = StyleSheet.create({
     header: {
-        paddingHorizontal: 12,
-        paddingTop: 30,
-        paddingBottom: 16,
+        elevation: 20,
+        shadowColor: AppColors.text,
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
     },
 })

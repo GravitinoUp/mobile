@@ -10,7 +10,7 @@ import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
 import { TasksFilterQueryContext } from '../../../context/tasks/tasks-filter-query'
 import { useGetPersonalOrdersQuery } from '../../../redux/api/orders'
-import EmptyOrderList from './components/empty-order-list'
+import EmptyList from '../../../components/empty-list/empty-list'
 import OrderCard from './components/order-card'
 import FiltersActionsheet from './components/filters-actionsheet'
 import { TabView } from 'react-native-tab-view'
@@ -41,11 +41,11 @@ const OrdersTab = ({ navigation, query }: { navigation: any; query: any }) => {
                     }}
                 />
             }
-            ListEmptyComponent={<EmptyOrderList />}
+            ListEmptyComponent={<EmptyList label={AppStrings.emptyOrderList} />}
             data={orders.data}
             renderItem={({ item, index }) => (
                 <OrderCard
-                    style={index === 0 ? { marginTop: 26 } : null}
+                    style={index === 0 ? { marginTop: 20 } : null}
                     orderData={item}
                     onPress={() =>
                         navigation.navigate('OrderScreen', {
@@ -142,7 +142,7 @@ export default function OrdersScreen({ navigation }: any) {
             <AppBar>
                 <AppInput
                     value={search}
-                    onChangeText={(text) => setSearch(text)}
+                    onChangeText={setSearch}
                     placeholder={AppStrings.search}
                     leadingIcon={<SearchIcon />}
                     trailingIcon={<SettingsIcon />}

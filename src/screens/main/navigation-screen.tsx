@@ -9,11 +9,16 @@ import {
 import OrdersNavigationScreen from './orders/orders-navigation-screen'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import { Fragment, useEffect, useState } from 'react'
-import ReportsScreen from './reports/reports-screen'
 import NotificationsNavigationScreen from './notifications/notifications-nav-screen'
 import ProfileNavigationScreen from './profile/profile-nav-screen'
 import ResetPasswordDialog from '../../components/reset-password-dialog/reset-password-dialog'
 import { useGetMyUserQuery } from '../../redux/api/users'
+import { useGetPersonalPermissionsQuery } from '../../redux/api/permissions'
+import { PermissionEnum } from '../../constants/permissions.enum'
+import { ADMIN_ROLE_ID } from '../../constants/constants'
+import { checkPermissions } from '../../utils/helpers'
+import SplashScreen from '../splash/splash-screen'
+import ReportsNavigationScreen from './reports/reports-navigation-screen'
 
 const Tab = createBottomTabNavigator()
 
@@ -21,17 +26,39 @@ export default function NavigationScreen() {
     const [isVisible, setVisible] = useState(true)
     const [isOpen, setOpen] = useState(false)
 
-    const { data: user, isSuccess } = useGetMyUserQuery()
+    const { data: user, isSuccess: userSuccess } = useGetMyUserQuery()
+    const { data: permissions, isSuccess: permissionsSuccess } =
+        useGetPersonalPermissionsQuery()
 
     useEffect(() => {
-        if (isSuccess) {
+        if (userSuccess && permissionsSuccess) {
             if (user.is_default_password) {
                 setOpen(true)
             }
-        }
-    }, [isSuccess])
 
-    return (
+            globalThis.userPermissions.length = 0
+            globalThis.userPermissions.push(
+                ...permissions.map((value) => ({
+                    permission_name: value.permission.permission_name,
+                    permission_description:
+                        value.permission.permission_description,
+                    permission_sku: value.permission.permission_sku,
+                    rights: value.rights,
+                }))
+            )
+
+            if (user.role.role_id === ADMIN_ROLE_ID) {
+                globalThis.userPermissions.unshift({
+                    permission_name: 'ADMIN',
+                    permission_description: '',
+                    permission_sku: 'admin',
+                    rights: user.role.role_id === ADMIN_ROLE_ID,
+                })
+            }
+        }
+    }, [userSuccess, permissionsSuccess])
+
+    return userSuccess && permissionsSuccess ? (
         <Fragment>
             <ResetPasswordDialog isOpen={isOpen} setOpen={setOpen} />
             <Tab.Navigator
@@ -59,13 +86,17 @@ export default function NavigationScreen() {
                         },
                     })}
                 />
-                <Tab.Screen
-                    name="ReportsScreen"
-                    component={ReportsScreen}
-                    options={{
-                        tabBarIcon: ({ color }) => <ReportIcon color={color} />,
-                    }}
-                />
+                {checkPermissions([PermissionEnum.ReportBranchCreate]) && (
+                    <Tab.Screen
+                        name="ReportsNavigationScreen"
+                        component={ReportsNavigationScreen}
+                        options={{
+                            tabBarIcon: ({ color }) => (
+                                <ReportIcon color={color} />
+                            ),
+                        }}
+                    />
+                )}
                 <Tab.Screen
                     name="NotificationsNavigationScreen"
                     component={NotificationsNavigationScreen}
@@ -86,5 +117,7 @@ export default function NavigationScreen() {
                 />
             </Tab.Navigator>
         </Fragment>
+    ) : (
+        <SplashScreen />
     )
 }

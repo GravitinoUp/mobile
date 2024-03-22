@@ -40,3 +40,10 @@ export const taskTypes = [
     { label: 'Плановая', value: 'planned' },
     { label: 'Внеплановая', value: 'unplanned' },
 ]
+
+export const ADMIN_ROLE_ID = 5
+
+export const QUALITY_STATUSES = {
+    MEDIUM: 50,
+    HIGH: 90,
+}
