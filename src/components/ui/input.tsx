@@ -43,20 +43,22 @@ const AppInput = ({
 }: AppInputProps) => {
     return (
         <View style={style}>
-            <Text style={[styles.hintText, hintStyle]}>
-                {hint && <Text>{hint}</Text>}
-                {required && (
-                    <Text
-                        style={[
-                            styles.hintText,
-                            hintStyle,
-                            { color: AppColors.error },
-                        ]}
-                    >
-                        {' *'}
-                    </Text>
-                )}
-            </Text>
+            {hint && (
+                <Text style={[styles.hintText, hintStyle]}>
+                    <Text>{hint}</Text>
+                    {required && (
+                        <Text
+                            style={[
+                                styles.hintText,
+                                hintStyle,
+                                { color: AppColors.error },
+                            ]}
+                        >
+                            {' *'}
+                        </Text>
+                    )}
+                </Text>
+            )}
             <Input
                 variant="rounded"
                 h={props.multiline ? undefined : '$11'}

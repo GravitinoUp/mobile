@@ -39,10 +39,10 @@ export const ReportIcon = (props: any) => (
         fill="none"
         {...props}
     >
-        <Circle cx={12} cy={12} r={9} stroke="#8A9099" strokeWidth={2} />
-        <Circle cx={12} cy={12} r={4} stroke="#8A9099" strokeWidth={2} />
+        <Circle cx={12} cy={12} r={9} stroke={props.color} strokeWidth={2} />
+        <Circle cx={12} cy={12} r={4} stroke={props.color} strokeWidth={2} />
         <Path
-            stroke="#8A9099"
+            stroke={props.color}
             strokeLinecap="round"
             strokeWidth={2}
             d="M12 3v4.5M18 18l-3-3m3-9-3 3M3 12h4.5"

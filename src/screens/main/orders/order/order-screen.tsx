@@ -2,7 +2,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { AppColors } from '../../../../constants/colors'
 import { StyleSheet, useWindowDimensions } from 'react-native'
 import AppStrings from '../../../../constants/strings'
-import AppBar from '../../../../components/ui/app-bar'
+import AppBar, { AppBarTitle } from '../../../../components/ui/app-bar'
 import { OrderInterface } from '../../../../types/interface/orders'
 import { HStack, Text } from '@gluestack-ui/themed'
 import OrderStatusCard from '../../../../components/order-status-card/order-status-card'
@@ -155,16 +155,11 @@ export default function OrderScreen({ navigation, route }: any) {
                         />
                     )}
                 </HStack>
-                <Text
-                    fontSize="$2xl"
-                    fontWeight="$semibold"
-                    textAlign="center"
-                    color={AppColors.text}
-                >
+                <AppBarTitle>
                     {!orderFetching
                         ? `№${orders.data[0].order_id}`
                         : AppStrings.loading}
-                </Text>
+                </AppBarTitle>
             </AppBar>
             {!orderFetching && orderSuccess ? (
                 <TabView

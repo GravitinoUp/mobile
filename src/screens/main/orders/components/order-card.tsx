@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
         marginHorizontal: 16,
-        marginBottom: 26,
+        marginBottom: 20,
     },
     topRow: {
         flexDirection: 'row',
