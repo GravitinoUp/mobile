@@ -57,14 +57,20 @@ const ReportCard = ({ report, onPress, ...props }: ReportCardProps) => {
                 <HStack
                     bgColor={AppColors.card}
                     p="$4"
+                    pr="$9"
                     borderTopLeftRadius="$xl"
                     borderTopRightRadius="$xl"
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <HStack>
+                    <HStack alignItems="center">
                         {icon}
-                        <Text ml="$2" fontSize="$sm" fontWeight="$semibold">
+                        <Text
+                            style={{ flex: 1 }}
+                            ml="$2"
+                            fontSize="$sm"
+                            fontWeight="$semibold"
+                        >
                             {title}
                         </Text>
                     </HStack>

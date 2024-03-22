@@ -14,19 +14,34 @@ import { useRefreshTokenMutation } from './redux/api/auth'
 import { getJWTtokens } from './utils/helpers'
 import { setAccessToken } from './redux/reducers/authSlice'
 import { TaskFilterQueryProvider } from './context/tasks/tasks-filter-query'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AppColors } from './constants/colors'
 
 globalThis.userPermissions = []
 const Stack = createNativeStackNavigator()
 
 export const AppWrapper = () => {
+    const [isLoading, setLoading] = useState<boolean>(true)
+
+    useEffect(() => {
+        AsyncStorage.getItem('appearance').then((value) => {
+            if (value) {
+                AppColors.primary = value
+            }
+            setLoading(false)
+        })
+    }, [])
+
     return (
-        <Provider store={store}>
-            <GluestackUIProvider config={config}>
-                <TaskFilterQueryProvider>
-                    <App />
-                </TaskFilterQueryProvider>
-            </GluestackUIProvider>
-        </Provider>
+        !isLoading && (
+            <Provider store={store}>
+                <GluestackUIProvider config={config}>
+                    <TaskFilterQueryProvider>
+                        <App />
+                    </TaskFilterQueryProvider>
+                </GluestackUIProvider>
+            </Provider>
+        )
     )
 }
 

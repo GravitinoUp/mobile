@@ -75,5 +75,11 @@ const AppStrings = {
     settings: 'Общие настройки',
     appearance: 'Оформление',
     notifications: 'Уведомления',
+    colorScheme: 'Цветовая схема',
+    logout: 'Выйти из аккаунта',
+    logoutDescription:
+        'Вы действительно хотите выйти из аккаунта? Все несохраненные данные будут утеряны.',
+    cancel: 'Отменить',
+    confirm: 'Подтвердить',
 }
 export default AppStrings
