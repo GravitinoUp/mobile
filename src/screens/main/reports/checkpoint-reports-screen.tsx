@@ -9,70 +9,82 @@ import {
 import { AppColors } from '../../../constants/colors'
 import AppInput from '../../../components/ui/input'
 import AppStrings from '../../../constants/strings'
-import { SearchIcon } from '@gluestack-ui/themed'
-import { BranchReportsPayloadInterface } from '../../../types/interface/reports'
+import { HStack, SearchIcon } from '@gluestack-ui/themed'
+import { CheckpointReportsPayloadInterface } from '../../../types/interface/reports'
 import { placeholderQuery } from '../../../constants/constants'
-import { useGetBranchReportsQuery } from '../../../redux/api/reports'
+import { useGetCheckpointReportsQuery } from '../../../redux/api/reports'
 import EmptyList from '../../../components/empty-list/empty-list'
 import ReportCard from './components/report-card'
 import LoadingView from '../../../components/ui/loading-view'
 import useErrorToast from '../../../hooks/use-error-toast'
 import { SettingsIcon } from '../../../components/icons/SettingsIcon'
+import { BranchInterface } from '../../../types/interface/branch'
+import BackButton from '../../../components/back-button/back-button'
 
-export default function BranchReportsScreen({ navigation }: any) {
+export default function CheckpointReportsScreen({ navigation, route }: any) {
+    const branch: BranchInterface = route.params.branch
+    const branch_id = branch ? branch.branch_id : -1
+
     const [search, setSearch] = useState('')
 
-    const [branchReportsQuery, setBranchReportsQuery] =
-        useState<BranchReportsPayloadInterface>(placeholderQuery)
+    const [checkpointReportsQuery, setCheckpointReportsQuery] =
+        useState<CheckpointReportsPayloadInterface>({
+            ...placeholderQuery,
+            branch_id,
+        })
 
     const {
         data: reports = { count: 0, data: [] },
-        isFetching: branchReportsFetching,
-        isSuccess: branchReportsSuccess,
-        error: branchReportsError,
+        isFetching: checkpointReportsFetching,
+        isSuccess: checkpointReportsSuccess,
+        error: checkpointReportsError,
         refetch,
-    } = useGetBranchReportsQuery(branchReportsQuery)
+    } = useGetCheckpointReportsQuery(checkpointReportsQuery)
 
     useEffect(() => {
         const delayTimeoutId = setTimeout(() => {
             const nameFilter =
                 search.trim().length !== 0
                     ? {
-                          branch_name: search.trim(),
+                          checkpoint_name: search.trim(),
                       }
                     : undefined
 
-            setBranchReportsQuery({
-                ...branchReportsQuery,
+            setCheckpointReportsQuery({
+                ...checkpointReportsQuery,
                 filter: {
-                    ...branchReportsQuery.filter,
-                    branch: nameFilter,
+                    ...checkpointReportsQuery.filter,
+                    checkpoint: nameFilter,
                 },
             })
         }, 500)
         return () => clearTimeout(delayTimeoutId)
     }, [search, 500])
 
-    useErrorToast(branchReportsError)
+    useErrorToast(checkpointReportsError)
 
     return (
         <SafeAreaView
             style={{ flex: 1, backgroundColor: AppColors.background }}
         >
             <AppBar style={styles.header}>
-                <AppInput
-                    value={search}
-                    onChangeText={setSearch}
-                    placeholder={AppStrings.search}
-                    leadingIcon={<SearchIcon />}
-                    trailingIcon={<SettingsIcon />}
-                    onTrailingIconPress={() => {}}
-                />
+                <HStack alignItems="center">
+                    <BackButton navigation={navigation} />
+                    <AppInput
+                        style={{ flex: 1, marginLeft: 8 }}
+                        value={search}
+                        onChangeText={setSearch}
+                        placeholder={AppStrings.search}
+                        leadingIcon={<SearchIcon />}
+                        trailingIcon={<SettingsIcon />}
+                        onTrailingIconPress={() => {}}
+                    />
+                </HStack>
                 <AppBarTitle mt="$5" fontSize="$lg">
-                    {AppStrings.branches}
+                    {branch.branch_name}
                 </AppBarTitle>
             </AppBar>
-            {!branchReportsFetching && branchReportsSuccess ? (
+            {!checkpointReportsFetching && checkpointReportsSuccess ? (
                 <FlatList
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={
@@ -92,9 +104,12 @@ export default function BranchReportsScreen({ navigation }: any) {
                             mt={index === 0 ? '$5' : undefined}
                             report={item}
                             onPress={() =>
-                                navigation.navigate('CheckpointReportsScreen', {
-                                    branch: item.branch,
-                                })
+                                navigation.navigate(
+                                    'OrganizationReportsScreen',
+                                    {
+                                        checkpoint: item.checkpoint,
+                                    }
+                                )
                             }
                         />
                     )}
@@ -108,6 +123,7 @@ export default function BranchReportsScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
     header: {
+        paddingLeft: 8,
         elevation: 20,
         shadowColor: AppColors.text,
         shadowOffset: {

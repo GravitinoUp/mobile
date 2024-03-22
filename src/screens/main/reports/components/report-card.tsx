@@ -21,7 +21,7 @@ type ReportCardProps = {
         | BranchReportInterface
         | CheckpointReportInterface
         | OrganizationReportInterface
-    onPress: () => void
+    onPress?: () => void
 } & ViewProps
 
 const ReportCard = ({ report, onPress, ...props }: ReportCardProps) => {
@@ -29,19 +29,15 @@ const ReportCard = ({ report, onPress, ...props }: ReportCardProps) => {
     const [title, setTitle] = useState('')
 
     useEffect(() => {
-        if ((report as BranchReportInterface).branch.branch_name) {
+        if ((report as BranchReportInterface).branch) {
             setIcon(<BranchIcon />)
             setTitle((report as BranchReportInterface).branch.branch_name)
-        } else if (
-            (report as CheckpointReportInterface).checkpoint.checkpoint_name
-        ) {
+        } else if ((report as CheckpointReportInterface).checkpoint) {
             setIcon(<CheckpointIcon />)
             setTitle(
                 (report as CheckpointReportInterface).checkpoint.checkpoint_name
             )
-        } else if (
-            (report as OrganizationReportInterface).organization.short_name
-        ) {
+        } else if ((report as OrganizationReportInterface).organization) {
             setIcon(<OrganizationIcon />)
             setTitle(
                 (report as OrganizationReportInterface).organization.short_name
@@ -50,7 +46,7 @@ const ReportCard = ({ report, onPress, ...props }: ReportCardProps) => {
     }, [])
 
     return (
-        <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+        <TouchableOpacity activeOpacity={1} onPress={onPress}>
             <View
                 style={styles.card}
                 mb="$5"
@@ -72,7 +68,7 @@ const ReportCard = ({ report, onPress, ...props }: ReportCardProps) => {
                             {title}
                         </Text>
                     </HStack>
-                    <NextIcon />
+                    {onPress && <NextIcon />}
                 </HStack>
                 <Divider borderStyle="solid" />
                 <View

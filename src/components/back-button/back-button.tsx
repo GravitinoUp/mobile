@@ -3,7 +3,7 @@ import IconButton from '../icon-button/icon-button'
 
 const BackButton = ({ navigation }: { navigation: any }) => (
     <IconButton
-        icon={<ChevronLeftIcon size="lg" />}
+        icon={<ChevronLeftIcon size="xl" />}
         onPress={() => navigation.goBack()}
     />
 )

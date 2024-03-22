@@ -51,6 +51,7 @@ const AppStrings = {
     name: 'Название',
     description: 'Описание',
     branch: 'Филиал',
+    branches: 'Филиалы',
     checkpoint: 'Пункт пропуска',
     facility: 'Объект обслуживания',
     closeOrder: 'Закрыть задачу',
