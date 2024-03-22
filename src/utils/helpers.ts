@@ -41,3 +41,16 @@ export const dateToEpoch = (date: Date) => {
 
     return date
 }
+
+export const checkPermissions = (permission_sku_list: string[]) => {
+    const permissions = globalThis.userPermissions
+
+    const permissionValue = permissions.find(
+        (permission) =>
+            (permission.permission_sku === 'admin' && permission.rights) ||
+            (permission_sku_list.includes(permission.permission_sku) &&
+                permission.rights)
+    )
+
+    return !!(permissionValue || permission_sku_list.length === 0)
+}

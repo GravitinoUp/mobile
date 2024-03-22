@@ -15,6 +15,7 @@ import { getJWTtokens } from './utils/helpers'
 import { setAccessToken } from './redux/reducers/authSlice'
 import { TaskFilterQueryProvider } from './context/tasks/tasks-filter-query'
 
+globalThis.userPermissions = []
 const Stack = createNativeStackNavigator()
 
 export const AppWrapper = () => {

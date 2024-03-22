@@ -31,6 +31,7 @@ const AppStrings = {
     sortTasks: 'Сортировать задачи',
     apply: 'Применить',
     emptyOrderList: 'Пока нет активных задач',
+    emptyReportList: 'Список отчетов пуст',
     attachFilesDescription: 'Прикрепить изображения, максимум 10',
     press: 'Нажмите',
     toMakePhoto: 'чтобы сделать Фото',
@@ -68,5 +69,7 @@ const AppStrings = {
     repeatNewPassword: 'Повторите новый пароль',
     required: 'Поле должно быть заполнено',
     wrongEmailFormat: 'Неправильный формат Email',
+    completedTasks: 'Исполненных задач',
+    checkedTasks: 'Проверенных задач',
 }
 export default AppStrings

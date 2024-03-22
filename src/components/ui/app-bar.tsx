@@ -7,12 +7,14 @@ type Props = {
 }
 
 const AppBar = ({ style, children }: Props) => (
-    <View style={[style, styles.header]}>{children}</View>
+    <View style={[styles.header, style]}>{children}</View>
 )
 
 const styles = StyleSheet.create({
     header: {
-        padding: 16,
+        paddingHorizontal: 16,
+        paddingTop: 0,
+        paddingBottom: 16,
         backgroundColor: AppColors.background,
         zIndex: 10,
     },

@@ -4,7 +4,7 @@ import AppStrings from '../../constants/strings'
 import { AppColors } from '../../constants/colors'
 import { Spinner } from '@gluestack-ui/themed'
 
-export default function SplashScreen({ navigation }: any) {
+export default function SplashScreen() {
     return (
         <SafeAreaView style={styles.view}>
             <Text style={styles.title}>{AppStrings.appName}</Text>
