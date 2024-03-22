@@ -19,7 +19,7 @@ const ProfileButton = ({ icon, label, onPress }: ProfileButtonProps) => (
             alignItems="center"
         >
             {icon}
-            <Text ml="$4" fontSize="$md">
+            <Text style={{ flex: 1 }} ml="$4" fontSize="$md">
                 {label}
             </Text>
         </HStack>

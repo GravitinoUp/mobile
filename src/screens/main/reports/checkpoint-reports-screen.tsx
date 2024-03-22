@@ -124,7 +124,7 @@ export default function CheckpointReportsScreen({ navigation, route }: any) {
 const styles = StyleSheet.create({
     header: {
         paddingLeft: 8,
-        elevation: 20,
+        elevation: 12,
         shadowColor: AppColors.text,
         shadowOffset: {
             width: 0,

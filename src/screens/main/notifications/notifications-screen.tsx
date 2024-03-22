@@ -84,7 +84,7 @@ export default function NotificationsScreen() {
 
 const styles = StyleSheet.create({
     header: {
-        elevation: 20,
+        elevation: 12,
         shadowColor: AppColors.text,
         shadowOffset: {
             width: 0,

@@ -57,7 +57,8 @@ const OrderCard = ({ style, orderData, onPress }: OrderCardProps) => {
                 p="$4"
                 ellipsizeMode="tail"
                 numberOfLines={2}
-                fontSize="$md"
+                fontSize={14}
+                lineHeight="$xs"
                 color={AppColors.text}
             >
                 {orderData?.order_description}

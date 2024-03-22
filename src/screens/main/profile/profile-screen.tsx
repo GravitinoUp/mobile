@@ -1,11 +1,14 @@
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
-import { AppColors } from '../../../constants/colors'
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native'
+import { AppColors, COLOR_SCHEMES } from '../../../constants/colors'
 import ProfileButton from './components/profile-button'
 import AppStrings from '../../../constants/strings'
 import ProfileRoundedIcon from '../../../components/icons/profile-rounded'
-import AppearanceRoundedIcon from '../../../components/icons/appearance-rounded'
-import NotificationsRoundedIcon from '../../../components/icons/notifications-rounded'
-import { HStack, Text, VStack } from '@gluestack-ui/themed'
+import { HStack, Text, VStack, View } from '@gluestack-ui/themed'
 import { useGetMyUserQuery } from '../../../redux/api/users'
 import LoadingView from '../../../components/ui/loading-view'
 import TextButton from '../../../components/ui/text-button'
@@ -13,14 +16,27 @@ import { Fragment, useState } from 'react'
 import Dialog from '../../../components/ui/dialog'
 import AppButton from '../../../components/ui/button'
 import { CommonActions } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
 
 export default function ProfileScreen({ navigation }: any) {
     const [isOpen, setOpen] = useState(false)
 
     const { data: user, isFetching } = useGetMyUserQuery()
 
+    const [appearanceColor, setAppearanceColor] = useState(AppColors.primary)
+
+    const handleChangeAppearance = async (selectedColor: string) => {
+        AppColors.primary = selectedColor
+        await AsyncStorage.setItem('appearance', selectedColor)
+        setAppearanceColor(selectedColor)
+
+        navigation.navigate({ name: 'ProfileNavigationScreen' })
+    }
+
     const handleLogout = async () => {
-        //await AsyncStorage.clear()
+        await AsyncStorage.clear()
+
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
@@ -70,6 +86,9 @@ export default function ProfileScreen({ navigation }: any) {
                     backgroundColor: AppColors.background,
                 }}
             >
+                <AppBar style={styles.header}>
+                    <AppBarTitle>{AppStrings.settings}</AppBarTitle>
+                </AppBar>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <Text
                         textAlign="center"
@@ -88,25 +107,48 @@ export default function ProfileScreen({ navigation }: any) {
                     <VStack my="$8" gap="$3">
                         <ProfileButton
                             icon={<ProfileRoundedIcon />}
-                            label={AppStrings.settings}
-                        />
-                        <ProfileButton
-                            icon={<AppearanceRoundedIcon />}
-                            label={AppStrings.appearance}
+                            label={AppStrings.userInfo}
                             onPress={() =>
-                                navigation.navigate('AppearanceScreen')
+                                navigation.navigate('UserInfoScreen')
                             }
                         />
-                        <ProfileButton
-                            icon={<NotificationsRoundedIcon />}
-                            label={AppStrings.notifications}
-                            onPress={() =>
-                                navigation.navigate('NotificationsScreen')
-                            }
-                        />
+                        <Text mt="$4">{AppStrings.colorScheme}</Text>
+                        <HStack gap="$4">
+                            {Object.entries(COLOR_SCHEMES).map((value) => (
+                                <TouchableOpacity
+                                    key={value[0]}
+                                    activeOpacity={0.8}
+                                    onPress={async () =>
+                                        await handleChangeAppearance(value[1])
+                                    }
+                                >
+                                    <View
+                                        w="$6"
+                                        h="$6"
+                                        bgColor={value[1]}
+                                        borderRadius="$full"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                    >
+                                        {appearanceColor === value[1] && (
+                                            <View
+                                                w="$2"
+                                                h="$2"
+                                                bgColor={AppColors.background}
+                                                borderRadius="$full"
+                                            />
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
+                        </HStack>
+                        <Text mt="$4">{AppStrings.notifications}</Text>
+                        {/*TODO Switches*/}
                         <TextButton
+                            mt="$10"
                             textAlign="center"
                             text={AppStrings.logout}
+                            color={AppColors.error}
                             onPress={() => setOpen(true)}
                         />
                     </VStack>
@@ -119,6 +161,16 @@ export default function ProfileScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    header: {
+        elevation: 12,
+        shadowColor: AppColors.text,
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
     scrollView: {
         flexGrow: 1,
         padding: 16,

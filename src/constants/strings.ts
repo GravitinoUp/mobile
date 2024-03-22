@@ -73,6 +73,7 @@ const AppStrings = {
     completedTasks: 'Исполненных задач',
     checkedTasks: 'Проверенных задач',
     settings: 'Общие настройки',
+    userInfo: 'Инфо о пользователе',
     appearance: 'Оформление',
     notifications: 'Уведомления',
     colorScheme: 'Цветовая схема',
