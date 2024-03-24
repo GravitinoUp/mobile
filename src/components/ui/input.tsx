@@ -11,13 +11,12 @@ import {
 import { AppColors } from '../../constants/colors'
 import { ComponentProps } from 'react'
 import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
-import { FormMessage } from './form'
 
 type InputFieldProps = ComponentProps<typeof InputField>
 type AppInputProps = {
     style?: StyleProp<ViewStyle>
     value: string
-    onChangeText: (text: string) => void
+    onChangeText?: (text: string) => void
     required?: boolean
     hint?: string | null
     hintStyle?: StyleProp<TextStyle>

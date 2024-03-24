@@ -142,7 +142,7 @@ export default function ProfileScreen({ navigation }: any) {
                                 </TouchableOpacity>
                             ))}
                         </HStack>
-                        <Text mt="$4">{AppStrings.notifications}</Text>
+                        {/* <Text mt="$4">{AppStrings.notifications}</Text> */}
                         {/*TODO Switches*/}
                         <TextButton
                             mt="$10"

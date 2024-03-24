@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { AppColors } from '../../constants/colors'
 import {
     CheckIcon,
@@ -16,7 +16,15 @@ type Props = {
 
 const AppCheckbox = ({ label, ...props }: Props) => (
     <Checkbox size="md" aria-label={label} {...props}>
-        <CheckboxIndicator mr={'$2'}>
+        <CheckboxIndicator
+            borderColor={AppColors.primary}
+            $active-bgColor={
+                props.isChecked ? AppColors.primary : AppColors.transparent
+            }
+            $base-bgColor={AppColors.transparent}
+            $checked-bgColor={AppColors.primary}
+            mr={'$2'}
+        >
             <CheckboxIcon as={CheckIcon} />
         </CheckboxIndicator>
         <CheckboxLabel style={styles.label}>{label}</CheckboxLabel>

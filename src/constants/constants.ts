@@ -1,3 +1,4 @@
+import { addDays, formatDateISO } from '../utils/helpers'
 import AppStrings from './strings'
 
 export const TASK_STATUSES = {
@@ -20,8 +21,8 @@ export const placeholderQuery = {
     filter: {},
     sorts: {},
     period: {
-        date_start: '2024-01-01',
-        date_end: '2025-01-01',
+        date_start: formatDateISO(new Date(), true),
+        date_end: formatDateISO(addDays(new Date(), 1), true),
     },
 }
 
