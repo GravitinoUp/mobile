@@ -64,7 +64,7 @@ export default function AuthScreen({ navigation }: any) {
                         objectFit: 'contain',
                         marginBottom: 20,
                     }}
-                    source={require('../../components/images/rosgranstroy-logo-main.png')}
+                    source={require('../../assets/images/rosgranstroy-logo-main.png')}
                 />
                 <Text
                     mb="$5"

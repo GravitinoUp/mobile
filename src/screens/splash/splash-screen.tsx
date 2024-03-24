@@ -1,13 +1,15 @@
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppStrings from '../../constants/strings'
 import { AppColors } from '../../constants/colors'
-import { Spinner } from '@gluestack-ui/themed'
+import { Spinner, Text } from '@gluestack-ui/themed'
 
 export default function SplashScreen() {
     return (
         <SafeAreaView style={styles.view}>
-            <Text style={styles.title}>{AppStrings.appName}</Text>
+            <Text style={styles.title} color={AppColors.primary}>
+                {AppStrings.appName}
+            </Text>
             <Spinner size="large" color={AppColors.primary} />
         </SafeAreaView>
     )
@@ -22,7 +24,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: '700',
-        color: AppColors.primary,
         textAlign: 'center',
         paddingBottom: 20,
     },

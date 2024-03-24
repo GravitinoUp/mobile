@@ -108,7 +108,7 @@ export default function BranchReportsScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
     header: {
-        elevation: 20,
+        elevation: 12,
         shadowColor: AppColors.text,
         shadowOffset: {
             width: 0,

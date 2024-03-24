@@ -72,5 +72,19 @@ const AppStrings = {
     wrongEmailFormat: 'Неправильный формат Email',
     completedTasks: 'Исполненных задач',
     checkedTasks: 'Проверенных задач',
+    settings: 'Общие настройки',
+    userInfo: 'Инфо о пользователе',
+    appearance: 'Оформление',
+    notifications: 'Уведомления',
+    colorScheme: 'Цветовая схема',
+    logout: 'Выйти из аккаунта',
+    logoutDescription:
+        'Вы действительно хотите выйти из аккаунта? Все несохраненные данные будут утеряны.',
+    cancel: 'Отменить',
+    confirm: 'Подтвердить',
+    fio: 'ФИО',
+    phone: 'Номер телефона',
+    group: 'Группа',
+    noGroup: 'Нет группы',
 }
 export default AppStrings
