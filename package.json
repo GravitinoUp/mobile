@@ -8,7 +8,8 @@
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
         "start": "react-native start",
-        "test": "jest"
+        "test": "jest",
+        "build-release-aab": "react-native build-android --mode=release"
     },
     "dependencies": {
         "@gluestack-style/react": "^1.0.52",
