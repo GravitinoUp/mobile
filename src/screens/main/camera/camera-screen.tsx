@@ -72,7 +72,8 @@ export default function CameraScreen({ navigation, route }: any) {
         <SafeAreaView style={styles.container}>
             <Camera
                 ref={camera}
-                style={{ width: '100%', height: '100%' }}
+                style={StyleSheet.absoluteFill}
+                resizeMode="contain"
                 device={device}
                 isActive={true}
                 photo={true}
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'black',
+        justifyContent: 'center',
     },
     bottomBar: {
         position: 'absolute',
@@ -103,7 +105,8 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 999,
-        borderWidth: 6,
-        borderColor: 'white',
+        borderWidth: 1,
+        borderColor: '#00000033',
+        backgroundColor: 'white',
     },
 })

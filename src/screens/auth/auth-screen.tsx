@@ -88,6 +88,7 @@ export default function AuthScreen({ navigation }: any) {
                                         onChangeText={field.onChange}
                                         hint="Email"
                                         placeholder="Email"
+                                        autoCapitalize="none"
                                     />
                                     <FormMessage />
                                 </FormItem>
@@ -103,6 +104,7 @@ export default function AuthScreen({ navigation }: any) {
                                         onChangeText={field.onChange}
                                         hint="Пароль"
                                         placeholder="Пароль"
+                                        autoCapitalize="none"
                                         secureTextEntry={passwordHidden}
                                         trailingIcon={
                                             passwordHidden ? (
