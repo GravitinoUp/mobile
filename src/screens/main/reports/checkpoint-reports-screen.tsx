@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react'
-import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
+import { HStack, SearchIcon } from '@gluestack-ui/themed'
 import {
     FlatList,
     RefreshControl,
     SafeAreaView,
     StyleSheet,
 } from 'react-native'
-import { AppColors } from '../../../constants/colors'
-import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/strings'
-import { HStack, SearchIcon } from '@gluestack-ui/themed'
-import { CheckpointReportsPayloadInterface } from '../../../types/interface/reports'
-import { placeholderQuery } from '../../../constants/constants'
-import { useGetCheckpointReportsQuery } from '../../../redux/api/reports'
-import EmptyList from '../../../components/empty-list/empty-list'
 import ReportCard from './components/report-card'
-import LoadingView from '../../../components/ui/loading-view'
-import useErrorToast from '../../../hooks/use-error-toast'
-import { SettingsIcon } from '../../../components/icons/SettingsIcon'
-import { BranchInterface } from '../../../types/interface/branch'
 import BackButton from '../../../components/back-button/back-button'
+import EmptyList from '../../../components/empty-list/empty-list'
+import { SettingsIcon } from '../../../components/icons/SettingsIcon'
+import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
+import AppInput from '../../../components/ui/input'
+import LoadingView from '../../../components/ui/loading-view'
+import { AppColors } from '../../../constants/colors'
+import { placeholderQuery } from '../../../constants/constants'
+import AppStrings from '../../../constants/strings'
+import useErrorToast from '../../../hooks/use-error-toast'
+import { useGetCheckpointReportsQuery } from '../../../redux/api/reports'
+import { BranchInterface } from '../../../types/interface/branch'
+import { CheckpointReportsPayloadInterface } from '../../../types/interface/reports'
 
 export default function CheckpointReportsScreen({ navigation, route }: any) {
     const branch: BranchInterface = route.params.branch

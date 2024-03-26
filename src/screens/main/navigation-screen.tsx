@@ -1,27 +1,27 @@
+import { Fragment, useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { BottomNavBar } from '../../components/ui/bottom-bar'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import NotificationsNavigationScreen from './notifications/notifications-nav-screen'
+import OrdersNavigationScreen from './orders/orders-navigation-screen'
+import ProfileNavigationScreen from './profile/profile-nav-screen'
+import ReportsNavigationScreen from './reports/reports-navigation-screen'
 import {
     FileIcon,
     NotificationsIcon,
     ProfileIcon,
     ReportIcon,
 } from '../../components/icons/BottomBarIcons'
-import OrdersNavigationScreen from './orders/orders-navigation-screen'
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
-import { Fragment, useEffect, useState } from 'react'
-import NotificationsNavigationScreen from './notifications/notifications-nav-screen'
-import ProfileNavigationScreen from './profile/profile-nav-screen'
 import ResetPasswordDialog from '../../components/reset-password-dialog/reset-password-dialog'
-import { useGetMyUserQuery } from '../../redux/api/users'
-import { useGetPersonalPermissionsQuery } from '../../redux/api/permissions'
-import { PermissionEnum } from '../../constants/permissions.enum'
+import { BottomNavBar } from '../../components/ui/bottom-bar'
+import UploadDialog from '../../components/upload-dialog/upload-dialog'
 import { ADMIN_ROLE_ID } from '../../constants/constants'
+import { PermissionEnum } from '../../constants/permissions.enum'
+import { useGetPersonalPermissionsQuery } from '../../redux/api/permissions'
+import { useGetMyUserQuery } from '../../redux/api/users'
+import { UnclosedOrderInterface } from '../../types/interface/fetch'
 import { checkPermissions } from '../../utils/helpers'
 import SplashScreen from '../splash/splash-screen'
-import ReportsNavigationScreen from './reports/reports-navigation-screen'
-import UploadDialog from '../../components/upload-dialog/upload-dialog'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { UnclosedOrderInterface } from '../../types/interface/fetch'
 
 const Tab = createBottomTabNavigator()
 
@@ -112,6 +112,7 @@ export default function NavigationScreen() {
                         tabBarIcon: ({ color }) => {
                             const routeName =
                                 getFocusedRouteNameFromRoute(route)
+                            // eslint-disable-next-line react-hooks/rules-of-hooks
                             useEffect(() => {
                                 if (routeName === 'OrderScreen') {
                                     setVisible(false)

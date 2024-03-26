@@ -7,11 +7,9 @@ import {
     Pressable,
     Toast,
     ToastDescription,
-    ToastTitle,
     useToast,
 } from '@gluestack-ui/themed'
 import { AppColors } from '../constants/colors'
-import IconButton from '../components/icon-button/icon-button'
 
 interface ToastProps {
     label: string

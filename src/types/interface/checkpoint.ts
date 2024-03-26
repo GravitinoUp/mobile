@@ -1,8 +1,8 @@
-import { RecursivePartial } from '../../utils/recursive-partial'
 import { BranchInterface, BranchSortInterface } from './branch'
 import { IQuery, SortOptionsType } from './fetch'
 import { ReportFilterInterface } from './report'
 import { ReportInterface } from './reports'
+import { RecursivePartial } from '../../utils/recursive-partial'
 
 export interface CheckpointsPayloadInterface extends IQuery {
     sorts: CheckpointSortInterface

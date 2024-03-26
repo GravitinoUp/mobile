@@ -1,16 +1,16 @@
 import { HStack, Text, VStack } from '@gluestack-ui/themed'
-import AppStrings from '../../constants/strings'
-import Dialog from '../ui/dialog'
-import AppButton from '../ui/button'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppColors } from '../../constants/colors'
-import { UnclosedOrderInterface } from '../../types/interface/fetch'
+import AppStrings from '../../constants/strings'
+import useErrorToast from '../../hooks/use-error-toast'
+import useSuccessToast from '../../hooks/use-success-toast'
 import {
     useUpdateStatusMutation,
     useUploadFileMutation,
 } from '../../redux/api/orders'
-import { useEffect } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import useSuccessToast from '../../hooks/use-success-toast'
+import { UnclosedOrderInterface } from '../../types/interface/fetch'
+import AppButton from '../ui/button'
+import Dialog from '../ui/dialog'
 
 type UploadDialogProps = {
     isOpen: boolean
@@ -107,6 +107,7 @@ const UploadDialog = ({
     }
 
     useSuccessToast(AppStrings.orderClosed, uploadSuccess && closeSuccess)
+    useErrorToast(uploadError || closeError)
 
     return (
         <Dialog

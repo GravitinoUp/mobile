@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native'
-import { AppColors } from '../../constants/colors'
+import { ComponentProps } from 'react'
 import {
     CheckIcon,
     Checkbox,
@@ -7,7 +6,8 @@ import {
     CheckboxIndicator,
     CheckboxLabel,
 } from '@gluestack-ui/themed'
-import { ComponentProps } from 'react'
+import { StyleSheet } from 'react-native'
+import { AppColors } from '../../constants/colors'
 
 type CheckboxProps = ComponentProps<typeof Checkbox>
 type Props = {

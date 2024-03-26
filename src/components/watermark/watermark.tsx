@@ -1,7 +1,7 @@
-import { Text } from '@gluestack-ui/themed'
-import AppStrings from '../../constants/strings'
-import { AppColors } from '../../constants/colors'
 import { ComponentProps } from 'react'
+import { Text } from '@gluestack-ui/themed'
+import { AppColors } from '../../constants/colors'
+import AppStrings from '../../constants/strings'
 
 type TextProps = ComponentProps<typeof Text>
 const Watermark = ({ ...props }: TextProps) => (

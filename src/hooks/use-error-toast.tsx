@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { useAppToast } from './use-toast'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { SerializedError } from '@reduxjs/toolkit'
-import { ErrorInterface } from '../types/interface/fetch'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { useAppToast } from './use-toast'
 import AppStrings from '../constants/strings'
+import { ErrorInterface } from '../types/interface/fetch'
 
 export default function useErrorToast(
     error?: FetchBaseQueryError | SerializedError | undefined

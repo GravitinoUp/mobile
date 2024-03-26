@@ -3,7 +3,7 @@ import NotificationsScreen from './notifications-screen'
 
 const Stack = createNativeStackNavigator()
 
-export default function NotificationsNavigationScreen({ navigation }: any) {
+export default function NotificationsNavigationScreen() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen

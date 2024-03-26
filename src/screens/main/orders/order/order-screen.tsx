@@ -1,27 +1,27 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { AppColors } from '../../../../constants/colors'
-import { StyleSheet, useWindowDimensions } from 'react-native'
-import AppStrings from '../../../../constants/strings'
-import AppBar, { AppBarTitle } from '../../../../components/ui/app-bar'
-import { OrderInterface } from '../../../../types/interface/orders'
-import { HStack } from '@gluestack-ui/themed'
-import OrderStatusCard from '../../../../components/order-status-card/order-status-card'
-import BackButton from '../../../../components/back-button/back-button'
 import { useContext, useEffect, useState } from 'react'
+import { HStack } from '@gluestack-ui/themed'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StyleSheet, useWindowDimensions } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabView } from 'react-native-tab-view'
+import CloseOrderScreen from './close-order-screen'
+import OrderInfo from './order-info'
+import BackButton from '../../../../components/back-button/back-button'
+import OrderStatusCard from '../../../../components/order-status-card/order-status-card'
 import AppTabBar from '../../../../components/tab-bar/tab-bar'
+import AppBar, { AppBarTitle } from '../../../../components/ui/app-bar'
+import LoadingView from '../../../../components/ui/loading-view'
+import { AppColors } from '../../../../constants/colors'
+import AppStrings from '../../../../constants/strings'
+import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
+import useErrorToast from '../../../../hooks/use-error-toast'
+import useSuccessToast from '../../../../hooks/use-success-toast'
 import {
     useGetPersonalOrdersQuery,
     useUpdateStatusMutation,
     useUploadFileMutation,
 } from '../../../../redux/api/orders'
-import LoadingView from '../../../../components/ui/loading-view'
-import useErrorToast from '../../../../hooks/use-error-toast'
-import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
-import CloseOrderScreen from './close-order-screen'
-import useSuccessToast from '../../../../hooks/use-success-toast'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import OrderInfo from './order-info'
+import { OrderInterface } from '../../../../types/interface/orders'
 
 const renderScene = ({
     route,

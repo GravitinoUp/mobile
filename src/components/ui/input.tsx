@@ -1,3 +1,5 @@
+import { ComponentProps } from 'react'
+import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
 import {
     GestureResponderEvent,
     StyleProp,
@@ -9,8 +11,6 @@ import {
     ViewStyle,
 } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import { ComponentProps } from 'react'
-import { Input, InputField, InputSlot } from '@gluestack-ui/themed'
 
 type InputFieldProps = ComponentProps<typeof InputField>
 type AppInputProps = {
@@ -39,59 +39,57 @@ const AppInput = ({
     onTrailingIconPress,
     onTouchEnd,
     ...props
-}: AppInputProps) => {
-    return (
-        <View style={style}>
-            {hint && (
-                <Text style={[styles.hintText, hintStyle]}>
-                    <Text>{hint}</Text>
-                    {required && (
-                        <Text
-                            style={[
-                                styles.hintText,
-                                hintStyle,
-                                { color: AppColors.error },
-                            ]}
-                        >
-                            {' *'}
-                        </Text>
-                    )}
-                </Text>
-            )}
-            <Input
-                variant="rounded"
-                h={props.multiline ? undefined : '$11'}
-                minHeight={minHeight}
-                borderColor={AppColors.border}
-                $focus-borderColor={AppColors.borderActive}
-                $invalid-borderColor={AppColors.error}
-                borderRadius="$2xl"
-                borderWidth={1.5}
-                onTouchEnd={onTouchEnd}
-            >
-                {leadingIcon && (
-                    <InputSlot style={styles.leading}>{leadingIcon}</InputSlot>
-                )}
-                <InputField
-                    value={value}
-                    onChangeText={onChangeText}
-                    fontSize={14}
-                    color={AppColors.text}
-                    px={16}
-                    {...props}
-                />
-                {trailingIcon && (
-                    <TouchableOpacity
-                        style={styles.trailing}
-                        onPress={onTrailingIconPress}
+}: AppInputProps) => (
+    <View style={style}>
+        {hint && (
+            <Text style={[styles.hintText, hintStyle]}>
+                <Text>{hint}</Text>
+                {required && (
+                    <Text
+                        style={[
+                            styles.hintText,
+                            hintStyle,
+                            { color: AppColors.error },
+                        ]}
                     >
-                        {trailingIcon}
-                    </TouchableOpacity>
+                        {' *'}
+                    </Text>
                 )}
-            </Input>
-        </View>
-    )
-}
+            </Text>
+        )}
+        <Input
+            variant="rounded"
+            h={props.multiline ? undefined : '$11'}
+            minHeight={minHeight}
+            borderColor={AppColors.border}
+            $focus-borderColor={AppColors.borderActive}
+            $invalid-borderColor={AppColors.error}
+            borderRadius="$2xl"
+            borderWidth={1.5}
+            onTouchEnd={onTouchEnd}
+        >
+            {leadingIcon && (
+                <InputSlot style={styles.leading}>{leadingIcon}</InputSlot>
+            )}
+            <InputField
+                value={value}
+                onChangeText={onChangeText}
+                fontSize={14}
+                color={AppColors.text}
+                px={16}
+                {...props}
+            />
+            {trailingIcon && (
+                <TouchableOpacity
+                    style={styles.trailing}
+                    onPress={onTrailingIconPress}
+                >
+                    {trailingIcon}
+                </TouchableOpacity>
+            )}
+        </Input>
+    </View>
+)
 
 const styles = StyleSheet.create({
     leading: {

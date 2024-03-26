@@ -1,9 +1,9 @@
 import { useContext } from 'react'
+import { HStack } from '@gluestack-ui/themed'
 import AltButton from '../../../../components/alt-button/alt-button'
 import AppStrings from '../../../../constants/strings'
-import { formatDateISO } from '../../../../utils/helpers'
 import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
-import { HStack } from '@gluestack-ui/themed'
+import { formatDateISO } from '../../../../utils/helpers'
 
 const DateList = () => {
     const { personalOrdersQuery, setPersonalOrdersQuery } = useContext(
@@ -11,7 +11,7 @@ const DateList = () => {
     )
 
     const generateDates = () => {
-        let list = []
+        const list = []
 
         for (let i = -1; i < 2; i++) {
             const currentDate = new Date()

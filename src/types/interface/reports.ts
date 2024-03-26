@@ -1,8 +1,8 @@
-import { RecursivePartial } from '../../utils/recursive-partial'
 import { BranchInterface } from './branch'
 import { CheckpointInterface } from './checkpoint'
 import { IQuery, SortOptionsType } from './fetch'
 import { OrganizationInterface } from './organizations'
+import { RecursivePartial } from '../../utils/recursive-partial'
 
 // Branch
 

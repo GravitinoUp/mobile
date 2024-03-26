@@ -1,5 +1,3 @@
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
-import { AppColors } from '../../constants/colors'
 import { ComponentProps } from 'react'
 import {
     Select,
@@ -16,6 +14,8 @@ import {
     SelectScrollView,
     Text,
 } from '@gluestack-ui/themed'
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { AppColors } from '../../constants/colors'
 import AppStrings from '../../constants/strings'
 
 export interface SelectItemInterface {
@@ -44,53 +44,51 @@ const AppSelect = ({
     placeholder = AppStrings.selectValue,
     h = '$11',
     ...props
-}: Props) => {
-    return (
-        <View style={style}>
-            {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
-            <Select
-                h={h}
-                {...props}
-                initialLabel={
-                    items.find((item) => item.value === selectedValue)?.label
-                }
-                selectedValue={selectedValue}
-                onValueChange={onValueChange}
-            >
-                <SelectTrigger h={h} variant="rounded" borderRadius="$2xl">
-                    <SelectInput placeholder={placeholder} />
-                    <Icon mr="$4" as={ChevronDownIcon} />
-                </SelectTrigger>
-                <SelectPortal>
-                    <SelectBackdrop />
-                    <SelectContent px={0} maxHeight="$full">
-                        <SelectDragIndicatorWrapper>
-                            <SelectDragIndicator />
-                        </SelectDragIndicatorWrapper>
-                        <Text
-                            my="$1"
-                            color={AppColors.text}
-                            fontSize="$lg"
-                            fontWeight="$semibold"
-                        >
-                            {placeholder}
-                        </Text>
-                        <SelectScrollView persistentScrollbar>
-                            {items.map((item, index) => (
-                                <SelectItem
-                                    key={`select-item-${index}`}
-                                    borderRadius="$none"
-                                    p="$4"
-                                    {...item}
-                                />
-                            ))}
-                        </SelectScrollView>
-                    </SelectContent>
-                </SelectPortal>
-            </Select>
-        </View>
-    )
-}
+}: Props) => (
+    <View style={style}>
+        {hint && <Text style={[styles.hintText, hintStyle]}>{hint}</Text>}
+        <Select
+            h={h}
+            {...props}
+            initialLabel={
+                items.find((item) => item.value === selectedValue)?.label
+            }
+            selectedValue={selectedValue}
+            onValueChange={onValueChange}
+        >
+            <SelectTrigger h={h} variant="rounded" borderRadius="$2xl">
+                <SelectInput placeholder={placeholder} />
+                <Icon mr="$4" as={ChevronDownIcon} />
+            </SelectTrigger>
+            <SelectPortal>
+                <SelectBackdrop />
+                <SelectContent px={0} maxHeight="$full">
+                    <SelectDragIndicatorWrapper>
+                        <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+                    <Text
+                        my="$1"
+                        color={AppColors.text}
+                        fontSize="$lg"
+                        fontWeight="$semibold"
+                    >
+                        {placeholder}
+                    </Text>
+                    <SelectScrollView persistentScrollbar>
+                        {items.map((item, index) => (
+                            <SelectItem
+                                key={`select-item-${index}`}
+                                borderRadius="$none"
+                                p="$4"
+                                {...item}
+                            />
+                        ))}
+                    </SelectScrollView>
+                </SelectContent>
+            </SelectPortal>
+        </Select>
+    </View>
+)
 
 const styles = StyleSheet.create({
     hintText: {

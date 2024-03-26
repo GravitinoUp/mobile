@@ -1,32 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-    DimensionValue,
-    Dimensions,
-    StyleProp,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-    ViewStyle,
-    useWindowDimensions,
-} from 'react-native'
-import {
-    Camera,
-    CameraDeviceFormat,
-    useCameraDevice,
-    useCameraFormat,
-    useFrameProcessor,
-} from 'react-native-vision-camera'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { CameraRoll } from '@react-native-camera-roll/camera-roll'
-import { moveFile } from 'react-native-fs'
+import { useRef, useState } from 'react'
 import { HStack } from '@gluestack-ui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { CameraRoll } from '@react-native-camera-roll/camera-roll'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { moveFile } from 'react-native-fs'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Camera, useCameraDevice } from 'react-native-vision-camera'
 import { UnclosedOrderInterface } from '../../../types/interface/fetch'
 import { OrderInterface } from '../../../types/interface/orders'
-import { runOnJS } from 'react-native-reanimated'
 
 export default function CameraScreen({ navigation, route }: any) {
-    let update = 2
     const device = useCameraDevice('back')
     const camera = useRef<Camera>(null)
 
