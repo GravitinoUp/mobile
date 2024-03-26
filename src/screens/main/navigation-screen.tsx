@@ -19,12 +19,20 @@ import { ADMIN_ROLE_ID } from '../../constants/constants'
 import { checkPermissions } from '../../utils/helpers'
 import SplashScreen from '../splash/splash-screen'
 import ReportsNavigationScreen from './reports/reports-navigation-screen'
+import UploadDialog from '../../components/upload-dialog/upload-dialog'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { UnclosedOrderInterface } from '../../types/interface/fetch'
 
 const Tab = createBottomTabNavigator()
 
 export default function NavigationScreen() {
     const [isVisible, setVisible] = useState(true)
     const [isOpen, setOpen] = useState(false)
+    const [isUploadDialogOpen, setUploadDialogOpen] = useState(false)
+
+    const [unclosedOrders, setUnclosedOrders] = useState<
+        UnclosedOrderInterface[]
+    >([])
 
     const { data: user, isSuccess: userSuccess } = useGetMyUserQuery()
     const { data: permissions, isSuccess: permissionsSuccess } =
@@ -58,9 +66,39 @@ export default function NavigationScreen() {
         }
     }, [userSuccess, permissionsSuccess])
 
+    useEffect(() => {
+        AsyncStorage.getAllKeys().then((keys) => {
+            const unclosedKeys = keys.filter((value) =>
+                value.includes('order-')
+            )
+
+            const uOrders: UnclosedOrderInterface[] = []
+            AsyncStorage.multiGet(unclosedKeys).then((orders) => {
+                orders.map((value) => {
+                    if (value[1]) {
+                        const parsedValue = JSON.parse(value[1]!)
+                        uOrders.push(parsedValue)
+                    }
+                })
+
+                setUnclosedOrders(uOrders)
+
+                if (uOrders.length > 0) {
+                    setUploadDialogOpen(true)
+                }
+            })
+        })
+    }, [])
+
     return userSuccess && permissionsSuccess ? (
         <Fragment>
             <ResetPasswordDialog isOpen={isOpen} setOpen={setOpen} />
+            <UploadDialog
+                isOpen={isUploadDialogOpen}
+                setOpen={setUploadDialogOpen}
+                unclosedOrders={unclosedOrders}
+                setUnclosedOrders={setUnclosedOrders}
+            />
             <Tab.Navigator
                 screenOptions={{ headerShown: false }}
                 tabBar={(props) => (

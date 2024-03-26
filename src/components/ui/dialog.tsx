@@ -40,6 +40,7 @@ const Dialog = ({
             onClose={() => setOpen(false)}
             closeOnOverlayClick={dismissable}
             isKeyboardDismissable={dismissable}
+            size="lg"
         >
             <AlertDialogBackdrop />
             <AlertDialogContent borderRadius="$xl">

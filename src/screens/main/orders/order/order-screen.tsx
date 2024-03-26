@@ -4,7 +4,7 @@ import { StyleSheet, useWindowDimensions } from 'react-native'
 import AppStrings from '../../../../constants/strings'
 import AppBar, { AppBarTitle } from '../../../../components/ui/app-bar'
 import { OrderInterface } from '../../../../types/interface/orders'
-import { HStack, Text } from '@gluestack-ui/themed'
+import { HStack } from '@gluestack-ui/themed'
 import OrderStatusCard from '../../../../components/order-status-card/order-status-card'
 import BackButton from '../../../../components/back-button/back-button'
 import { useContext, useEffect, useState } from 'react'
@@ -25,7 +25,6 @@ import OrderInfo from './order-info'
 
 const renderScene = ({
     route,
-    navigation,
     order,
     files,
     setFiles,
@@ -36,7 +35,6 @@ const renderScene = ({
         key: string
         title: string
     }
-    navigation: any
     order: OrderInterface
     files: string[]
     setFiles: React.Dispatch<React.SetStateAction<string[]>>
@@ -48,7 +46,6 @@ const renderScene = ({
             return (
                 <CloseOrderScreen
                     order={order}
-                    navigation={navigation}
                     files={files}
                     setFiles={setFiles}
                     submitOrder={submitOrder}
@@ -181,7 +178,6 @@ export default function OrderScreen({ navigation, route }: any) {
                     renderScene={({ route }) =>
                         renderScene({
                             route,
-                            navigation,
                             order: orders.data[0],
                             files,
                             setFiles,
