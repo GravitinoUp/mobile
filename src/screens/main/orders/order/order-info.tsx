@@ -1,6 +1,6 @@
 import { HStack, Text, VStack, View } from '@gluestack-ui/themed'
 import { ScrollView, StyleSheet } from 'react-native'
-import CalendarIcon from '../../../../components/icons/calendar'
+import CalendarIcon from '../../../../assets/icons/calendar'
 import Card from '../../../../components/ui/card'
 import Divider from '../../../../components/ui/divider'
 import AppInput from '../../../../components/ui/input'

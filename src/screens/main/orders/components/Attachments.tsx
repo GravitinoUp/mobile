@@ -10,9 +10,9 @@ import {
     View,
     ViewStyle,
 } from 'react-native'
-import { AddCircleIcon } from '../../../../components/icons/AddCircleIcon'
-import { PhotoIcon } from '../../../../components/icons/PhotoIcon'
-import { UploadIcon } from '../../../../components/icons/UploadIcon'
+import { AddCircleIcon } from '../../../../assets/icons/AddCircleIcon'
+import { PhotoIcon } from '../../../../assets/icons/PhotoIcon'
+import { UploadIcon } from '../../../../assets/icons/UploadIcon'
 import { AppColors } from '../../../../constants/colors'
 import AppStrings from '../../../../constants/strings'
 

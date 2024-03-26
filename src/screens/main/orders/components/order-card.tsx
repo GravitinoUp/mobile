@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     ViewStyle,
 } from 'react-native'
-import CalendarIcon from '../../../../components/icons/calendar'
+import CalendarIcon from '../../../../assets/icons/calendar'
 import renderIconSwitch from '../../../../components/order-status-card/render-icon-switch'
 import Divider from '../../../../components/ui/divider'
 import { AppColors } from '../../../../constants/colors'
@@ -38,7 +38,7 @@ const OrderCard = ({ style, orderData, onPress }: OrderCardProps) => (
                         fontWeight="$semibold"
                         color={AppColors.text}
                     >
-                        {orderData?.order_name}
+                        {`№${orderData?.order_id} ${orderData?.order_name}`}
                     </Text>
                     {orderData?.planned_datetime && (
                         <Text fontSize="$sm" color={AppColors.hint}>

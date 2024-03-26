@@ -13,8 +13,8 @@ import {
     NotificationsIcon,
     ProfileIcon,
     ReportIcon,
-} from '../../components/icons/BottomBarIcons'
-import { UploadIcon } from '../../components/icons/UploadIcon'
+} from '../../assets/icons/BottomBarIcons'
+import { UploadIcon } from '../../assets/icons/UploadIcon'
 import ResetPasswordDialog from '../../components/reset-password-dialog/reset-password-dialog'
 import { BottomNavBar } from '../../components/ui/bottom-bar'
 import UploadDialog from '../../components/upload-dialog/upload-dialog'

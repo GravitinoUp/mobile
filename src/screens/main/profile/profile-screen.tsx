@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import ProfileButton from './components/profile-button'
-import ProfileRoundedIcon from '../../../components/icons/profile-rounded'
+import ProfileRoundedIcon from '../../../assets/icons/profile-rounded'
 import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
 import AppButton from '../../../components/ui/button'
 import Dialog from '../../../components/ui/dialog'

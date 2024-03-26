@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import ReportCard from './components/report-card'
 import EmptyList from '../../../components/empty-list/empty-list'
-import { SettingsIcon } from '../../../components/icons/SettingsIcon'
+import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
 import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
 import AppInput from '../../../components/ui/input'
 import LoadingView from '../../../components/ui/loading-view'

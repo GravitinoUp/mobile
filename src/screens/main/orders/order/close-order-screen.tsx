@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 import { Dimensions, PermissionsAndroid, StyleSheet } from 'react-native'
 import { pick } from 'react-native-document-picker'
-import { exists, moveFile, unlink } from 'react-native-fs'
-import { launchCamera } from 'react-native-image-picker'
+import { exists, unlink } from 'react-native-fs'
+import ImagePicker from 'react-native-image-crop-picker'
 import { BottomBar } from '../../../../components/ui/bottom-bar'
 import AppButton from '../../../../components/ui/button'
 import Card from '../../../../components/ui/card'
@@ -79,8 +79,8 @@ export default function CloseOrderScreen({
         )
 
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            const result = await launchCamera({
-                mediaType: 'photo',
+            const result = await ImagePicker.openCamera({
+                compressImageQuality: 0.5,
             })
 
             const storedData: UnclosedOrderInterface = {
@@ -95,22 +95,26 @@ export default function CloseOrderScreen({
                 storedData.files = JSON.parse(jsonStoredFiles).files
             }
 
-            if (result.assets) {
-                for (const asset of result.assets) {
-                    if (asset.originalPath) {
-                        const newUri = asset.originalPath.replace(
-                            'rn_image_picker_lib_temp_',
-                            'gravitino-'
-                        )
+            // if (result.assets) {
+            //     for (const asset of result.assets) {
+            //         if (asset.originalPath) {
+            //             const newUri = asset.originalPath.replace(
+            //                 'rn_image_picker_lib_temp_',
+            //                 'gravitino-'
+            //             )
 
-                        console.log(asset.originalPath)
-                        console.log(newUri)
+            //             console.log(asset.originalPath)
+            //             console.log(newUri)
 
-                        await moveFile(asset.originalPath, newUri)
+            //             await moveFile(asset.originalPath, newUri)
 
-                        storedData.files = [...storedData.files, newUri]
-                    }
-                }
+            //             storedData.files = [...storedData.files, newUri]
+            //         }
+            //     }
+            // }
+
+            if (result.path) {
+                storedData.files = [...storedData.files, result.path]
             }
 
             await AsyncStorage.setItem(
