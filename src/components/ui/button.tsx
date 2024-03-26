@@ -29,7 +29,7 @@ const AppButton = ({
     <Button
         key={props.key}
         style={style}
-        h="$11"
+        h="$12"
         backgroundColor={backgroundColor}
         borderColor={borderColor}
         borderRadius={'$2xl'}

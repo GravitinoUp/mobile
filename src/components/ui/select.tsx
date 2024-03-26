@@ -42,7 +42,7 @@ const AppSelect = ({
     hint,
     hintStyle,
     placeholder = AppStrings.selectValue,
-    h = '$11',
+    h = '$12',
     ...props
 }: Props) => (
     <View style={style}>

@@ -56,7 +56,7 @@ export default function AuthScreen({ navigation }: any) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={styles.loginScreenScrollView}>
-                <View style={{ flex: 3 }} />
+                <View style={{ flex: 2 }} />
                 <Image
                     style={{
                         width: 'auto',

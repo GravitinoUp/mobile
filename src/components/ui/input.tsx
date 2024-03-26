@@ -59,7 +59,7 @@ const AppInput = ({
         )}
         <Input
             variant="rounded"
-            h={props.multiline ? undefined : '$11'}
+            h={props.multiline ? undefined : '$12'}
             minHeight={minHeight}
             borderColor={AppColors.border}
             $focus-borderColor={AppColors.borderActive}

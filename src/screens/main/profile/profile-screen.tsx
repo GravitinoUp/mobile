@@ -123,8 +123,8 @@ export default function ProfileScreen({ navigation }: any) {
                                     }
                                 >
                                     <View
-                                        w="$6"
-                                        h="$6"
+                                        w="$8"
+                                        h="$8"
                                         bgColor={value[1]}
                                         borderRadius="$full"
                                         justifyContent="center"
@@ -132,8 +132,8 @@ export default function ProfileScreen({ navigation }: any) {
                                     >
                                         {appearanceColor === value[1] && (
                                             <View
-                                                w="$2"
-                                                h="$2"
+                                                w="$3"
+                                                h="$3"
                                                 bgColor={AppColors.background}
                                                 borderRadius="$full"
                                             />
