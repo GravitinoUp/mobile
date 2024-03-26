@@ -22,7 +22,7 @@
         "@react-navigation/native": "^6.1.9",
         "@react-navigation/native-stack": "^6.9.17",
         "@reduxjs/toolkit": "^2.2.1",
-        "@typescript-eslint/parser": "^6.0.0",
+        "@typescript-eslint/parser": "^6.21.0",
         "base-64": "^1.0.0",
         "date-fns": "^3.5.0",
         "jwt-decode": "^4.0.0",
