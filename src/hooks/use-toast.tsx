@@ -43,8 +43,9 @@ function useAppToast() {
                 return (
                     <Toast
                         nativeID={toastId}
-                        bgColor={AppColors.background}
+                        bgColor={AppColors.card}
                         alignItems="center"
+                        justifyContent="center"
                         borderRadius="$xl"
                     >
                         <Icon as={icon} size="lg" />

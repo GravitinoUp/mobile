@@ -44,7 +44,7 @@ export const AttachmentsCard = ({
                 onPress={() => {
                     onAddFilePress !== undefined ? onAddFilePress() : null
                 }}
-                icon={<UploadIcon />}
+                icon={<UploadIcon color="#8A9099" />}
                 text={AppStrings.toUpload}
             />
         ) : (

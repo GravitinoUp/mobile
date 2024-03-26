@@ -46,4 +46,5 @@ export interface UnclosedOrderInterface {
     order_id: number
     order_name: string
     files: string[]
+    uploadError?: boolean
 }
