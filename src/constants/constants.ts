@@ -48,3 +48,5 @@ export const QUALITY_STATUSES = {
     MEDIUM: 50,
     HIGH: 90,
 }
+
+export const GRAVITINO_URL = 'https://gravitino.ru'
