@@ -55,11 +55,11 @@ function App() {
         useRefreshTokenMutation()
 
     useEffect(() => {
-        getJWTtokens().then(({ accessToken, refreshToken }) => {
+        getJWTtokens().then(({ refreshToken }) => {
             if (refreshToken) {
                 fetchRefresh({ refresh_token: `${refreshToken}` })
                 setLoading(true)
-            } else if (!accessToken) {
+            } else {
                 setLoading(false)
             }
         })
