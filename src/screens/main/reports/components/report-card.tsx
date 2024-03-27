@@ -1,19 +1,19 @@
+import { ComponentProps, Fragment, useEffect, useState } from 'react'
+import { HStack, Text, View } from '@gluestack-ui/themed'
 import { StyleSheet, TouchableOpacity } from 'react-native'
+import AppCircularProgress from '../../../../components/circular-progress.tsx/circular-progress'
+import BranchIcon from '../../../../assets/icons/branch-icon'
+import CheckpointIcon from '../../../../assets/icons/checkpoint-icon'
+import NextIcon from '../../../../assets/icons/next-icon'
+import OrganizationIcon from '../../../../assets/icons/organization-icon'
+import Divider from '../../../../components/ui/divider'
+import { AppColors } from '../../../../constants/colors'
+import AppStrings from '../../../../constants/strings'
 import {
     BranchReportInterface,
     CheckpointReportInterface,
     OrganizationReportInterface,
 } from '../../../../types/interface/reports'
-import { HStack, Text, View } from '@gluestack-ui/themed'
-import { AppColors } from '../../../../constants/colors'
-import Divider from '../../../../components/ui/divider'
-import BranchIcon from '../../../../components/icons/branch-icon'
-import AppStrings from '../../../../constants/strings'
-import { ComponentProps, Fragment, useEffect, useState } from 'react'
-import AppCircularProgress from '../../../../components/circular-progress.tsx/circular-progress'
-import CheckpointIcon from '../../../../components/icons/checkpoint-icon'
-import OrganizationIcon from '../../../../components/icons/organization-icon'
-import NextIcon from '../../../../components/icons/next-icon'
 
 type ViewProps = ComponentProps<typeof View>
 type ReportCardProps = {

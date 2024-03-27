@@ -1,23 +1,23 @@
+import { Fragment, useState } from 'react'
+import { HStack, Text, VStack, View } from '@gluestack-ui/themed'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { CommonActions } from '@react-navigation/native'
 import {
     SafeAreaView,
     ScrollView,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native'
-import { AppColors, COLOR_SCHEMES } from '../../../constants/colors'
 import ProfileButton from './components/profile-button'
-import AppStrings from '../../../constants/strings'
-import ProfileRoundedIcon from '../../../components/icons/profile-rounded'
-import { HStack, Text, VStack, View } from '@gluestack-ui/themed'
-import { useGetMyUserQuery } from '../../../redux/api/users'
+import ProfileRoundedIcon from '../../../assets/icons/profile-rounded'
+import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
+import AppButton from '../../../components/ui/button'
+import Dialog from '../../../components/ui/dialog'
 import LoadingView from '../../../components/ui/loading-view'
 import TextButton from '../../../components/ui/text-button'
-import { Fragment, useState } from 'react'
-import Dialog from '../../../components/ui/dialog'
-import AppButton from '../../../components/ui/button'
-import { CommonActions } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
+import { AppColors, COLOR_SCHEMES } from '../../../constants/colors'
+import AppStrings from '../../../constants/strings'
+import { useGetMyUserQuery } from '../../../redux/api/users'
 
 export default function ProfileScreen({ navigation }: any) {
     const [isOpen, setOpen] = useState(false)
@@ -123,8 +123,8 @@ export default function ProfileScreen({ navigation }: any) {
                                     }
                                 >
                                     <View
-                                        w="$6"
-                                        h="$6"
+                                        w="$8"
+                                        h="$8"
                                         bgColor={value[1]}
                                         borderRadius="$full"
                                         justifyContent="center"
@@ -132,8 +132,8 @@ export default function ProfileScreen({ navigation }: any) {
                                     >
                                         {appearanceColor === value[1] && (
                                             <View
-                                                w="$2"
-                                                h="$2"
+                                                w="$3"
+                                                h="$3"
                                                 bgColor={AppColors.background}
                                                 borderRadius="$full"
                                             />

@@ -6,16 +6,14 @@ type IconButtonProps = {
     onPress: () => void
 }
 
-const IconButton = ({ style, icon, onPress }: IconButtonProps) => {
-    return (
-        <TouchableOpacity
-            style={[style, { padding: 8, borderRadius: 100 }]}
-            activeOpacity={0.5}
-            onPress={onPress}
-        >
-            {icon}
-        </TouchableOpacity>
-    )
-}
+const IconButton = ({ style, icon, onPress }: IconButtonProps) => (
+    <TouchableOpacity
+        style={[style, { padding: 8, borderRadius: 100 }]}
+        activeOpacity={0.5}
+        onPress={onPress}
+    >
+        {icon}
+    </TouchableOpacity>
+)
 
 export default IconButton

@@ -1,10 +1,10 @@
-import AddIcon from '../icons/AddIcon'
-import CancelledIcon from '../icons/CancelledIcon'
-import InWorkIcon from '../icons/InWorkIcon'
-import PendingIcon from '../icons/PendingIcon'
-import AssignedIcon from '../icons/assigned'
-import SuccessIcon from '../icons/SuccessIcon'
 import { TASK_STATUS_COLORS } from '../../constants/colors'
+import AddIcon from '../../assets/icons/AddIcon'
+import AssignedIcon from '../../assets/icons/assigned'
+import CancelledIcon from '../../assets/icons/CancelledIcon'
+import InWorkIcon from '../../assets/icons/InWorkIcon'
+import PendingIcon from '../../assets/icons/PendingIcon'
+import SuccessIcon from '../../assets/icons/SuccessIcon'
 
 function renderIconSwitch(key: any): React.JSX.Element {
     switch (key) {

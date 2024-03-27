@@ -1,11 +1,13 @@
-import React, { useCallback, useRef, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Camera, useCameraDevice } from 'react-native-vision-camera'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { CameraRoll } from '@react-native-camera-roll/camera-roll'
-import { moveFile } from 'react-native-fs'
+import { useRef, useState } from 'react'
 import { HStack } from '@gluestack-ui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { CameraRoll } from '@react-native-camera-roll/camera-roll'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { moveFile } from 'react-native-fs'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Camera, useCameraDevice } from 'react-native-vision-camera'
+import { UnclosedOrderInterface } from '../../../types/interface/fetch'
+import { OrderInterface } from '../../../types/interface/orders'
 
 export default function CameraScreen({ navigation, route }: any) {
     const device = useCameraDevice('back')
@@ -13,7 +15,7 @@ export default function CameraScreen({ navigation, route }: any) {
 
     const [cameraEnabled, setCameraEnabled] = useState(false)
 
-    const orderID = route.params.orderID
+    const order: OrderInterface = route.params.order
 
     const takePhoto = async () => {
         setCameraEnabled(false)
@@ -39,45 +41,53 @@ export default function CameraScreen({ navigation, route }: any) {
                 savedPhoto.node.image.uri.replace('mrousavy', 'gravitino-')
             )
 
-            const storedFiles = { order_id: orderID, comment: '', files: [] }
+            const storedFiles = {
+                order_id: order.order_id,
+                comment: '',
+                files: [],
+            }
             const jsonStoredFiles = await AsyncStorage.getItem(
-                `order-${orderID}`
+                `order-${order.order_id}`
             )
             if (jsonStoredFiles !== null) {
                 storedFiles.files = JSON.parse(jsonStoredFiles).files
             }
 
-            const data = {
-                order_id: orderID,
-                comment: '',
+            const data: UnclosedOrderInterface = {
+                order_id: order.order_id,
+                order_name: `${order.order_name}`,
                 files: [...storedFiles.files, newUri],
             }
 
-            await AsyncStorage.setItem(`order-${orderID}`, JSON.stringify(data))
+            await AsyncStorage.setItem(
+                `order-${order.order_id}`,
+                JSON.stringify(data)
+            )
 
             navigation.navigate({
                 name: 'OrderScreen',
-                params: { orderID },
+                params: { orderID: order.order_id },
                 merge: true,
             })
         }
     }
 
-    const onInitialized = useCallback(() => {
+    const onInitialized = () => {
         setCameraEnabled(true)
-    }, [])
+    }
 
-    if (device == null) return <View />
+    if (!device) return <View />
+
     return (
         <SafeAreaView style={styles.container}>
             <Camera
                 ref={camera}
-                style={StyleSheet.absoluteFill}
-                resizeMode="contain"
                 device={device}
+                resizeMode={'contain'}
                 isActive={true}
                 photo={true}
                 onInitialized={onInitialized}
+                style={StyleSheet.absoluteFill}
             />
             <HStack style={styles.bottomBar}>
                 <TouchableOpacity

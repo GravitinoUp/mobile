@@ -1,6 +1,6 @@
+import { DEFAULT_HOST } from '@env'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { getJWTtokens } from '../../utils/helpers'
-import { DEFAULT_HOST } from '@env'
 
 export const api = createApi({
     reducerPath: 'api',

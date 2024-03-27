@@ -1,7 +1,7 @@
+import { ComponentProps } from 'react'
+import { Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed'
 import { StyleProp, ViewStyle } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import { Button, ButtonSpinner, ButtonText } from '@gluestack-ui/themed'
-import { ComponentProps } from 'react'
 
 type ButtonProps = ComponentProps<typeof Button>
 type ButtonTextProps = ComponentProps<typeof ButtonText>
@@ -29,7 +29,7 @@ const AppButton = ({
     <Button
         key={props.key}
         style={style}
-        h="$11"
+        h="$12"
         backgroundColor={backgroundColor}
         borderColor={borderColor}
         borderRadius={'$2xl'}

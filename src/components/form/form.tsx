@@ -1,4 +1,3 @@
-import { TypeOf, ZodSchema } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
     FieldValues,
@@ -7,6 +6,7 @@ import {
     useForm as useHookForm,
     UseFormProps as UseHookFormProps,
 } from 'react-hook-form'
+import { TypeOf, ZodSchema } from 'zod'
 
 interface UseFormProps<T extends ZodSchema<any>>
     extends UseHookFormProps<TypeOf<T>> {

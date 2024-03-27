@@ -1,5 +1,5 @@
-import { Text, View } from '@gluestack-ui/themed'
 import { createContext, useContext, useId } from 'react'
+import { Text, View } from '@gluestack-ui/themed'
 import {
     Controller,
     ControllerProps,
@@ -7,9 +7,8 @@ import {
     FieldValues,
     useFormContext,
 } from 'react-hook-form'
-import AppStrings from '../../constants/strings'
-import { AppColors } from '../../constants/colors'
 import { StyleProp, ViewStyle } from 'react-native'
+import { AppColors } from '../../constants/colors'
 
 type FormFieldContextValue<
     TFieldValues extends FieldValues = FieldValues,

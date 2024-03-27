@@ -4,7 +4,6 @@ module.exports = {
         node: true,
     },
     extends: [
-        'standard-with-typescript',
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react-hooks/recommended',
@@ -59,6 +58,7 @@ module.exports = {
                 },
             },
         ],
+        '@typescript-eslint/no-explicit-any': 'off',
     },
     settings: {
         'import/parsers': {

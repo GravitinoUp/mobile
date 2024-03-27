@@ -1,20 +1,20 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
-import { AppColors } from '../../constants/colors'
 import { useEffect, useState } from 'react'
 import { EyeIcon, EyeOffIcon, Text, VStack } from '@gluestack-ui/themed'
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { z } from 'zod'
 import { CustomForm, useForm } from '../../components/form/form'
+import AppButton from '../../components/ui/button'
+import AppCheckbox from '../../components/ui/checkbox'
+import { FormField, FormItem, FormMessage } from '../../components/ui/form'
+import AppInput from '../../components/ui/input'
+import Watermark from '../../components/watermark/watermark'
+import { AppColors } from '../../constants/colors'
+import AppStrings from '../../constants/strings'
+import useErrorToast from '../../hooks/use-error-toast'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useAuthMutation } from '../../redux/api/auth'
 import { setAccessToken, setRefreshToken } from '../../redux/reducers/authSlice'
-import AppStrings from '../../constants/strings'
-import AppInput from '../../components/ui/input'
-import AppCheckbox from '../../components/ui/checkbox'
-import AppButton from '../../components/ui/button'
-import { z } from 'zod'
-import Watermark from '../../components/watermark/watermark'
-import { FormField, FormItem, FormMessage } from '../../components/ui/form'
-import useErrorToast from '../../hooks/use-error-toast'
 
 const authSchema = z.object({
     email: z.string().email({ message: AppStrings.wrongEmailFormat }),
@@ -56,7 +56,7 @@ export default function AuthScreen({ navigation }: any) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={styles.loginScreenScrollView}>
-                <View style={{ flex: 3 }} />
+                <View style={{ flex: 2 }} />
                 <Image
                     style={{
                         width: 'auto',

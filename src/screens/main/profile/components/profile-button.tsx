@@ -5,7 +5,7 @@ import { AppColors } from '../../../../constants/colors'
 type ProfileButtonProps = {
     icon: React.ReactNode
     label: string
-    onPress?: () => {}
+    onPress?: () => void
 }
 
 const ProfileButton = ({ icon, label, onPress }: ProfileButtonProps) => (

@@ -1,15 +1,14 @@
-import { StyleProp, ViewStyle } from 'react-native'
-import { AppColors } from '../../constants/colors'
+import { ComponentProps } from 'react'
 import {
     Actionsheet,
     ActionsheetBackdrop,
     ActionsheetContent,
     ActionsheetDragIndicator,
     ActionsheetDragIndicatorWrapper,
-    Box,
     VStack,
 } from '@gluestack-ui/themed'
-import { ComponentProps } from 'react'
+import { StyleProp, ViewStyle } from 'react-native'
+import { AppColors } from '../../constants/colors'
 
 type ActionsheetContentProps = ComponentProps<typeof ActionsheetContent>
 type Props = {
@@ -25,23 +24,18 @@ const AppActionsheet = ({
     isOpen,
     onClose,
     ...props
-}: Props) => {
-    return (
-        <Actionsheet isOpen={isOpen} onClose={onClose} zIndex={999}>
-            <ActionsheetBackdrop />
-            <ActionsheetContent
-                backgroundColor={AppColors.background}
-                {...props}
-            >
-                <ActionsheetDragIndicatorWrapper>
-                    <ActionsheetDragIndicator />
-                </ActionsheetDragIndicatorWrapper>
-                <VStack style={style} width="100%" justifyContent={'center'}>
-                    {children}
-                </VStack>
-            </ActionsheetContent>
-        </Actionsheet>
-    )
-}
+}: Props) => (
+    <Actionsheet isOpen={isOpen} onClose={onClose} zIndex={999}>
+        <ActionsheetBackdrop />
+        <ActionsheetContent backgroundColor={AppColors.background} {...props}>
+            <ActionsheetDragIndicatorWrapper>
+                <ActionsheetDragIndicator />
+            </ActionsheetDragIndicatorWrapper>
+            <VStack style={style} width="100%" justifyContent={'center'}>
+                {children}
+            </VStack>
+        </ActionsheetContent>
+    </Actionsheet>
+)
 
 export default AppActionsheet

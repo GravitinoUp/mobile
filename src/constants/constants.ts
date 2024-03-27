@@ -1,5 +1,5 @@
-import { addDays, formatDateISO } from '../utils/helpers'
 import AppStrings from './strings'
+import { addDays, formatDateISO } from '../utils/helpers'
 
 export const TASK_STATUSES = {
     CREATED: AppStrings.orderCreated,
@@ -48,3 +48,5 @@ export const QUALITY_STATUSES = {
     MEDIUM: 50,
     HIGH: 90,
 }
+
+export const GRAVITINO_URL = 'https://gravitino.ru'

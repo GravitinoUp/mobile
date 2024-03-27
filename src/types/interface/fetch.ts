@@ -35,3 +35,16 @@ export type EntityType =
     | 'Checkpoints'
     | 'Branches'
     | 'Roles'
+
+export interface FormDataInterface {
+    uri: string
+    name: string
+    type: string
+}
+
+export interface UnclosedOrderInterface {
+    order_id: number
+    order_name: string
+    files: string[]
+    uploadError?: boolean
+}

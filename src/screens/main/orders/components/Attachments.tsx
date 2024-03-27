@@ -1,3 +1,4 @@
+import { CloseIcon, Image } from '@gluestack-ui/themed'
 import {
     Dimensions,
     FlatList,
@@ -9,12 +10,11 @@ import {
     View,
     ViewStyle,
 } from 'react-native'
+import { AddCircleIcon } from '../../../../assets/icons/AddCircleIcon'
+import { PhotoIcon } from '../../../../assets/icons/PhotoIcon'
+import { UploadIcon } from '../../../../assets/icons/UploadIcon'
 import { AppColors } from '../../../../constants/colors'
-import { AddCircleIcon } from '../../../../components/icons/AddCircleIcon'
-import { PhotoIcon } from '../../../../components/icons/PhotoIcon'
-import { UploadIcon } from '../../../../components/icons/UploadIcon'
 import AppStrings from '../../../../constants/strings'
-import { CloseIcon, Image } from '@gluestack-ui/themed'
 
 type CardProps = {
     style?: StyleProp<ViewStyle>
@@ -44,7 +44,7 @@ export const AttachmentsCard = ({
                 onPress={() => {
                     onAddFilePress !== undefined ? onAddFilePress() : null
                 }}
-                icon={<UploadIcon />}
+                icon={<UploadIcon color="#8A9099" />}
                 text={AppStrings.toUpload}
             />
         ) : (
@@ -112,38 +112,36 @@ export const Attachment = ({
     attachment,
     onPress,
     onDeletePress,
-}: AttachmentProps) => {
-    return (
-        <View style={[style, styles.attachment]}>
-            {onDeletePress ? (
-                <TouchableOpacity
-                    style={styles.deleteButton}
-                    onPress={onDeletePress}
-                >
-                    <CloseIcon />
-                </TouchableOpacity>
-            ) : (
-                <View />
-            )}
+}: AttachmentProps) => (
+    <View style={[style, styles.attachment]}>
+        {onDeletePress ? (
             <TouchableOpacity
-                activeOpacity={1}
-                onPress={onPress}
-                style={styles.touchableAttachment}
+                style={styles.deleteButton}
+                onPress={onDeletePress}
             >
-                {attachment.uri ? (
-                    <Image
-                        source={attachment}
-                        alt=""
-                        width={Dimensions.get('window').width / 3 - 38}
-                        height={Dimensions.get('window').width / 3 - 38}
-                    />
-                ) : (
-                    <AddCircleIcon />
-                )}
+                <CloseIcon />
             </TouchableOpacity>
-        </View>
-    )
-}
+        ) : (
+            <View />
+        )}
+        <TouchableOpacity
+            activeOpacity={1}
+            onPress={onPress}
+            style={styles.touchableAttachment}
+        >
+            {attachment.uri ? (
+                <Image
+                    source={attachment}
+                    alt=""
+                    width={Dimensions.get('window').width / 3 - 38}
+                    height={Dimensions.get('window').width / 3 - 38}
+                />
+            ) : (
+                <AddCircleIcon />
+            )}
+        </TouchableOpacity>
+    </View>
+)
 
 type AttachFileProps = {
     style?: StyleProp<ViewStyle>

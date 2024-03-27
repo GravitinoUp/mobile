@@ -1,22 +1,23 @@
-import AppActionsheet from '../../../../components/ui/actionsheet'
-import AppSelect from '../../../../components/ui/select'
-import AppStrings from '../../../../constants/strings'
-import { useGetAllOrderStatusesQuery } from '../../../../redux/api/order-statuses'
+import { Fragment, useContext, useState } from 'react'
 import { Text, VStack } from '@gluestack-ui/themed'
+import { Controller } from 'react-hook-form'
+import DatePicker from 'react-native-date-picker'
+import { z } from 'zod'
+import { useForm } from '../../../../components/form/form'
+import AppActionsheet from '../../../../components/ui/actionsheet'
 import AppButton from '../../../../components/ui/button'
+import AppSelect from '../../../../components/ui/select'
 import {
     defaultSelectItem,
     placeholderQuery,
     sortVariants,
     taskTypes,
 } from '../../../../constants/constants'
-import { useGetBranchesQuery } from '../../../../redux/api/branch'
-import { useForm } from '../../../../components/form/form'
-import { z } from 'zod'
-import { Controller } from 'react-hook-form'
-import { Fragment, useContext, useState } from 'react'
+import AppStrings from '../../../../constants/strings'
 import { TasksFilterQueryContext } from '../../../../context/tasks/tasks-filter-query'
-import DatePicker from 'react-native-date-picker'
+import useErrorToast from '../../../../hooks/use-error-toast'
+import { useGetBranchesQuery } from '../../../../redux/api/branch'
+import { useGetAllOrderStatusesQuery } from '../../../../redux/api/order-statuses'
 
 const filterSchema = z.object({
     task_type: z.string(),
@@ -101,6 +102,8 @@ const FiltersActionsheet = ({
         setActionsheetOpen(false)
     }
 
+    useErrorToast(branchesError || orderStatusesError)
+
     return (
         <Fragment>
             <DatePicker
@@ -158,7 +161,10 @@ const FiltersActionsheet = ({
                                         value !== 'all' ? Number(value) : 0
                                     )
                                 }
-                                isDisabled={orderStatusesLoading}
+                                isDisabled={
+                                    orderStatusesLoading &&
+                                    !orderStatusesSuccess
+                                }
                             />
                         )}
                     />
@@ -179,7 +185,7 @@ const FiltersActionsheet = ({
                                         value !== 'all' ? Number(value) : 0
                                     )
                                 }
-                                isDisabled={branchesLoading}
+                                isDisabled={branchesLoading && !branchesSuccess}
                             />
                         )}
                     />

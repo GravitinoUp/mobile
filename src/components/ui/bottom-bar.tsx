@@ -1,3 +1,5 @@
+import { HStack } from '@gluestack-ui/themed'
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import {
     StyleProp,
     StyleSheet,
@@ -5,8 +7,6 @@ import {
     ViewStyle,
 } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { HStack } from '@gluestack-ui/themed'
 
 type BottomBarProps = {
     style?: StyleProp<ViewStyle>
@@ -22,49 +22,47 @@ type BottomNavBarProps = {
     isVisible: boolean
 }
 
-export const BottomNavBar = ({ props, isVisible }: BottomNavBarProps) => {
-    return (
-        <HStack style={[styles.bottomNavBar, { height: isVisible ? 100 : 0 }]}>
-            {props.state.routes.map((route, index) => {
-                const isFocused = props.state.index === index
+export const BottomNavBar = ({ props, isVisible }: BottomNavBarProps) => (
+    <HStack style={[styles.bottomNavBar, { height: isVisible ? 100 : 0 }]}>
+        {props.state.routes.map((route, index) => {
+            const isFocused = props.state.index === index
 
-                const { options } = props.descriptors[route.key]
-                const icon = options.tabBarIcon!({
-                    focused: isFocused,
-                    color: isFocused ? AppColors.primary : AppColors.hint,
-                    size: 24,
+            const { options } = props.descriptors[route.key]
+            const icon = options.tabBarIcon!({
+                focused: isFocused,
+                color: isFocused ? AppColors.primary : AppColors.hint,
+                size: 24,
+            })
+
+            const onPress = () => {
+                const event = props.navigation.emit({
+                    type: 'tabPress',
+                    target: route.key,
+                    canPreventDefault: true,
                 })
 
-                const onPress = () => {
-                    const event = props.navigation.emit({
-                        type: 'tabPress',
-                        target: route.key,
-                        canPreventDefault: true,
-                    })
-
-                    if (!isFocused && !event.defaultPrevented) {
-                        props.navigation.navigate(route.name, route.params)
-                    }
+                if (!isFocused && !event.defaultPrevented) {
+                    props.navigation.navigate(route.name, route.params)
                 }
+            }
 
-                return isVisible ? (
-                    <TouchableOpacity
-                        style={{
-                            flex: 1,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                        activeOpacity={0.5}
-                        key={route.key}
-                        onPress={onPress}
-                    >
-                        {icon}
-                    </TouchableOpacity>
-                ) : undefined
-            })}
-        </HStack>
-    )
-}
+            return isVisible ? (
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                    activeOpacity={0.5}
+                    key={route.key}
+                    onPress={onPress}
+                >
+                    {icon}
+                </TouchableOpacity>
+            ) : undefined
+        })}
+    </HStack>
+)
 
 const styles = StyleSheet.create({
     bottomBar: {

@@ -1,7 +1,7 @@
+import { ComponentProps } from 'react'
+import { Text } from '@gluestack-ui/themed'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { AppColors } from '../../constants/colors'
-import { Text } from '@gluestack-ui/themed'
-import { ComponentProps } from 'react'
 
 type Props = {
     style?: StyleProp<ViewStyle>

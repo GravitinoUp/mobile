@@ -1,24 +1,23 @@
+import { Fragment, useCallback } from 'react'
 import { ScrollView, Text } from '@gluestack-ui/themed'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Fragment, useCallback, useState } from 'react'
-import { Dimensions, StyleSheet } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
+import { Dimensions, PermissionsAndroid, StyleSheet } from 'react-native'
 import { pick } from 'react-native-document-picker'
 import { exists, unlink } from 'react-native-fs'
-import { useCameraPermission } from 'react-native-vision-camera'
+import ImagePicker from 'react-native-image-crop-picker'
 import { BottomBar } from '../../../../components/ui/bottom-bar'
 import AppButton from '../../../../components/ui/button'
 import Card from '../../../../components/ui/card'
-import AppInput from '../../../../components/ui/input'
 import { AppColors } from '../../../../constants/colors'
 import AppStrings from '../../../../constants/strings'
+import { useAppToast } from '../../../../hooks/use-toast'
+import { UnclosedOrderInterface } from '../../../../types/interface/fetch'
 import { OrderInterface } from '../../../../types/interface/orders'
 import { AttachmentsCard } from '../components/attachments'
-import { useAppToast } from '../../../../hooks/use-toast'
-import { useFocusEffect } from '@react-navigation/native'
 
 interface CloseOrderScreenProps {
     order: OrderInterface
-    navigation: any
     files: string[]
     setFiles: React.Dispatch<React.SetStateAction<string[]>>
     submitOrder: () => void
@@ -27,7 +26,6 @@ interface CloseOrderScreenProps {
 
 export default function CloseOrderScreen({
     order,
-    navigation,
     files,
     setFiles,
     submitOrder,
@@ -36,9 +34,6 @@ export default function CloseOrderScreen({
     const orderData = order
 
     const { showToast, showErrorToast } = useAppToast()
-    const { requestPermission } = useCameraPermission()
-
-    const [comment, onChangeComment] = useState('')
 
     const pickImages = async () => {
         let pickedFiles = await pick({
@@ -59,9 +54,9 @@ export default function CloseOrderScreen({
 
         setFiles([...files, ...newFiles])
 
-        const data = {
+        const data: UnclosedOrderInterface = {
             order_id: orderData.order_id,
-            comment: comment,
+            order_name: `${orderData.order_name}`,
             files: [...files, ...newFiles],
         }
 
@@ -71,26 +66,93 @@ export default function CloseOrderScreen({
         )
     }
 
+    const takePhoto = async () => {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: 'Доступ к камере',
+                message:
+                    'Для прикрепления изображений к задаче необходим доступ к камере устройства',
+                buttonNegative: 'Отменить',
+                buttonPositive: 'OK',
+            }
+        )
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            const result = await ImagePicker.openCamera({
+                compressImageQuality: 0.5,
+            })
+
+            const storedData: UnclosedOrderInterface = {
+                order_id: order.order_id,
+                order_name: `${order.order_name}`,
+                files: [],
+            }
+            const jsonStoredFiles = await AsyncStorage.getItem(
+                `order-${order.order_id}`
+            )
+            if (jsonStoredFiles !== null) {
+                storedData.files = JSON.parse(jsonStoredFiles).files
+            }
+
+            // if (result.assets) {
+            //     for (const asset of result.assets) {
+            //         if (asset.originalPath) {
+            //             const newUri = asset.originalPath.replace(
+            //                 'rn_image_picker_lib_temp_',
+            //                 'gravitino-'
+            //             )
+
+            //             console.log(asset.originalPath)
+            //             console.log(newUri)
+
+            //             await moveFile(asset.originalPath, newUri)
+
+            //             storedData.files = [...storedData.files, newUri]
+            //         }
+            //     }
+            // }
+
+            if (result.path) {
+                storedData.files = [...storedData.files, result.path]
+            }
+
+            await AsyncStorage.setItem(
+                `order-${order.order_id}`,
+                JSON.stringify(storedData)
+            )
+
+            setFiles(storedData.files)
+        } else {
+            showErrorToast({ label: AppStrings.cameraAccessError })
+        }
+    }
+
     const deleteFile = async (index: number) => {
         const newFiles = [...files]
         const deletedFile = newFiles.splice(index, 1)
 
         setFiles(newFiles)
 
-        const data = {
+        const data: UnclosedOrderInterface = {
             order_id: orderData.order_id,
-            comment: comment,
+            order_name: `${orderData.order_name}`,
             files: newFiles,
         }
 
-        await AsyncStorage.setItem(
-            `order-${orderData.order_id}`,
-            JSON.stringify(data)
-        )
+        if (newFiles.length > 0) {
+            await AsyncStorage.setItem(
+                `order-${orderData.order_id}`,
+                JSON.stringify(data)
+            )
+        } else {
+            await AsyncStorage.removeItem(`order-${orderData.order_id}`)
+        }
+
         await unlink(deletedFile[0])
     }
 
-    const deleteEmptyFiles = async (data: any) => {
+    const deleteEmptyFiles = async (data: UnclosedOrderInterface) => {
         for (let i = 0; i < data.files.length; i++) {
             const file = data.files[i]
 
@@ -103,10 +165,14 @@ export default function CloseOrderScreen({
             }
         }
 
-        await AsyncStorage.setItem(
-            `order-${order.order_id}`,
-            JSON.stringify(data)
-        )
+        if (data.files.length > 0) {
+            await AsyncStorage.setItem(
+                `order-${order.order_id}`,
+                JSON.stringify(data)
+            )
+        } else {
+            await AsyncStorage.removeItem(`order-${order.order_id}`)
+        }
 
         return data
     }
@@ -127,17 +193,6 @@ export default function CloseOrderScreen({
         <Fragment>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <Card style={{ padding: 16 }}>
-                    <AppInput
-                        value={comment}
-                        multiline={true}
-                        hint={AppStrings.comment}
-                        placeholder={AppStrings.comment}
-                        minHeight={120}
-                        textAlignVertical="top"
-                        onChangeText={(text) => {
-                            onChangeComment(text)
-                        }}
-                    />
                     <Text mt="$3" color={AppColors.bodyLight}>
                         {AppStrings.attachFilesDescription}
                     </Text>
@@ -154,17 +209,7 @@ export default function CloseOrderScreen({
                             await deleteFile(index)
                         }}
                         onMakePhotoPress={async () => {
-                            const result = await requestPermission()
-
-                            if (result) {
-                                navigation.navigate('CameraScreen', {
-                                    orderID: orderData.order_id,
-                                })
-                            } else {
-                                showErrorToast({
-                                    label: AppStrings.cameraAccessError,
-                                })
-                            }
+                            await takePhoto()
                         }}
                     />
                 </Card>

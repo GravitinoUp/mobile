@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native'
-import { TaskIcon } from '../icons/TaskIcon'
 import { AppColors } from '../../constants/colors'
+import { TaskIcon } from '../../assets/icons/TaskIcon'
 
 const EmptyList = ({ label }: { label: string }) => (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

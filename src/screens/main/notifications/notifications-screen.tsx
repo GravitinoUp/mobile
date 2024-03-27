@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import AppBar from '../../../components/ui/app-bar'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
-import { AppColors } from '../../../constants/colors'
-import AppInput from '../../../components/ui/input'
-import AppStrings from '../../../constants/strings'
 import { SearchIcon } from '@gluestack-ui/themed'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
 import AltButton from '../../../components/alt-button/alt-button'
-import { SettingsIcon } from '../../../components/icons/SettingsIcon'
+import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
+import AppBar from '../../../components/ui/app-bar'
+import AppInput from '../../../components/ui/input'
+import { AppColors } from '../../../constants/colors'
+import AppStrings from '../../../constants/strings'
 
 export default function NotificationsScreen() {
     const [search, onChangeSearch] = useState('')

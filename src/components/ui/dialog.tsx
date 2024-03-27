@@ -33,29 +33,28 @@ const Dialog = ({
     isOpen,
     setOpen,
     dismissable = true,
-}: DialogProps) => {
-    return (
-        <AlertDialog
-            isOpen={isOpen}
-            onClose={() => setOpen(false)}
-            closeOnOverlayClick={dismissable}
-            isKeyboardDismissable={dismissable}
-        >
-            <AlertDialogBackdrop />
-            <AlertDialogContent borderRadius="$xl">
-                <AlertDialogHeader pb="$1">
-                    <Heading size="lg">{title}</Heading>
-                    {dismissable && (
-                        <AlertDialogCloseButton>
-                            <Icon as={CloseIcon} />
-                        </AlertDialogCloseButton>
-                    )}
-                </AlertDialogHeader>
-                <AlertDialogBody>{children}</AlertDialogBody>
-                <AlertDialogFooter>{footer}</AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
-    )
-}
+}: DialogProps) => (
+    <AlertDialog
+        isOpen={isOpen}
+        onClose={() => setOpen(false)}
+        closeOnOverlayClick={dismissable}
+        isKeyboardDismissable={dismissable}
+        size="lg"
+    >
+        <AlertDialogBackdrop />
+        <AlertDialogContent borderRadius="$xl">
+            <AlertDialogHeader pb="$1">
+                <Heading size="lg">{title}</Heading>
+                {dismissable && (
+                    <AlertDialogCloseButton>
+                        <Icon as={CloseIcon} />
+                    </AlertDialogCloseButton>
+                )}
+            </AlertDialogHeader>
+            <AlertDialogBody>{children}</AlertDialogBody>
+            <AlertDialogFooter>{footer}</AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+)
 
 export default Dialog

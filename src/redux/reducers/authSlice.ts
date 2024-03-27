@@ -1,6 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createSlice } from '@reduxjs/toolkit'
 import { AuthInterface } from '../../types/interface/auth'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState: AuthInterface = {
     isLogin: false,

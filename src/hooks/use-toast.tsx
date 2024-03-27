@@ -7,11 +7,9 @@ import {
     Pressable,
     Toast,
     ToastDescription,
-    ToastTitle,
     useToast,
 } from '@gluestack-ui/themed'
 import { AppColors } from '../constants/colors'
-import IconButton from '../components/icon-button/icon-button'
 
 interface ToastProps {
     label: string
@@ -45,8 +43,9 @@ function useAppToast() {
                 return (
                     <Toast
                         nativeID={toastId}
-                        bgColor={AppColors.background}
+                        bgColor={AppColors.card}
                         alignItems="center"
+                        justifyContent="center"
                         borderRadius="$xl"
                     >
                         <Icon as={icon} size="lg" />

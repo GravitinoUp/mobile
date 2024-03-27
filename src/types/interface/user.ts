@@ -1,4 +1,3 @@
-import { RecursivePartial } from '../../utils/recursive-partial'
 import { IQuery, SortOptionsType } from './fetch'
 import { GroupInterface, GroupSortInterface } from './group'
 import {
@@ -6,6 +5,7 @@ import {
     OrganizationSortInterface,
 } from './organizations'
 import { RoleInterface, RoleSortInterface } from './roles'
+import { RecursivePartial } from '../../utils/recursive-partial'
 
 export interface UsersPayloadInterface extends IQuery {
     sorts: UserSortInterface

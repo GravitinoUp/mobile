@@ -1,12 +1,12 @@
+import { VStack } from '@gluestack-ui/themed'
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
-import { useGetMyUserQuery } from '../../../redux/api/users'
+import BackButton from '../../../components/back-button/back-button'
 import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
+import AppInput from '../../../components/ui/input'
+import LoadingView from '../../../components/ui/loading-view'
 import { AppColors } from '../../../constants/colors'
 import AppStrings from '../../../constants/strings'
-import { VStack } from '@gluestack-ui/themed'
-import BackButton from '../../../components/back-button/back-button'
-import LoadingView from '../../../components/ui/loading-view'
-import AppInput from '../../../components/ui/input'
+import { useGetMyUserQuery } from '../../../redux/api/users'
 
 const UserInfoScreen = ({ navigation }: any) => {
     const { data: user, isFetching } = useGetMyUserQuery()
