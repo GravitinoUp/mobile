@@ -67,7 +67,7 @@ const FormItem = ({
     style,
     children,
 }: {
-    style: StyleProp<ViewStyle>
+    style?: StyleProp<ViewStyle>
     children?: React.ReactNode
 }) => {
     const id = useId()

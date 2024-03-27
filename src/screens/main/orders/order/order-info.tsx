@@ -8,7 +8,7 @@ import { AppColors } from '../../../../constants/colors'
 import AppStrings from '../../../../constants/strings'
 import { OrderInterface } from '../../../../types/interface/orders'
 import { formatDate } from '../../../../utils/helpers'
-import { AttachmentsCard } from '../components/attachments'
+import { AttachmentsCard } from '../components/order-attachments'
 
 const OrderInfo = ({ order }: { order: OrderInterface }) => (
     <ScrollView contentContainerStyle={styles.scrollView}>

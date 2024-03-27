@@ -14,9 +14,8 @@ const DateList = () => {
         const list = []
 
         for (let i = -1; i < 2; i++) {
-            const currentDate = new Date()
+            const currentDate = new Date(formatDateISO(new Date()))
             currentDate.setDate(currentDate.getDate() + i)
-            currentDate.setHours(0, 0, 0, 0)
 
             const buttonTitle =
                 i === -1
@@ -31,7 +30,11 @@ const DateList = () => {
                     text={buttonTitle}
                     onPress={() => {
                         const date = formatDateISO(currentDate, true)
-                        currentDate.setHours(24, 0, 0, 0)
+                        currentDate.setDate(currentDate.getDate() + 1)
+                        currentDate.setMilliseconds(
+                            currentDate.getMilliseconds() - 1
+                        )
+
                         const endDate = formatDateISO(currentDate, true)
 
                         setPersonalOrdersQuery({

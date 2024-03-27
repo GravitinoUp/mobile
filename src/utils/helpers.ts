@@ -33,6 +33,8 @@ export const getJWTtokens = async () => {
 export const addDays = (date: Date, days: number) => {
     const newDate = new Date(date)
     newDate.setDate(date.getDate() + days)
+    newDate.setMilliseconds(date.getMilliseconds() - 1)
+
     return newDate
 }
 

@@ -14,7 +14,7 @@ import AppStrings from '../../../../constants/strings'
 import { useAppToast } from '../../../../hooks/use-toast'
 import { UnclosedOrderInterface } from '../../../../types/interface/fetch'
 import { OrderInterface } from '../../../../types/interface/orders'
-import { AttachmentsCard } from '../components/attachments'
+import { AttachmentsCard } from '../components/order-attachments'
 
 interface CloseOrderScreenProps {
     order: OrderInterface

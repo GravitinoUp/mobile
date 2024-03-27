@@ -90,5 +90,11 @@ const AppStrings = {
     uploadTitle: 'Закрыть задачи?',
     uploadDescription: 'У вас остались незакрытые задачи.',
     closeSuccess: 'Задачи успешно закрыты и отправлены на проверку.',
+    sortBy: 'Сортировать по',
+    sortVariant: 'Вариант сортировки',
+    dateStart: 'Дата начала',
+    dateEnd: 'Дата окончания',
+    dateMismatch: 'Дата начала должна быть меньше даты окончания',
+    period: 'Период',
 }
 export default AppStrings
