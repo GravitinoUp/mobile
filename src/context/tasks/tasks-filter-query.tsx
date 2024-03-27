@@ -3,12 +3,12 @@ import {
     Dispatch,
     ReactNode,
     SetStateAction,
+    useEffect,
     useMemo,
     useState,
 } from 'react'
-import { addDays } from 'date-fns'
 import { OrderPayloadInterface } from '../../types/interface/orders'
-import { dateToEpoch, formatDateISO } from '../../utils/helpers'
+import { addDays, dateToEpoch, formatDateISO } from '../../utils/helpers'
 
 const currentDate = dateToEpoch(new Date())
 const DEFAULT_ORDERS_PER_PAGE = 10
@@ -38,12 +38,13 @@ export const TaskFilterQueryProvider = ({
 }: {
     children: ReactNode
 }) => {
-    //const savedQuery = localStorage.getItem('personalOrdersQuery')
     const [personalOrdersQuery, setPersonalOrdersQuery] =
-        useState<OrderPayloadInterface>(
-            //savedQuery !== null ? JSON.parse(savedQuery!) : defaultQuery
-            defaultQuery
-        )
+        useState<OrderPayloadInterface>(defaultQuery)
+
+    useEffect(
+        () => console.log(personalOrdersQuery.period),
+        [personalOrdersQuery]
+    )
 
     const contextState = useMemo(
         () => ({
