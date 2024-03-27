@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { HStack, SearchIcon } from '@gluestack-ui/themed'
 import {
     FlatList,
@@ -7,31 +7,31 @@ import {
     StyleSheet,
 } from 'react-native'
 import ReportCard from './components/report-card'
+import ReportFiltersActionsheet from './components/report-filters-actionsheet'
+import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
 import BackButton from '../../../components/back-button/back-button'
 import EmptyList from '../../../components/empty-list/empty-list'
-import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
 import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
 import AppInput from '../../../components/ui/input'
 import LoadingView from '../../../components/ui/loading-view'
 import { AppColors } from '../../../constants/colors'
-import { placeholderQuery } from '../../../constants/constants'
 import AppStrings from '../../../constants/strings'
+import { ReportsFilterQueryContext } from '../../../context/tasks/reports-filter-query'
 import useErrorToast from '../../../hooks/use-error-toast'
 import { useGetCheckpointReportsQuery } from '../../../redux/api/reports'
 import { BranchInterface } from '../../../types/interface/branch'
-import { CheckpointReportsPayloadInterface } from '../../../types/interface/reports'
 
 export default function CheckpointReportsScreen({ navigation, route }: any) {
     const branch: BranchInterface = route.params.branch
     const branch_id = branch ? branch.branch_id : -1
 
     const [search, setSearch] = useState('')
+    const [actionsheetOpen, setActionsheetOpen] = useState(false)
 
-    const [checkpointReportsQuery, setCheckpointReportsQuery] =
-        useState<CheckpointReportsPayloadInterface>({
-            ...placeholderQuery,
-            branch_id,
-        })
+    const {
+        reportsQuery: checkpointReportsQuery,
+        setReportsQuery: setCheckpointReportsQuery,
+    } = useContext(ReportsFilterQueryContext)
 
     const {
         data: reports = { count: 0, data: [] },
@@ -39,7 +39,7 @@ export default function CheckpointReportsScreen({ navigation, route }: any) {
         isSuccess: checkpointReportsSuccess,
         error: checkpointReportsError,
         refetch,
-    } = useGetCheckpointReportsQuery(checkpointReportsQuery)
+    } = useGetCheckpointReportsQuery({ ...checkpointReportsQuery, branch_id })
 
     useEffect(() => {
         const delayTimeoutId = setTimeout(() => {
@@ -117,6 +117,10 @@ export default function CheckpointReportsScreen({ navigation, route }: any) {
             ) : (
                 <LoadingView />
             )}
+            <ReportFiltersActionsheet
+                actionsheetOpen={actionsheetOpen}
+                setActionsheetOpen={setActionsheetOpen}
+            />
         </SafeAreaView>
     )
 }

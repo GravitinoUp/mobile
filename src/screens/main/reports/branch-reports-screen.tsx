@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { SearchIcon } from '@gluestack-ui/themed'
 import {
     FlatList,
@@ -7,23 +7,26 @@ import {
     StyleSheet,
 } from 'react-native'
 import ReportCard from './components/report-card'
-import EmptyList from '../../../components/empty-list/empty-list'
+import ReportFiltersActionsheet from './components/report-filters-actionsheet'
 import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
+import EmptyList from '../../../components/empty-list/empty-list'
 import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
 import AppInput from '../../../components/ui/input'
 import LoadingView from '../../../components/ui/loading-view'
 import { AppColors } from '../../../constants/colors'
-import { placeholderQuery } from '../../../constants/constants'
 import AppStrings from '../../../constants/strings'
+import { ReportsFilterQueryContext } from '../../../context/tasks/reports-filter-query'
 import useErrorToast from '../../../hooks/use-error-toast'
 import { useGetBranchReportsQuery } from '../../../redux/api/reports'
-import { BranchReportsPayloadInterface } from '../../../types/interface/reports'
 
 export default function BranchReportsScreen({ navigation }: any) {
     const [search, setSearch] = useState('')
+    const [actionsheetOpen, setActionsheetOpen] = useState(false)
 
-    const [branchReportsQuery, setBranchReportsQuery] =
-        useState<BranchReportsPayloadInterface>(placeholderQuery)
+    const {
+        reportsQuery: branchReportsQuery,
+        setReportsQuery: setBranchReportsQuery,
+    } = useContext(ReportsFilterQueryContext)
 
     const {
         data: reports = { count: 0, data: [] },
@@ -66,7 +69,7 @@ export default function BranchReportsScreen({ navigation }: any) {
                     placeholder={AppStrings.search}
                     leadingIcon={<SearchIcon />}
                     trailingIcon={<SettingsIcon />}
-                    onTrailingIconPress={() => {}}
+                    onTrailingIconPress={() => setActionsheetOpen(true)}
                 />
                 <AppBarTitle mt="$5" fontSize="$lg">
                     {AppStrings.branches}
@@ -102,6 +105,10 @@ export default function BranchReportsScreen({ navigation }: any) {
             ) : (
                 <LoadingView />
             )}
+            <ReportFiltersActionsheet
+                actionsheetOpen={actionsheetOpen}
+                setActionsheetOpen={setActionsheetOpen}
+            />
         </SafeAreaView>
     )
 }

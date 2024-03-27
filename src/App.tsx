@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider } from 'react-redux'
 import { AppColors } from './constants/colors'
+import { ReportsFilterQueryProvider } from './context/tasks/reports-filter-query'
 import { TaskFilterQueryProvider } from './context/tasks/tasks-filter-query'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { useRefreshTokenMutation } from './redux/api/auth'
@@ -36,9 +37,11 @@ export const AppWrapper = () => {
         !isLoading && (
             <Provider store={store}>
                 <GluestackUIProvider config={config}>
-                    <TaskFilterQueryProvider>
-                        <App />
-                    </TaskFilterQueryProvider>
+                    <ReportsFilterQueryProvider>
+                        <TaskFilterQueryProvider>
+                            <App />
+                        </TaskFilterQueryProvider>
+                    </ReportsFilterQueryProvider>
                 </GluestackUIProvider>
             </Provider>
         )

@@ -1,3 +1,5 @@
+import { RecursivePartial } from '../../utils/recursive-partial'
+
 export interface IQuery {
     offset: IOffset
 }
@@ -47,4 +49,13 @@ export interface UnclosedOrderInterface {
     order_name: string
     files: string[]
     uploadError?: boolean
+}
+
+export interface PayloadInterface<FilterType, SortType> extends IQuery {
+    filter: RecursivePartial<FilterType>
+    sorts: SortType
+    period: {
+        date_start: string
+        date_end: string
+    }
 }

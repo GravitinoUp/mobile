@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { HStack, SearchIcon } from '@gluestack-ui/themed'
 import {
     FlatList,
@@ -7,31 +7,31 @@ import {
     StyleSheet,
 } from 'react-native'
 import ReportCard from './components/report-card'
+import ReportFiltersActionsheet from './components/report-filters-actionsheet'
+import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
 import BackButton from '../../../components/back-button/back-button'
 import EmptyList from '../../../components/empty-list/empty-list'
-import { SettingsIcon } from '../../../assets/icons/SettingsIcon'
 import AppBar, { AppBarTitle } from '../../../components/ui/app-bar'
 import AppInput from '../../../components/ui/input'
 import LoadingView from '../../../components/ui/loading-view'
 import { AppColors } from '../../../constants/colors'
-import { placeholderQuery } from '../../../constants/constants'
 import AppStrings from '../../../constants/strings'
+import { ReportsFilterQueryContext } from '../../../context/tasks/reports-filter-query'
 import useErrorToast from '../../../hooks/use-error-toast'
 import { useGetOrganizationReportsQuery } from '../../../redux/api/reports'
 import { CheckpointInterface } from '../../../types/interface/checkpoint'
-import { OrganizationReportsPayloadInterface } from '../../../types/interface/reports'
 
 export default function OrganizationReportsScreen({ navigation, route }: any) {
     const checkpoint: CheckpointInterface = route.params.checkpoint
     const checkpoint_id = checkpoint ? checkpoint.checkpoint_id : -1
 
     const [search, setSearch] = useState('')
+    const [actionsheetOpen, setActionsheetOpen] = useState(false)
 
-    const [organizationReportsQuery, setOrganizationReportsQuery] =
-        useState<OrganizationReportsPayloadInterface>({
-            ...placeholderQuery,
-            checkpoint_id,
-        })
+    const {
+        reportsQuery: organizationReportsQuery,
+        setReportsQuery: setOrganizationReportsQuery,
+    } = useContext(ReportsFilterQueryContext)
 
     const {
         data: reports = { count: 0, data: [] },
@@ -39,7 +39,10 @@ export default function OrganizationReportsScreen({ navigation, route }: any) {
         isSuccess: organizationReportsSuccess,
         error: organizationReportsError,
         refetch,
-    } = useGetOrganizationReportsQuery(organizationReportsQuery)
+    } = useGetOrganizationReportsQuery({
+        ...organizationReportsQuery,
+        checkpoint_id,
+    })
 
     useEffect(() => {
         const delayTimeoutId = setTimeout(() => {
@@ -109,6 +112,10 @@ export default function OrganizationReportsScreen({ navigation, route }: any) {
             ) : (
                 <LoadingView />
             )}
+            <ReportFiltersActionsheet
+                actionsheetOpen={actionsheetOpen}
+                setActionsheetOpen={setActionsheetOpen}
+            />
         </SafeAreaView>
     )
 }
