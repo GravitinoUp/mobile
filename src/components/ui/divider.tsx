@@ -1,11 +1,13 @@
-import { View } from 'react-native'
+import { ComponentProps } from 'react'
+import { View } from '@gluestack-ui/themed'
 import { AppColors } from '../../constants/colors'
 
-const Divider = ({
-    borderStyle = 'dashed',
-}: {
+type ViewProps = ComponentProps<typeof View>
+type DividerProps = {
     borderStyle?: 'solid' | 'dotted' | 'dashed' | undefined
-}) => (
+} & ViewProps
+
+const Divider = ({ borderStyle = 'dashed', ...props }: DividerProps) => (
     <View
         style={{
             height: 1,
@@ -14,6 +16,7 @@ const Divider = ({
             borderColor: AppColors.border,
             borderStyle: borderStyle,
         }}
+        {...props}
     />
 )
 

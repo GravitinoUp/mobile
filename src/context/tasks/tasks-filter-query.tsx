@@ -18,7 +18,7 @@ const defaultQuery = {
         count: DEFAULT_ORDERS_PER_PAGE,
         page: 1,
     },
-    filter: {},
+    filter: { order_status: [{ order_status_id: 3 }] },
     sorts: {},
     period: {
         date_start: formatDateISO(currentDate, true),

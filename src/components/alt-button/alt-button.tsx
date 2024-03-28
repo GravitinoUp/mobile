@@ -1,13 +1,15 @@
+import { ComponentProps } from 'react'
 import { AppColors } from '../../constants/colors'
 import AppButton from '../ui/button'
 
+type ButtonProps = ComponentProps<typeof AppButton>
 type AltButtonProps = {
     text: string
     selected?: boolean
     onPress: () => void
-}
+} & ButtonProps
 
-const AltButton = ({ text, selected, onPress }: AltButtonProps) => (
+const AltButton = ({ text, selected, onPress, ...props }: AltButtonProps) => (
     <AppButton
         flex={1}
         h="auto"
@@ -23,6 +25,7 @@ const AltButton = ({ text, selected, onPress }: AltButtonProps) => (
         borderColor={AppColors.text}
         borderWidth="$2"
         backgroundColor={selected ? AppColors.text : AppColors.background}
+        {...props}
     />
 )
 

@@ -59,7 +59,7 @@ const DateList = () => {
         return list
     }
     return (
-        <HStack mt="$3" gap={'$2'}>
+        <HStack mt="$3" gap="$2">
             {generateDates()}
         </HStack>
     )
